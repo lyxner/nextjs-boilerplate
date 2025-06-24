@@ -1,0 +1,103 @@
+/* app/page.module.css */
+
+/* Container utama */
+.container {
+  max-width: 1000px;
+  margin: 80px auto 40px;
+  padding: 0 20px;
+}
+
+/* Judul Dashboard */
+.heading {
+  font-size: 2.5rem;
+  color: #0056b3;
+  margin: 0;
+  text-align: center;
+}
+
+/* Subheading / penjelasan */
+.subheading {
+  margin-top: 8px;
+  margin-bottom: 32px;
+  text-align: center;
+  color: #333;
+  font-size: 1.125rem;
+}
+
+/* Grid untuk card */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+/* Card clickable */
+.card {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  text-decoration: none; /* hilangkan underline pada Link */
+  color: inherit; /* wariskan warna teks */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* Wrapper gambar dalam card */
+.imageWrapper {
+  width: 100%;
+  /* aspect ratio: 3:2 => padding-bottom trick atau gunakan height tetap */
+  position: relative;
+  padding-top: 66.6667%; /* 2/3 => tinggi 2/3 lebar */
+  overflow: hidden;
+}
+
+/* Gambar responsif di dalam wrapper */
+.imageWrapper img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Konten card (judul & deskripsi) */
+.cardContent {
+  padding: 16px;
+  flex: 1; /* agar content mengisi sisa tinggi pastinya */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Judul dalam card */
+.cardTitle {
+  font-size: 1.25rem;
+  margin: 0 0 8px 0;
+  color: #003e80;
+}
+
+/* Deskripsi dalam card */
+.cardDesc {
+  margin: 0;
+  color: #555;
+  flex: 1; /* agar jika teks pendek, spasi konsisten */
+  font-size: 1rem;
+}
+
+/* Responsive tweaks jika perlu */
+@media (max-width: 500px) {
+  .heading {
+    font-size: 2rem;
+  }
+  .subheading {
+    font-size: 1rem;
+  }
+}

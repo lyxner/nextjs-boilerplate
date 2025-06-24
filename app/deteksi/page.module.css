@@ -1,0 +1,105 @@
+
+/* Root container untuk halaman deteksi */
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  background-color: #fff; /* override background global jika ingin */
+}
+
+/* Judul */
+.title {
+  font-size: 2rem;
+  color: #0056b3;
+  margin-bottom: 24px;
+}
+
+/* Form upload: card-like */
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 400px;
+  background-color: #fafafa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Input file */
+.fileInput {
+  width: 100%;
+}
+
+/* Tombol submit */
+.submitButton {
+  width: 100%;
+  padding: 0.6rem;
+  background-color: #3366cc;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+}
+.submitButton:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+.submitButton:not(:disabled):hover {
+  background-color: #2851a3;
+  transform: translateY(-1px);
+}
+
+/* Preview */
+.previewContainer {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.previewTitle {
+  margin-bottom: 12px;
+  font-size: 1.2rem;
+  color: #333;
+  text-align: center;
+}
+.previewImageWrapper {
+  width: 100%;
+  max-width: 400px;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  border: 1px solid #ccc;
+}
+.previewImage {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* Result */
+.resultBox {
+  margin-top: 24px;
+  width: 100%;
+  max-width: 400px;
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  text-align: center;
+  font-weight: bold;
+}
+.resultSuccess {
+  color: #28a745;
+}
+.resultError {
+  color: #dc3545;
+}

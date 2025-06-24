@@ -12,10 +12,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <nav>
           <ul>
+            <li><a href="/">Home</a></li>
             <li><a href="/cara">Gambar AI</a></li>
             <li><a href="/modell">Model & Tools</a></li>
             <li><a href="/kuis">Kuis Interaktif</a></li>
-            <li><a href="/">Deteksi AI</a></li>
+             <li><a href="/deteksi">Deteksi AI</a></li>
+
+       
           </ul>
         </nav>
         {children}
