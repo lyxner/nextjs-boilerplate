@@ -1,6 +1,105 @@
-/* styles/globals.css */
+/* ================= Nav Responsive ================= */
+/* Struktur markup di layout.tsx:
+   <nav class="navbar">
+     <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+     <label for="nav-toggle" class="nav-toggle-label">&#9776;</label>
+     <ul class="nav-menu">
+       <li><a href="/">Home</a></li>
+       ...
+     </ul>
+   </nav>
+*/
 
-/* ================= Reset & Global Basics ================= */
+/* Navbar dasar */
+.navbar {
+  background-color: #3366cc;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  height: 56px;
+}
+
+/* Checkbox toggle (hamburger) disembunyikan secara visual */
+.nav-toggle {
+  display: none;
+}
+
+/* Label hamburger: sembunyikan di desktop, tampilkan di mobile */
+.nav-toggle-label {
+  display: none;
+  font-size: 1.5rem;
+  color: #fff;
+  cursor: pointer;
+  line-height: 56px;
+  padding: 0 8px;
+}
+
+/* Daftar menu (desktop) */
+.nav-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex; /* horizontal di desktop */
+  flex: 1;       /* agar link menempel di kiri/kanan jika perlu */
+  justify-content: flex-start;
+}
+.nav-menu li {
+  margin: 0;
+}
+.nav-menu a {
+  color: #fff;
+  padding: 0 16px;
+  display: block;
+  line-height: 56px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+.nav-menu a:hover {
+  background-color: #2851a3;
+}
+
+/* ================= Responsive: Mobile ================= */
+/* Breakpoint di sini: max-width 768px (tablet/mobile) */
+@media (max-width: 768px) {
+  /* Tampilkan hamburger icon */
+  .nav-toggle-label {
+    display: block;
+  }
+  /* Navbar: susun ulang agar hamburger + logo/first item */
+  .navbar {
+    justify-content: space-between;
+  }
+  /* Sembunyikan menu secara default */
+  .nav-menu {
+    position: absolute;
+    top: 56px; /* di bawah navbar */
+    left: 0;
+    width: 100%;
+    background-color: #3366cc;
+    flex-direction: column;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+  }
+  .nav-menu li {
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .nav-menu a {
+    padding: 12px 16px;
+    line-height: normal;
+  }
+  /* Ketika toggle dicentang, tampilkan menu */
+  .nav-toggle:checked + .nav-toggle-label + .nav-menu,
+  .nav-toggle:checked ~ .nav-menu {
+    max-height: 500px; /* cukup untuk menampilkan semua <li>; jika banyak, sesuaikan atau gunakan overflow-y */
+    transition: max-height 0.3s ease-in;
+  }
+}
+
+/* ================= Container & Global Basics ================= */
 * {
   box-sizing: border-box;
 }
@@ -11,16 +110,23 @@ body {
   color: #333;
   line-height: 1.6;
 }
+a {
+  text-decoration: none;
+  color: inherit;
+}
 
-/* ================= Container ================= */
+/* Container umum */
 .container {
+  width: 100%;
   max-width: 900px;
   margin: 80px auto 40px;
-  padding: 20px;
+  padding: 0 16px;
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+
+/* Heading */
 h1, h2 {
   color: #0056b3;
 }
@@ -29,34 +135,7 @@ h1 {
   margin-bottom: 1rem;
 }
 
-/* ================= Nav ================= */
-nav {
-  background-color: #3366cc;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-}
-nav li {
-  margin: 0;
-}
-nav a {
-  color: #fff;
-  text-decoration: none;
-  padding: 15px 20px;
-  display: block;
-  font-weight: bold;
-}
-nav a:hover {
-  background-color: #2851a3;
-}
-
-/* ================= Buttons ================= */
+/* Buttons */
 button, .reset-button {
   padding: 0.6rem 1.2rem;
   background-color: #3366cc;
@@ -79,7 +158,7 @@ button:hover:not(:disabled), .reset-button:hover {
   margin-top: 24px;
 }
 
-/* ================= Global Images ================= */
+/* Global Images */
 img {
   display: block;
   max-width: 100%;
@@ -89,24 +168,23 @@ img {
   border: 1px solid #ccc;
 }
 
-/* ================= Preview Gambar Deteksi AI ================= */
+/* Preview Gambar Deteksi AI */
 .preview-container {
   display: flex;
   justify-content: center;
   margin-top: 20px;
 }
 .preview-image {
-  width: 300px;   /* Samakan dengan ukuran quiz card */
-  height: 200px;
-  object-fit: cover; /* atau contain sesuai kebutuhan */
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 3/2;
+  object-fit: cover;
   border: 1px solid #ccc;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-/* ================= Quiz Styles ================= */
-
-/* Card untuk setiap pertanyaan */
+/* Quiz Styles */
 .question-card {
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -115,15 +193,11 @@ img {
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   background-color: #fff;
 }
-
-/* Judul pertanyaan */
 .question-title {
   font-size: 1.2rem;
   margin-bottom: 16px;
   color: #333;
 }
-
-/* Container opsi: grid dengan auto-fit agar responsif */
 .options {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -131,8 +205,6 @@ img {
   margin-top: 10px;
   justify-items: center;
 }
-
-/* Card opsi default */
 .option-card {
   position: relative;
   display: flex;
@@ -145,62 +217,43 @@ img {
   cursor: pointer;
   transition: border-color 0.3s, background-color 0.3s, transform 0.2s;
   width: 100%;
-  max-width: 320px; /* Menyesuaikan grid minmax */
+  max-width: 320px;
   box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
-
-/* Hover effect sebelum dijawab */
 .option-card:hover input:not(:disabled) ~ .image-wrapper img,
 .option-card:hover {
   background-color: #f0f8ff;
   transform: scale(1.02);
 }
-
-/* Sembunyikan radio default secara visual */
 .option-card input[type="radio"] {
   position: absolute;
   opacity: 0;
   pointer-events: none;
 }
-
-/* Wrapper gambar: dimensi tetap */
 .image-wrapper {
-  width: 300px;   /* Lebar tetap */
-  height: 200px;  /* Tinggi tetap */
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 3/2;
   overflow: hidden;
   border-radius: 4px;
 }
-
-/* Gambar dalam wrapper: isi penuh dengan object-fit */
 .image-wrapper img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Untuk mengisi area kotak */
+  object-fit: cover;
   display: block;
   border-radius: 4px;
 }
-
-/* Jika ingin menampilkan seluruh gambar utuh: 
-.image-wrapper img {
-  object-fit: contain;
-}
-*/
-
-/* Highlight ketika jawaban benar */
 .option-card.correct {
   border-color: #28a745;
   background-color: #e6f4ea;
   box-shadow: 0 2px 4px rgba(40,167,69,0.3);
 }
-
-/* Highlight ketika jawaban salah */
 .option-card.wrong {
   border-color: #dc3545;
   background-color: #f8d7da;
   box-shadow: 0 2px 4px rgba(220,53,69,0.3);
 }
-
-/* Feedback teks */
 .feedback {
   font-weight: bold;
   margin-top: 16px;
@@ -214,24 +267,19 @@ img {
   color: #dc3545;
 }
 
-/* Responsive: di layar sempit, grid menjadi satu kolom */
-@media (max-width: 650px) {
-  .options {
-    grid-template-columns: 1fr;
+/* Responsive tweaks untuk very small screens */
+@media (max-width: 500px) {
+  .container {
+    margin: 60px auto 20px;
+    padding: 0 12px;
   }
-  .question-card {
-    padding: 16px;
+  h1 {
+    font-size: 1.5rem;
+  }
+  h2 {
+    font-size: 1.125rem;
   }
   .question-title {
     font-size: 1.1rem;
-    margin-bottom: 12px;
-  }
-  .reset-button {
-    width: 100%;
   }
 }
-
-/* ================= Other Global Styles (Jika Ada) ================= */
-/* Result-box atau preview-image di halaman lain sudah diatur di atas. */
-
-/* Pastikan tidak ada aturan duplikat atau konflik */
