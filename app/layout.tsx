@@ -25,6 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <li><a href="/cara">Gambar AI</a></li>
             <li><a href="/modell">Model & Tools</a></li>
             <li><a href="/kuis">Kuis Interaktif</a></li>
+             <li><a href="/generate">Generate Gambar AI</a></li>
             <li><a href="/deteksi">Deteksi AI</a></li>
           </ul>
         </nav>
