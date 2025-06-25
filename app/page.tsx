@@ -29,6 +29,13 @@ export default function DashboardPage() {
       imgAlt: 'Kuis Interaktif',
     },
      {
+      title: 'Generate Gambar AI',
+      description: 'Masukkan prompt anda dan buat gambar AI anda.',
+      href: '/generate',
+      imgSrc: 'https://via.placeholder.com/300x200?text=Model+%26+Tools',
+      imgAlt: 'Model & Tools',
+    },
+     {
       title: 'Deteksi Gambar AI',
       description: 'Unggah gambar untuk mendeteksi apakah dihasilkan oleh AI.',
       href: '/deteksi',
