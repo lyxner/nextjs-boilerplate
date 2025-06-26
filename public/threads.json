@@ -1,0 +1,12 @@
+[
+  {
+    "id": "thread-1",
+    "image": "/images/example-ai.png",
+    "caption": "Contoh gambar AI pertama"
+  },
+  {
+    "id": "thread-2",
+    "image": "/images/example-real.jpg",
+    "caption": "Contoh gambar asli pertama"
+  }
+]
