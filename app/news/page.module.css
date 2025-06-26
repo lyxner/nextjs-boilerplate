@@ -5,7 +5,7 @@
 }
 .heading {
   font-size: 2rem;
-  color: #0056b3;
+  color: #232c51; /* primary */
   text-align: center;
   margin-bottom: 32px;
 }
@@ -20,12 +20,12 @@
   background: #fff;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(35,44,81,0.1); /* tint primary */
   transition: transform 0.2s, box-shadow 0.2s;
 }
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(35,44,81,0.2);
 }
 .link {
   display: flex;
@@ -51,10 +51,11 @@
 .title {
   font-size: 1.1rem;
   margin: 0 0 8px;
+  color: #aa8e76; /* accent */
 }
 .meta {
   font-size: 0.9rem;
-  color: #666;
+  color: #97a5d4; /* secondary */
 }
 @media (max-width: 600px) {
   .link {

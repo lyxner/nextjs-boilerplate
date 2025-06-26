@@ -1,3 +1,4 @@
+/* Container & Heading */
 .container {
   max-width: 800px;
   margin: 60px auto;
@@ -5,53 +6,63 @@
 }
 .heading {
   font-size: 2rem;
-  color: #0056b3;
+  color: #232c51; /* primary */
   text-align: center;
   margin-bottom: 8px;
 }
 .description {
   text-align: center;
   margin-bottom: 24px;
-  color: #333;
+  color: #555; /* sedikit lebih lembut daripada #333 */
 }
+
+/* Card */
 .card {
   background: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(35,44,81,0.1); /* tint primary */
   margin-bottom: 24px;
   padding: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
+
+/* Gambar */
 .image {
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
   aspect-ratio: 16/9;
   object-fit: cover;
   border-radius: 4px;
-  margin-bottom: 16px;
+  margin: 0 auto 16px;
 }
+
+/* Opsi Pilihan */
 .options {
   display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 .option {
-  padding: 8px 12px;
-  background: #f0f0f0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  text-align: left;
+  padding: 12px;
+  background: #232c51;       /* primary */
+  border: 1px solid #97a5d4; /* secondary */
+  border-radius: 6px;
+  color: #fff;
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s;
 }
+.option:hover:not(:disabled) {
+  background: #97a5d4;       /* secondary */
+  border-color: #aa8e76;     /* accent */
+  color: #232c51;
+}
 .option:disabled {
   cursor: default;
+  opacity: 0.6;
 }
-.option:hover:not(:disabled) {
-  background: #e0eaff;
-}
+
+/* Status Jawaban */
 .correct {
   border-color: #28a745 !important;
   background-color: #e6f4ea !important;
@@ -60,21 +71,27 @@
   border-color: #dc3545 !important;
   background-color: #f8d7da !important;
 }
+
+/* Feedback */
 .feedbackCorrect {
   color: #28a745;
   font-weight: bold;
   margin-top: 12px;
+  text-align: center;
 }
 .feedbackWrong {
   color: #dc3545;
   font-weight: bold;
   margin-top: 12px;
+  text-align: center;
 }
+
+/* Tombol Reset */
 .reset {
   display: block;
   margin: 32px auto 0;
   padding: 0.6rem 1.2rem;
-  background: #3366cc;
+  background: #232c51; /* primary */
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -83,13 +100,16 @@
   transition: background 0.2s;
 }
 .reset:hover {
-  background: #2851a3;
+  background: #97a5d4; /* secondary */
+  color: #232c51;
 }
 
-/* Responsive: mobile */
+/* Responsive */
 @media (max-width: 600px) {
   .option {
-    flex: 1 1 100%;
-    text-align: center;
+    font-size: 0.9rem;
+  }
+  .image {
+    max-width: 100%;
   }
 }

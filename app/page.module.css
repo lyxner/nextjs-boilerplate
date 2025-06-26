@@ -10,7 +10,7 @@
 /* Judul Dashboard */
 .heading {
   font-size: 2.5rem;
-  color: #0056b3;
+  color: #232c51; /* primary */
   margin: 0;
   text-align: center;
 }
@@ -20,7 +20,7 @@
   margin-top: 8px;
   margin-bottom: 32px;
   text-align: center;
-  color: #333;
+  color: #97a5d4; /* secondary */
   font-size: 1.125rem;
 }
 
@@ -36,26 +36,25 @@
   display: flex;
   flex-direction: column;
   background-color: #fff;
-  border: 1px solid #ddd;
+  border: 1px solid #97a5d4; /* secondary */
   border-radius: 8px;
   text-decoration: none; /* hilangkan underline pada Link */
   color: inherit; /* wariskan warna teks */
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(35,44,81,0.1); /* lembut dengan primary tint */
   transition: transform 0.2s, box-shadow 0.2s;
   overflow: hidden;
 }
 
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 10px rgba(35,44,81,0.2); /* sedikit lebih gelap */
 }
 
 /* Wrapper gambar dalam card */
 .imageWrapper {
   width: 100%;
-  /* aspect ratio: 3:2 => padding-bottom trick atau gunakan height tetap */
   position: relative;
-  padding-top: 66.6667%; /* 2/3 => tinggi 2/3 lebar */
+  padding-top: 66.6667%; /* 3:2 */
   overflow: hidden;
 }
 
@@ -72,7 +71,7 @@
 /* Konten card (judul & deskripsi) */
 .cardContent {
   padding: 16px;
-  flex: 1; /* agar content mengisi sisa tinggi pastinya */
+  flex: 1; /* agar content mengisi sisa tinggi */
   display: flex;
   flex-direction: column;
 }
@@ -81,13 +80,13 @@
 .cardTitle {
   font-size: 1.25rem;
   margin: 0 0 8px 0;
-  color: #003e80;
+  color: #aa8e76; /* accent */
 }
 
 /* Deskripsi dalam card */
 .cardDesc {
   margin: 0;
-  color: #555;
+  color: #333;
   flex: 1; /* agar jika teks pendek, spasi konsisten */
   font-size: 1rem;
 }

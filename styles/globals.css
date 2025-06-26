@@ -1,18 +1,7 @@
-/* ================= Nav Responsive ================= */
-/* Struktur markup di layout.tsx:
-   <nav class="navbar">
-     <input type="checkbox" id="nav-toggle" class="nav-toggle" />
-     <label for="nav-toggle" class="nav-toggle-label">&#9776;</label>
-     <ul class="nav-menu">
-       <li><a href="/">Home</a></li>
-       ...
-     </ul>
-   </nav>
-*/
 
 /* Navbar dasar */
 .navbar {
-  background-color: #3366cc;
+  background-color: #232c51; /* primary */
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -55,10 +44,11 @@
   display: block;
   line-height: 56px;
   font-weight: bold;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, color 0.3s;
 }
 .nav-menu a:hover {
-  background-color: #2851a3;
+  background-color: #97a5d4; /* secondary */
+  color: #232c51;            /* teks jadi kontras */
 }
 
 /* ================= Responsive: Mobile ================= */
@@ -78,7 +68,7 @@
     top: 56px; /* di bawah navbar */
     left: 0;
     width: 100%;
-    background-color: #3366cc;
+    background-color: #232c51; /* primary */
     flex-direction: column;
     max-height: 0;
     overflow: hidden;
@@ -128,7 +118,7 @@ a {
 
 /* Heading */
 h1, h2 {
-  color: #0056b3;
+  color: #aa8e76; /* accent */
 }
 h1 {
   margin-top: 0;
@@ -138,7 +128,7 @@ h1 {
 /* Buttons */
 button, .reset-button {
   padding: 0.6rem 1.2rem;
-  background-color: #3366cc;
+  background-color: #232c51; /* primary */
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -151,7 +141,8 @@ button:disabled {
   cursor: not-allowed;
 }
 button:hover:not(:disabled), .reset-button:hover {
-  background-color: #2851a3;
+  background-color: #97a5d4; /* secondary */
+  color: #232c51;
   transform: translateY(-1px);
 }
 .reset-button {
@@ -220,9 +211,9 @@ img {
   max-width: 320px;
   box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
-.option-card:hover input:not(:disabled) ~ .image-wrapper img,
+/* hover ringan dengan secondary, sedikit transparan */
 .option-card:hover {
-  background-color: #f0f8ff;
+  background-color: rgba(151,165,212,0.2);
   transform: scale(1.02);
 }
 .option-card input[type="radio"] {

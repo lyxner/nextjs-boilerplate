@@ -28,6 +28,13 @@ export default function DashboardPage() {
       imgSrc: 'https://via.placeholder.com/300x200?text=Kuis',
       imgAlt: 'Kuis Interaktif',
     },
+    {
+      title: 'Kuis Interaktif',
+      description: 'Tes kemampuan Anda dalam menyamakan promt yang sesuai dengan gambar .',
+      href: '/match-promt',
+      imgSrc: 'https://via.placeholder.com/300x200?text=Kuis',
+      imgAlt: 'Kuis Match Prompt',
+    },
      {
       title: 'Generate Gambar AI',
       description: 'Masukkan prompt anda dan buat gambar AI anda.',

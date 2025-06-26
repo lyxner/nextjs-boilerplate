@@ -5,18 +5,18 @@
   padding: 20px;
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px rgba(35,44,81,0.1); /* tint primary */
 }
 
 .heading1 {
-  color: #0056b3;
+  color: #232c51; /* primary */
   margin-top: 0;
   margin-bottom: 1rem;
   font-size: 2rem;
 }
 
 .heading2 {
-  color: #003e80;
+  color: #aa8e76; /* accent */
   margin-top: 2rem;
   margin-bottom: 0.5rem;
   font-size: 1.5rem;
@@ -25,12 +25,13 @@
 .paragraph {
   line-height: 1.6;
   margin-bottom: 1rem;
+  color: #333;
 }
 
 .image {
   max-width: 100%;
   height: auto;
-  border: 1px solid #ccc;
+  border: 1px solid #97a5d4; /* secondary */
   border-radius: 4px;
   margin: 10px 0;
   display: block;
@@ -43,4 +44,10 @@
 
 .list li {
   margin-bottom: 0.5rem;
+  color: #555;
+}
+
+/* Optional: styling for list markers */
+.list li::marker {
+  color: #97a5d4; /* secondary */
 }
