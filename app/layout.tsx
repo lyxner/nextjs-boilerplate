@@ -27,7 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <li><a href="/kuis">Kuis Interaktif</a></li>
              <li><a href="/generate">Generate Gambar AI</a></li>
             <li><a href="/deteksi">Deteksi AI</a></li>
-             <li><a href="/discussion">Forum Diskusi</a></li>
+             <li><a href="/news">Berita</a></li>
           </ul>
         </nav>
 
