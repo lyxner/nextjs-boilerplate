@@ -43,7 +43,14 @@ export default function DashboardPage() {
       imgSrc: 'https://via.placeholder.com/300x200?text=Deteksi+AI',
       imgAlt: 'Deteksi AI',
     },
-   
+     {
+      title: 'Berita',
+      description: 'Melihat berita seputar Gambar AI ',
+      href: '/news',
+      // placeholder image: Anda bisa ganti nanti sesuai aset
+      imgSrc: 'https://via.placeholder.com/300x200?text=Deteksi+AI',
+      imgAlt: 'News',
+    },
     // Tambahkan item lain jika perlu
   ];
 

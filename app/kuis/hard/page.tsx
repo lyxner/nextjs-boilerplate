@@ -1,28 +1,21 @@
-// app/kuis/page.tsx (Tingkat Mudah)
+// app/kuis/hard/page.tsx (Tingkat Susah)
 'use client';
 
-import Link from 'next/link';
 import { useState } from 'react';
-import styles from './page.module.css';
+import styles from '../page.module.css';
 
-type Question = {
-  id: number;
-  correct: 'real' | 'ai';
-  imageReal: string;
-  imageAI: string;
-};
-
-const easyQuestions: Question[] = Array.from({ length: 10 }, (_, i) => {
+type Question = { id: number; correct: 'real' | 'ai'; imageReal: string; imageAI: string };
+const hardQuestions: Question[] = Array.from({ length: 5 }, (_, i) => {
   const n = i + 1;
   return {
     id: n,
-    correct: n % 2 === 0 ? 'ai' : 'real',
-    imageReal: `/images/kuis/real${n}.jpg`,
-    imageAI: `/images/kuis/ai${n}.jpg`,
+    correct: i % 2 === 0 ? 'real' : 'ai',
+    imageReal: `/images/kuis/hard/real${n}.jpg`,
+    imageAI: `/images/kuis/hard/ai${n}.jpg`,
   };
 });
 
-export default function KuisEasy() {
+export default function KuisHard() {
   const [answers, setAnswers] = useState<Record<number, 'real' | 'ai'>>({});
   const [disabled, setDisabled] = useState<Record<number, boolean>>({});
 
@@ -45,16 +38,16 @@ export default function KuisEasy() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1>Kuis Interaktif (Mudah)</h1>
+        <h1>Kuis Interaktif (Susah)</h1>
         <label htmlFor="difficulty-select" className={styles.selectorLabel}>Tingkat Kesulitan:</label>
         <select
           id="difficulty-select"
           aria-label="Pilih tingkat kesulitan"
           className={styles.selector}
-          defaultValue="easy"
+          defaultValue="hard"
           onChange={e => {
-            if (e.currentTarget.value === 'hard') {
-              window.location.href = '/kuis/hard';
+            if (e.currentTarget.value === 'easy') {
+              window.location.href = '/kuis';
             }
           }}
         >
@@ -62,19 +55,19 @@ export default function KuisEasy() {
           <option value="hard">Susah</option>
         </select>
       </div>
-      <p>Di bawah ini terdapat {easyQuestions.length} pertanyaan. Pilih gambar yang <strong>asli</strong>.</p>
+      <p>Di bawah ini terdapat {hardQuestions.length} pertanyaan tingkat susah.</p>
 
-      {easyQuestions.map(q => (
+      {hardQuestions.map(q => (
         <div key={q.id} className={styles.questionCard}>
           <p className={styles.questionTitle}>Pertanyaan {q.id}</p>
           <div className={styles.options}>
-            {(['ai', 'real'] as const).map(val => {
-              const isAi = val === 'ai';
-              const isSelected = answers[q.id] === val;
+            {(['ai','real'] as const).map(val => {
+              const isAi = val==='ai';
+              const sel = answers[q.id]===val;
               let cls = '';
               if (disabled[q.id]) {
-                if (val === q.correct) cls = styles.correct;
-                else if (isSelected) cls = styles.wrong;
+                if (val===q.correct) cls = styles.correct;
+                else if (sel) cls = styles.wrong;
               }
               return (
                 <label key={val} className={`${styles.optionCard} ${cls}`}>                  
@@ -83,12 +76,10 @@ export default function KuisEasy() {
                     name={`q${q.id}`}
                     aria-label={isAi ? 'Pilihan AI' : 'Pilihan Asli'}
                     disabled={disabled[q.id]}
-                    checked={isSelected}
-                    onChange={() => handleAnswer(q, val)}
+                    checked={sel}
+                    onChange={()=>handleAnswer(q,val)}
                   />
-                  <div className={styles.imageWrapper}>
-                    <img src={isAi ? q.imageAI : q.imageReal} alt={isAi ? 'Gambar AI' : 'Gambar Asli'} />
-                  </div>
+                  <div className={styles.imageWrapper}><img src={isAi?q.imageAI:q.imageReal} alt={isAi?'Gambar AI':'Gambar Asli'} /></div>
                 </label>
               );
             })}
@@ -96,12 +87,7 @@ export default function KuisEasy() {
           {getFeedback(q)}
         </div>
       ))}
-      <button
-        className={styles.resetButton}
-        onClick={() => { setAnswers({}); setDisabled({}); }}
-      >
-        Ulangi Kuis
-      </button>
+      <button className={styles.resetButton} onClick={()=>{setAnswers({});setDisabled({});}}>Ulangi Kuis</button>
     </div>
   );
 }
