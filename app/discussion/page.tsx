@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Script from 'next/script';
 import styles from './page.module.css';
 
@@ -10,16 +10,21 @@ type Thread = {
   caption: string;
 };
 
-export default function DiscussionPage() {
-  const [threads, setThreads] = useState<Thread[]>([]);
+const STATIC_THREADS: Thread[] = [
+  {
+    id: 'thread-1',
+    image: '/images/example-ai.png',     // letakkan placeholder di public/images
+    caption: 'Contoh Gambar AI: sebuah lanskap futuristik.',
+  },
+  {
+    id: 'thread-2',
+    image: '/images/example-real.jpg',
+    caption: 'Contoh Gambar Asli: pemandangan pegunungan sore hari.',
+  },
+];
 
-  // Load daftar thread statis dari public/data/threads.json
-  useEffect(() => {
-    fetch('/data/threads.json')
-      .then(res => res.json())
-      .then(setThreads)
-      .catch(console.error);
-  }, []);
+export default function DiscussionPage() {
+  const [threads] = useState<Thread[]>(STATIC_THREADS);
 
   return (
     <main className={styles.container}>
@@ -27,35 +32,36 @@ export default function DiscussionPage() {
 
       {threads.map(thread => (
         <article key={thread.id} className={styles.threadCard} id={thread.id}>
-          <img src={thread.image} alt={thread.caption} className={styles.threadImage} />
+          <img
+            src={thread.image}
+            alt={thread.caption}
+            className={styles.threadImage}
+          />
           <p className={styles.threadCaption}>{thread.caption}</p>
 
-          {/* Disqus container */}
+          {/* Disqus thread untuk tiap post */}
           <div id={`disqus_thread_${thread.id}`} className={styles.disqus}></div>
-
-          {/* Embed Disqus script */}
           <Script
             id={`disqus-script-${thread.id}`}
             strategy="lazyOnload"
             dangerouslySetInnerHTML={{
               __html: `
-              var disqus_config = function () {
-                this.page.url = window.location.origin + '/discussion#${thread.id}';
-                this.page.identifier = '${thread.id}';
-              };
-              (function() {
-                var d = document, s = d.createElement('script');
-                s.src = 'https://${process.env.NEXT_PUBLIC_DISQUS_SHORTNAME}.disqus.com/embed.js';
-                s.setAttribute('data-timestamp', +new Date());
-                document.getElementById('disqus_thread_${thread.id}').appendChild(s);
-              })();
-            `,
+                var disqus_config = function () {
+                  this.page.url = window.location.origin + '/discussion#${thread.id}';
+                  this.page.identifier = '${thread.id}';
+                };
+                (function() {
+                  var d = document, s = d.createElement('script');
+                  s.src = 'https://${process.env.NEXT_PUBLIC_DISQUS_SHORTNAME}.disqus.com/embed.js';
+                  s.setAttribute('data-timestamp', +new Date());
+                  document.getElementById('disqus_thread_${thread.id}').appendChild(s);
+                })();
+              `,
             }}
           />
         </article>
       ))}
 
-      {/* Disqus comment count script (optional) */}
       <Script
         id="disqus-count"
         strategy="lazyOnload"
