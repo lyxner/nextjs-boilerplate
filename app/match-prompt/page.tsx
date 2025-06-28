@@ -25,7 +25,7 @@ const QUESTIONS: Question[] = [
     image: '/images/match/ai2.png',
     promptA: 'Pemandangan kota futuristik di malam hari dengan gedung-gedung tinggi bercahaya neón, jalanan basah memantulkan lampu kendaraan, mobil terbang melintas, atmosfer cyberpunk, gaya sinematik.',
     promptB: 'Pemandangan desa pedesaan di pagi hari dengan kabut tipis, ladang hijau luas, sapi merumput, cahaya matahari lembut, suasana damai, gaya realistik.',
-    correct: 'A',
+    correct: 'B',
   },
   {
     id: 3,

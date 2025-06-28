@@ -1,15 +1,15 @@
-// app/layout.tsx
+// app/layout.tsx 
 import '../styles/globals.css';
 
 export const metadata = {
-  title: 'Deteksi Gambar AI',
+  title: 'Gambar AI',
   description: 'Website edukatif tentang gambar AI',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="id">
-      <body>
+      <body >
         {/* Navbar responsif */}
         <nav className="navbar">
           {/* Checkbox toggle untuk hamburger menu */}
@@ -33,6 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </nav>
 
         {children}
+        
       </body>
     </html>
   );

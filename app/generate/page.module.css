@@ -1,10 +1,12 @@
 /* app/generate/page.module.css */
 
 /* Container utama */
+
 .container {
   max-width: 800px;
   margin: 80px auto 40px;
   padding: 0 16px;
+   
 }
 
 /* Judul halaman */
@@ -56,6 +58,7 @@
   gap: 16px;
   margin-bottom: 24px;
 }
+
 
 /* Group input */
 .inputGroup {
@@ -212,6 +215,9 @@
   color: #232c51;
   transform: translateY(-1px);
 }
+
+/* Contoh hover untuk button kedua */
+
 
 /* Responsiveness untuk layar kecil */
 @media (max-width: 500px) {

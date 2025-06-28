@@ -158,7 +158,9 @@ export default function GeneratePage() {
             ? 'Generate'
             : 'Generate'}
         </button>
+
       </form>
+     
 
       {error && <p className={styles.error}>{error}</p>}
 
