@@ -2,7 +2,7 @@
 
 /* Navbar dasar */
 .navbar {
-  background-color: transparent; /* primary */
+  background-color: #090040; /* primary */
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -21,9 +21,9 @@
 .nav-toggle-label {
   display: none;
   font-size: 1.5rem;
-  color: #fff;
+  color: white;
   cursor: pointer;
-  line-height: 56px;
+  line-height: 100px;
   padding: 0 8px;
 }
 
@@ -40,7 +40,7 @@
   margin: 0;
 }
 .nav-menu a {
-  color:black;
+  color:white;
   padding: 0 16px;
   display: block;
   line-height: 56px;
@@ -48,7 +48,7 @@
   transition: background-color 0.3s, color 0.3s;
 }
 .nav-menu a:hover {
-  background-color: #232c51; /* secondary */
+  background-color:#333446; /* secondary */
   color: white;            /* teks jadi kontras */
 }
 

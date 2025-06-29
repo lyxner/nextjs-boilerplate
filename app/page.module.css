@@ -2,10 +2,12 @@
 /* Container utama */
 .container {
   max-width: 2000px;
-  margin: 0px auto 40px;
+  margin: 0px auto 0px;
   padding: 0 20px;
  background-color: #333;
-
+ background-image: url(../public/backround/backround.jpg);
+ background-repeat: no-repeat;
+background-size:cover;
 }
 
 /* Judul Dashboard */
