@@ -1,0 +1,125 @@
+/* app/cara/page.module.css */
+
+/* Container & Typography */
+.container {
+  max-width: 900px;
+  margin: 80px auto 40px;
+  padding: 0 16px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.title {
+  font-size: 2rem;
+  color: #232c51;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.intro {
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+.sectionTitle {
+  font-size: 1.5rem;
+  color: #232c51;
+  margin-top: 32px;
+  margin-bottom: 12px;
+}
+
+/* List styling */
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+}
+.listItem {
+  position: relative;
+  padding: 16px 0;
+  border-bottom: 1px solid #eee;
+}
+.listItem::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #3366cc;
+}
+.listItem strong {
+  color: #232c51;
+}
+
+/* ==== Infinite Carousel ==== */
+.carousel {
+  overflow: hidden;
+  margin: 12px 0;
+  /* Tinggi mengikuti tinggi slide */
+  height: auto;
+}
+
+.slideTrack {
+  display: flex;
+  /* ulangi konten dua kali untuk loop seamless */
+  /* kita hilangkan width statis, pakai translateX(-50%) nanti */
+  animation: scroll 12s linear infinite;
+}
+
+.slide {
+  flex: 0 0 220px;   /* basis lebar slide */
+  height: 150px;      /* tinggi slide */
+  margin-right: 10px; /* jarak */
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+/* Hover effect: zoom sedikit */
+.slide:hover img {
+  transform: scale(1.1);
+  z-index: 1;
+}
+
+/* animasi scroll setengah panjang track (translateX proporsional) */
+@keyframes scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* pause on hover */
+.carousel:hover .slideTrack {
+  animation-play-state: paused;
+}
+
+/* ==== Responsive for Mobile ==== */
+@media (max-width: 768px) {
+  .container {
+    margin: 40px 8px;
+  }
+  .slide {
+    flex: 0 0 120px;
+    height: 90px;
+    margin-right: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.5rem;
+  }
+  .sectionTitle {
+    font-size: 1.25rem;
+  }
+  .slide {
+    flex: 0 0 100px;
+    height: 75px;
+    margin-right: 6px;
+  }
+}

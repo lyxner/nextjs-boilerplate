@@ -1,40 +1,105 @@
 // app/cara/page.tsx
+import styles from './page.module.css';
+
+const karakteristik = [
+  'Detail Tubuh Tidak Wajar',
+  'Tekstur Terlalu Halus',
+  'Teks atau Logo Aneh',
+  'Latar Belakang Aneh',
+  'Pencahayaan Sempurna',
+  'Watermark Tersembunyi',
+];
+
+// Buat array 2D: setiap sub-array berisi 5 path gambar untuk masing-masing list
+const placeholdersPerList: string[][] = [
+  [
+  '/slide2/image1.jpg',
+  '/slide2/image1.jpg',
+    '/slide2/image1.jpg',
+    '/slide2/image1.jpg',
+   '/slide2/image1.jpg',
+  ],
+  [
+    '/slide2/image1.jpg',
+  '/slide2/image1.jpg',
+    '/slide2/image1.jpg',
+    '/slide2/image1.jpg',
+   '/slide2/image1.jpg',
+  ],
+  [
+    '/slide3/image1.jpg',
+     '/slide3/image1.jpg',
+      '/slide3/image1.jpg',
+       '/slide3/image1.jpg',
+        '/slide3/image1.jpg',
+   
+  ],
+  [
+ '/slide4/image1.jpg',
+    '/slide4/image1.jpg',
+     '/slide4/image1.jpg',
+      '/slide4/image1.jpg',
+       '/slide4/image1.jpg',
+  ],
+  [
+    '/slide3/image1.jpg',
+     '/slide3/image1.jpg',
+      '/slide3/image1.jpg',
+       '/slide3/image1.jpg',
+        '/slide3/image1.jpg',
+
+  ],
+  [
+   '/slide3/image1.jpg',
+    '/slide3/image1.jpg',
+     '/slide3/image1.jpg',
+      '/slide3/image1.jpg',
+       '/slide3/image1.jpg',
+  ],
+];
+
+type InfiniteSlideshowProps = {
+  images: string[];
+};
+
+function InfiniteSlideshow({ images }: InfiniteSlideshowProps) {
+  // duplikat array agar loop seamless
+  const slides = [...images, ...images];
+
+  return (
+    <div className={styles.carousel}>
+      <div className={styles.slideTrack}>
+        {slides.map((url, i) => (
+          <div key={i} className={styles.slide}>
+            <img
+              src={url}
+              alt={`Slide ${i % images.length + 1}`}
+              loading="lazy"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function CaraPage() {
   return (
-    <div className="container">
-      <h1>Cara Mengenali Gambar AI</h1>
-      <p>Gambar AI adalah gambar yang dibuat komputer...</p>
-      <ul>
-        <li><strong>Penyebaran Hoaks:</strong> Gambar AI dapat menciptakan situasi palsu...</li>
-        <li><strong>Kerusakan Reputasi:</strong> Wajah seseorang bisa...</li>
-        <li><strong>Manipulasi Opini Publik:</strong> ...</li>
-        <li><strong>Penipuan dan Scam:</strong> ...</li>
-      </ul>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Cara Mengenali Gambar AI</h1>
+      <p className={styles.intro}>
+        Gambar AI adalah gambar yang dibuat komputer…
+      </p>
 
-      <img src="https://via.placeholder.com/600x350?text=Contoh+Gambar+AI" alt="Contoh Gambar AI" />
-
-      <h2>Karakteristik Visual Gambar AI</h2>
-      <ul>
-        <li><strong>Detail Tubuh Tidak Wajar:</strong> ...</li>
-        <li><strong>Tekstur Terlalu Halus:</strong> ...</li>
-        <li><strong>Teks atau Logo Aneh:</strong> ...</li>
-        <li><strong>Latar Belakang Aneh:</strong> ...</li>
-        <li><strong>Pencahayaan Sempurna:</strong> ...</li>
-        <li><strong>Watermark Tersembunyi:</strong> ...</li>
-      </ul>
-
-      <h2>Petunjuk Teknis</h2>
-      <ul>
-        <li><strong>Periksa Metadata:</strong> ...</li>
-        <li><strong>Refleksi dan Bayangan:</strong> ...</li>
-        <li><strong>Artefak Visual:</strong> ...</li>
-        <li><strong>Bandingkan Gambar:</strong> ...</li>
-      </ul>
-
-      <h2>Tips Tambahan</h2>
-      <ul>
-        <li><strong>Sumber dan Konteks:</strong> ...</li>
-        <li><strong>Verifikasi Informasi:</strong> ...</li>
+      <h2 className={styles.sectionTitle}>Karakteristik Visual Gambar AI</h2>
+      <ul className={styles.list}>
+        {karakteristik.map((label, idx) => (
+          <li key={idx} className={styles.listItem}>
+            <strong>{label}:</strong> penjelasan detail…
+            {/* Infinite slideshow untuk list ke-idx */}
+            <InfiniteSlideshow images={placeholdersPerList[idx]} />
+          </li>
+        ))}
       </ul>
     </div>
   );
