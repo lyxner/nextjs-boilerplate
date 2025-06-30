@@ -1,31 +1,63 @@
 /* app/cara/page.module.css */
 
+/* ==================== Theme Overrides ==================== */
+/* Pastikan :root di globals.css sudah memuat variabel:
+   --color-bg, --color-base, --color-acc1, --color-acc2, --color-text,
+   --font-sans, --font-din1451, --font-futura
+*/
+
 /* Container & Typography */
 .container {
   max-width: 900px;
   margin: 80px auto 40px;
   padding: 0 16px;
-  background: #fff;
+  background: var(--color-bg);
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  font-family: var(--font-sans);
+  color: var(--color-text);
 }
+
 .title {
   font-size: 2rem;
-  color: #232c51;
+  color: var(--color-acc1);
   margin-bottom: 16px;
   text-align: center;
+  font-family: var(--font-din1451);
+  position: relative;
 }
+.title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: var(--color-acc2);
+  margin: 8px auto 0;
+}
+
 .intro {
   font-size: 1rem;
-  color: #333;
+  color: var(--color-text);
   line-height: 1.6;
   margin-bottom: 24px;
 }
+
+/* Section headings */
 .sectionTitle {
   font-size: 1.5rem;
-  color: #232c51;
-  margin-top: 32px;
-  margin-bottom: 12px;
+  color: var(--color-acc1);
+  margin: 32px 0 12px;
+  font-family: var(--font-din1451);
+  position: relative;
+}
+.sectionTitle::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 40px;
+  height: 3px;
+  background: var(--color-acc2);
 }
 
 /* List styling */
@@ -36,90 +68,113 @@
 }
 .listItem {
   position: relative;
-  padding: 16px 0;
-  border-bottom: 1px solid #eee;
+  padding: 16px 0 16px 24px;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
 }
 .listItem::before {
-  content: '•';
+  content: '■';
   position: absolute;
   left: 0;
-  color: #3366cc;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-acc1);
+  font-size: 0.75rem;
 }
 .listItem strong {
-  color: #232c51;
+  color: var(--color-acc2);
 }
 
-/* ==== Infinite Carousel ==== */
+/* ==== Infinite Carousel (Top & Bottom Borders Only) ==== */
 .carousel {
+  position: relative;
   overflow: hidden;
-  margin: 12px 0;
-  /* Tinggi mengikuti tinggi slide */
-  height: auto;
+  margin: 24px 0;
+  padding: 12px 0;  /* ruang atas/bawah untuk border */
+  background: var(--color-bg);
+  clip-path: polygon(
+    5% 0%, 95% 0%,
+    100% 5%, 100% 95%,
+    95% 100%, 5% 100%,
+    0% 95%, 0% 5%
+  );
+  z-index: 0;
 }
 
+/* Outer border (6px) hanya top & bottom */
+.carousel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-top: 6px solid var(--color-acc1);
+  border-bottom: 6px solid var(--color-acc1);
+  border-left: none;
+  border-right: none;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Inner border (3px) hanya top & bottom */
+.carousel::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 12px);
+  border-top: 3px solid var(--color-acc2);
+  border-bottom: 3px solid var(--color-acc2);
+  border-left: none;
+  border-right: none;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Track dan slides (tidak berubah) */
 .slideTrack {
   display: flex;
-  /* ulangi konten dua kali untuk loop seamless */
-  /* kita hilangkan width statis, pakai translateX(-50%) nanti */
+  gap: 10px;
   animation: scroll 12s linear infinite;
+  z-index: 1;
 }
 
 .slide {
-  flex: 0 0 220px;   /* basis lebar slide */
-  height: 150px;      /* tinggi slide */
-  margin-right: 10px; /* jarak */
+  flex: 0 0 220px;
+  height: 150px;
+  background: var(--color-base);
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
   position: relative;
-  transition: transform 0.3s ease;
+  z-index: 1;
 }
 
 .slide img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s;
 }
 
-/* Hover effect: zoom sedikit */
+.slide:hover {
+  transform: translateY(-6px);
+}
 .slide:hover img {
-  transform: scale(1.1);
-  z-index: 1;
+  transform: scale(1.07);
 }
 
-/* animasi scroll setengah panjang track (translateX proporsional) */
 @keyframes scroll {
-  to {
-    transform: translateX(-50%);
-  }
+  to { transform: translateX(-50%); }
 }
 
-/* pause on hover */
 .carousel:hover .slideTrack {
   animation-play-state: paused;
 }
 
-/* ==== Responsive for Mobile ==== */
+/* Responsive tetap sama */
 @media (max-width: 768px) {
-  .container {
-    margin: 40px 8px;
-  }
   .slide {
     flex: 0 0 120px;
     height: 90px;
-    margin-right: 8px;
-  }
-}
-
-@media (max-width: 480px) {
-  .title {
-    font-size: 1.5rem;
-  }
-  .sectionTitle {
-    font-size: 1.25rem;
-  }
-  .slide {
-    flex: 0 0 100px;
-    height: 75px;
-    margin-right: 6px;
   }
 }

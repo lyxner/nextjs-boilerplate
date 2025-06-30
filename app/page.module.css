@@ -1,30 +1,37 @@
+/* Variabel warna & font sudah didefinisikan di globals.css */
 
 /* Container utama */
 .container {
   max-width: 2000px;
-  margin: 0px auto 0px;
-  padding: 0 20px;
- background-color: #333;
- background-image: url(../public/backround/backround.jpg);
- background-repeat: no-repeat;
-background-size:cover;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--color-text);
 }
 
 /* Judul Dashboard */
 .heading {
   font-size: 2.5rem;
-  color: goldenrod; /* primary */
-  margin: 0;
+  color: var(--color-bg);
   text-align: center;
+  font-family: var(--font-din1451);
+  position: relative;
+}
+.heading::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 5px;
+  background: var(--color-acc1);
+  margin: 8px auto 0;
 }
 
-/* Subheading / penjelasan */
+/* Subheading */
 .subheading {
-  margin-top: 8px;
-  margin-bottom: 32px;
+  margin: 8px 0 32px;
   text-align: center;
-  color: #97a5d4; /* secondary */
+  color: var(--color-base);
   font-size: 1.125rem;
+  font-family: var(--font-sans);
 }
 
 /* Grid untuk card */
@@ -34,47 +41,39 @@ background-size:cover;
   gap: 24px;
 }
 
-/* Card clickable */
+/* Card */
 .card {
   display: flex;
   flex-direction: column;
-  background-color: #fff;
-  border: 1px solid #97a5d4; /* secondary */
-  border-radius: 8px;
-  text-decoration: none; /* hilangkan underline pada Link */
-  color: inherit; /* wariskan warna teks */
-  box-shadow: 0 2px 5px rgba(35,44,81,0.1); /* lembut dengan primary tint */
+  background-color: var(--color-bg);
+  border: 3px solid var(--color-acc2);
+  clip-path: polygon(0 0, 100% 4%, 100% 100%, 4% 100%);
+  text-decoration: none;
+  color: inherit;
   transition: transform 0.2s, box-shadow 0.2s;
-  overflow: hidden;
 }
-
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 4px 10px rgba(35,44,81,0.2); /* sedikit lebih gelap */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Wrapper gambar dalam card */
+/* Gambar dalam card */
 .imageWrapper {
-  width: 100%;
   position: relative;
-  padding-top: 66.6667%; /* 3:2 */
+  padding-top: 66.7%;
   overflow: hidden;
 }
-
-/* Gambar responsif di dalam wrapper */
 .imageWrapper img {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-/* Konten card (judul & deskripsi) */
+/* Konten card */
 .cardContent {
   padding: 16px;
-  flex: 1; /* agar content mengisi sisa tinggi */
   display: flex;
   flex-direction: column;
 }
@@ -82,19 +81,20 @@ background-size:cover;
 /* Judul dalam card */
 .cardTitle {
   font-size: 1.25rem;
-  margin: 0 0 8px 0;
-  color: #aa8e76; /* accent */
+  margin-bottom: 8px;
+  color: var(--color-acc1);
+  font-family: var(--font-futura);
 }
 
 /* Deskripsi dalam card */
 .cardDesc {
-  margin: 0;
-  color: #333;
-  flex: 1; /* agar jika teks pendek, spasi konsisten */
+  flex: 1;
+  color: var(--color-text);
   font-size: 1rem;
+  font-family: var(--font-sans);
 }
 
-/* Responsive tweaks jika perlu */
+/* Responsive tweaks */
 @media (max-width: 500px) {
   .heading {
     font-size: 2rem;

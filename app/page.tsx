@@ -1,13 +1,11 @@
-// app/page.tsx
 'use client';
 
 import Link from 'next/link';
 import styles from './page.module.css';
 
 export default function DashboardPage() {
-  // Data card dashboard. Anda bisa menyesuaikan title, description, dan route.
   const cards = [
-   {
+    {
       title: 'Cara Mengenali Gambar AI',
       description: 'Panduan mengenali ciri-ciri gambar yang dihasilkan AI.',
       href: '/cara',
@@ -21,7 +19,7 @@ export default function DashboardPage() {
       imgSrc: 'https://via.placeholder.com/300x200?text=Model+%26+Tools',
       imgAlt: 'Model & Tools',
     },
-      {
+    {
       title: 'Kuis Interaktif',
       description: 'Tes kemampuan Anda membedakan gambar asli vs AI.',
       href: '/kuis',
@@ -29,36 +27,40 @@ export default function DashboardPage() {
       imgAlt: 'Kuis Interaktif',
     },
     {
-      title: 'Kuis Interaktif',
-      description: 'Tes kemampuan Anda dalam menyamakan promt yang sesuai dengan gambar .',
+      title: 'Match Prompt',
+      description: 'Tes kemampuan Anda dalam menyamakan prompt yang sesuai.',
       href: '/match-promt',
-      imgSrc: 'https://via.placeholder.com/300x200?text=Kuis',
+      imgSrc: 'https://via.placeholder.com/300x200?text=Match+Prompt',
       imgAlt: 'Kuis Match Prompt',
     },
-     {
+    {
       title: 'Generate Gambar AI',
-      description: 'Masukkan prompt anda dan buat gambar AI anda.',
+      description: 'Masukkan prompt Anda dan buat gambar AI.',
       href: '/generate',
-      imgSrc: 'https://via.placeholder.com/300x200?text=Model+%26+Tools',
-      imgAlt: 'Model & Tools',
+      imgSrc: 'https://via.placeholder.com/300x200?text=Generate+AI',
+      imgAlt: 'Generate Gambar AI',
     },
-     {
+    {
       title: 'Deteksi Gambar AI',
-      description: 'Unggah gambar untuk mendeteksi apakah dihasilkan oleh AI.',
+      description: 'Unggah gambar untuk mendeteksi apakah dihasilkan AI.',
       href: '/deteksi',
-      // placeholder image: Anda bisa ganti nanti sesuai aset
-      imgSrc: 'https://via.placeholder.com/300x200?text=Deteksi+AI',
+      imgSrc: '',
       imgAlt: 'Deteksi AI',
     },
-     {
+    {
       title: 'Berita',
-      description: 'Melihat berita seputar Gambar AI ',
+      description: 'Lihat berita seputar gambar AI.',
       href: '/news',
-      // placeholder image: Anda bisa ganti nanti sesuai aset
-      imgSrc: 'https://via.placeholder.com/300x200?text=Deteksi+AI',
-      imgAlt: 'News',
+      imgSrc: 'https://via.placeholder.com/300x200?text=News',
+      imgAlt: 'News AI',
     },
-    // Tambahkan item lain jika perlu
+     {
+      title: 'Coming Soon',
+      description: 'Coming soon',
+      href: '',
+      imgSrc: 'https://via.placeholder.com/300x200?text=News',
+      imgAlt: 'News AI',
+    },
   ];
 
   return (
@@ -68,7 +70,7 @@ export default function DashboardPage() {
         Selamat datang! Pilih halaman yang ingin Anda akses:
       </p>
       <div className={styles.grid}>
-        {cards.map((card) => (
+        {cards.map(card => (
           <Link key={card.href} href={card.href} className={styles.card}>
             <div className={styles.imageWrapper}>
               <img src={card.imgSrc} alt={card.imgAlt} className={styles.image} />

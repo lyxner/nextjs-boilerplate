@@ -1,27 +1,69 @@
-/* app/kuis/page.module.css */
 
-/* Container utama */
+
 .container {
   max-width: 900px;
   margin: 80px auto 40px;
   padding: 0 16px;
-  background-color: #fff;
+  background-color: var(--color-bg);
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(35,44,81,0.1); /* tint primary */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  font-family: var(--font-sans);
+  position: relative;
+  color: var(--color-text);
+  overflow: hidden; /* supaya pseudo-element tidak tumpah */
 }
 
-/* Header dengan judul dan selector */
+/* Stripe kiri */
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 100%;
+  background: var(--color-acc1);
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  z-index: 1;
+}
+
+/* Stripe kanan */
+.container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 6px;
+  height: 100%;
+  background: var(--color-acc1);
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  z-index: 1;
+}
+
+/* Header section */
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
   flex-wrap: wrap;
+  margin-bottom: 24px;
 }
 .heading {
-  color: #232c51; /* primary */
-  margin: 0;
+  font-family: var(--font-din1451);
   font-size: 1.75rem;
+  color: var(--color-acc1);
+  margin: 0;
+  position: relative;
+}
+.heading::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: var(--color-acc2);
+  margin-top: 8px;
+  border-radius: 2px;
 }
 .selectorGroup {
   display: flex;
@@ -29,41 +71,57 @@
   gap: 8px;
 }
 .selectorLabel {
+  font-family: var(--font-sans);
   font-weight: 500;
-  color: #333;
+  color: var(--color-text);
 }
 .selector {
   padding: 6px 8px;
-  border: 1px solid #97a5d4; /* secondary */
+  border: 1px solid var(--color-acc2);
   border-radius: 4px;
-  background: #f9f9f9;
+  background: var(--color-base);
+  font-family: var(--font-sans);
   font-size: 1rem;
   cursor: pointer;
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, background 0.3s;
 }
 .selector:hover {
-  border-color: #232c51;
+  border-color: var(--color-acc1);
+  background: var(--color-bg);
 }
 
-/* Deskripsi / subtitle */
+/* Description / subtitle */
 .description {
   margin: 0 0 24px;
-  color: #555;
+  font-family: var(--font-sans);
+  color: var(--color-muted);
 }
 
 /* Card pertanyaan */
 .questionCard {
-  background: #fff;
-  border: 1px solid #ddd;
+  position: relative;
+  background: var(--color-bg);
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(35,44,81,0.1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   margin-bottom: 24px;
-  padding: 16px;
+  padding: 24px;
+}
+.questionCard::before {
+  /* accent border atas */
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 6px;
+  background: var(--color-acc1);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 .questionTitle {
+  font-family: var(--font-din1451);
   font-size: 1.2rem;
-  margin: 0 0 12px;
-  color: #232c51; /* primary */
+  color: var(--color-acc2);
+  margin: 0 0 16px;
 }
 
 /* Grid opsi */
@@ -71,7 +129,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 16px;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 /* Card opsi */
@@ -80,7 +138,7 @@
   border: 2px solid transparent;
   border-radius: 8px;
   padding: 8px;
-  background: #fafafa;
+  background: var(--color-bg);
   cursor: pointer;
   transition: transform 0.2s, border-color 0.2s, background-color 0.2s;
   display: flex;
@@ -88,13 +146,22 @@
   align-items: center;
   overflow: hidden;
 }
+.optionCard::after {
+  /* subtle diagonal stripe */
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: rgba( var(--color-acc1), 0.03 );
+  transform: rotate(45deg);
+}
 .optionCard:hover {
   transform: scale(1.02);
-  background-color: rgba(151,165,212,0.2); /* light secondary */
-  border-color: #97a5d4;
+  border-color: var(--color-acc2);
+  background-color: var(--color-base);
 }
 
-/* Radio input hidden but accessible */
+/* Radio input hidden */
 .optionCard input[type="radio"] {
   position: absolute;
   opacity: 0;
@@ -112,7 +179,10 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
+  transition: transform 0.3s;
+}
+.optionCard:hover .imageWrapper img {
+  transform: scale(1.05);
 }
 
 /* Status highlight */
@@ -128,7 +198,7 @@
 /* Feedback teks */
 .feedback {
   font-weight: bold;
-  margin-top: 12px;
+  margin-top: 16px;
   text-align: center;
 }
 .correctText {
@@ -143,17 +213,17 @@
   display: block;
   margin: 24px auto 0;
   padding: 0.6rem 1.2rem;
-  background-color: #232c51; /* primary */
-  color: #fff;
+  background-color: var(--color-acc2);
+  color: var(--color-bg);
   border: none;
   border-radius: 4px;
+  font-family: var(--font-sans);
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s;
 }
 .resetButton:hover {
-  background-color: #97a5d4; /* secondary */
-  color: #232c51;
+  background-color: var(--color-acc1);
   transform: translateY(-1px);
 }
 
@@ -165,6 +235,6 @@
   .header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
+    gap: 12px;
   }
 }
