@@ -32,6 +32,8 @@ html, body {
   background-color: var(--color-bg);
   color: var(--color-text);
   line-height: 1.6;
+  scroll-behavior: smooth;
+  
 }
 
 a {
@@ -39,16 +41,8 @@ a {
   color: inherit;
 }
 
-img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  border-radius: 4px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-}
-/* ==================== Navbar Themed (Fixed) ==================== */
-/* Taruh ini di globals.css setelah reset/base, sebelum container/section lain */
+
+/*Navbar */
 
 .navbar {
   position: fixed;

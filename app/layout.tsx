@@ -22,11 +22,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </li>
             {/* Link biasa */}
             <li><a href="/cara">Gambar AI</a></li>
-            <li><a href="/modell">Model &amp; Tools</a></li>
+            <li><a href="/modell">Model Generatif</a></li>
             <li><a href="/kuis">Kuis Interaktif</a></li>
-            <li><a href="/match-prompt">Match Prompt</a></li>
-            <li><a href="/generate">Generate AI</a></li>
-            <li><a href="/deteksi">Deteksi AI</a></li>
+            <li><a href="/match-prompt">Kuis Match Prompt</a></li>
+            <li><a href="/generate">Generate Gambar AI</a></li>
+            <li><a href="/deteksi">Deteksi Gambar AI</a></li>
             <li><a href="/news">Berita</a></li>
           </ul>
         </nav>

@@ -1,12 +1,8 @@
-/* app/cara/page.module.css */
 
-/* ==================== Theme Overrides ==================== */
-/* Pastikan :root di globals.css sudah memuat variabel:
-   --color-bg, --color-base, --color-acc1, --color-acc2, --color-text,
-   --font-sans, --font-din1451, --font-futura
-*/
 
-/* Container & Typography */
+
+
+/* ==================== Container & Typography ==================== */
 .container {
   max-width: 900px;
   margin: 80px auto 40px;
@@ -89,14 +85,8 @@
   position: relative;
   overflow: hidden;
   margin: 24px 0;
-  padding: 12px 0;  /* ruang atas/bawah untuk border */
+  padding: 30px 0;  /* ruang atas/bawah untuk border */
   background: var(--color-bg);
-  clip-path: polygon(
-    5% 0%, 95% 0%,
-    100% 5%, 100% 95%,
-    95% 100%, 5% 100%,
-    0% 95%, 0% 5%
-  );
   z-index: 0;
 }
 
@@ -132,7 +122,7 @@
 /* Track dan slides (tidak berubah) */
 .slideTrack {
   display: flex;
-  gap: 10px;
+  gap: 40px;
   animation: scroll 12s linear infinite;
   z-index: 1;
 }
@@ -140,10 +130,7 @@
 .slide {
   flex: 0 0 220px;
   height: 150px;
-  background: var(--color-base);
   overflow: hidden;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   transition: transform 0.3s;
   position: relative;
   z-index: 1;

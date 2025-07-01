@@ -11,7 +11,6 @@ type Question = {
   correct: 'A' | 'B';
 };
 
-// Contoh data 10 soal dengan prompt nyata
 const QUESTIONS: Question[] = [
   {
     id: 1,
@@ -95,11 +94,17 @@ export default function MatchPromptPage() {
     setDisabled(prev => ({ ...prev, [q.id]: true }));
   };
 
+  const resetQuiz = () => {
+    setAnswers({});
+    setDisabled({});
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className={styles.container}>
       <h1 className={styles.heading}>Game: Cocokkan Prompt</h1>
       <p className={styles.description}>
-        Untuk setiap gambar AI, pilih prompt (A atau B) yang **benar** digunakan untuk membuatnya.
+        Untuk setiap gambar AI, pilih prompt (A atau B) yang <strong>benar</strong> digunakan untuk membuatnya.
       </p>
 
       {QUESTIONS.map(q => {
@@ -109,7 +114,7 @@ export default function MatchPromptPage() {
           <div key={q.id} className={styles.card}>
             <img src={q.image} alt={`Gambar AI ${q.id}`} className={styles.image} />
             <div className={styles.options}>
-              {(['A','B'] as const).map(label => {
+              {(['A', 'B'] as const).map(label => {
                 const text = label === 'A' ? q.promptA : q.promptB;
                 let cls = '';
                 if (disabled[q.id]) {
@@ -138,14 +143,8 @@ export default function MatchPromptPage() {
         );
       })}
 
-      <button
-        className={styles.reset}
-        onClick={() => {
-          setAnswers({});
-          setDisabled({});
-        }}
-      >
-        Main Lagi
+      <button className={styles.reset} onClick={resetQuiz}>
+        Ulangi Kuis
       </button>
     </div>
   );

@@ -1,4 +1,3 @@
-// app/kuis/hard/page.tsx (Tingkat Susah)
 'use client';
 
 import { useState } from 'react';
@@ -35,6 +34,12 @@ export default function KuisHard() {
     );
   };
 
+  const resetQuiz = () => {
+    setAnswers({});
+    setDisabled({});
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -62,12 +67,12 @@ export default function KuisHard() {
           <p className={styles.questionTitle}>Pertanyaan {q.id}</p>
           <div className={styles.options}>
             {(['ai','real'] as const).map(val => {
-              const isAi = val==='ai';
-              const sel = answers[q.id]===val;
+              const isAi = val === 'ai';
+              const isSelected = answers[q.id] === val;
               let cls = '';
               if (disabled[q.id]) {
-                if (val===q.correct) cls = styles.correct;
-                else if (sel) cls = styles.wrong;
+                if (val === q.correct) cls = styles.correct;
+                else if (isSelected) cls = styles.wrong;
               }
               return (
                 <label key={val} className={`${styles.optionCard} ${cls}`}>                  
@@ -76,10 +81,12 @@ export default function KuisHard() {
                     name={`q${q.id}`}
                     aria-label={isAi ? 'Pilihan AI' : 'Pilihan Asli'}
                     disabled={disabled[q.id]}
-                    checked={sel}
-                    onChange={()=>handleAnswer(q,val)}
+                    checked={isSelected}
+                    onChange={() => handleAnswer(q, val)}
                   />
-                  <div className={styles.imageWrapper}><img src={isAi?q.imageAI:q.imageReal} alt={isAi?'Gambar AI':'Gambar Asli'} /></div>
+                  <div className={styles.imageWrapper}>
+                    <img src={isAi ? q.imageAI : q.imageReal} alt={isAi ? 'Gambar AI' : 'Gambar Asli'} />
+                  </div>
                 </label>
               );
             })}
@@ -87,7 +94,7 @@ export default function KuisHard() {
           {getFeedback(q)}
         </div>
       ))}
-      <button className={styles.resetButton} onClick={()=>{setAnswers({});setDisabled({});}}>Ulangi Kuis</button>
+      <button className={styles.resetButton} onClick={resetQuiz}>Ulangi Kuis</button>
     </div>
   );
 }

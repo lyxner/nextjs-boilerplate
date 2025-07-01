@@ -9,12 +9,12 @@ export default function DashboardPage() {
       title: 'Cara Mengenali Gambar AI',
       description: 'Panduan mengenali ciri-ciri gambar yang dihasilkan AI.',
       href: '/cara',
-      imgSrc: 'https://via.placeholder.com/300x200?text=Cara+Mengenali+AI',
+      imgSrc: './home/icon1.png',
       imgAlt: 'Cara Mengenali Gambar AI',
     },
     {
-      title: 'Model & Tools',
-      description: 'Pelajari berbagai model dan alat untuk generative AI.',
+      title: 'Model Generatif',
+      description: 'Pelajari berbagai model generatif gambar AI.',
       href: '/modell',
       imgSrc: 'https://via.placeholder.com/300x200?text=Model+%26+Tools',
       imgAlt: 'Model & Tools',
@@ -27,7 +27,7 @@ export default function DashboardPage() {
       imgAlt: 'Kuis Interaktif',
     },
     {
-      title: 'Match Prompt',
+      title: 'Kuis Match Prompt',
       description: 'Tes kemampuan Anda dalam menyamakan prompt yang sesuai.',
       href: '/match-promt',
       imgSrc: 'https://via.placeholder.com/300x200?text=Match+Prompt',
@@ -45,7 +45,7 @@ export default function DashboardPage() {
       description: 'Unggah gambar untuk mendeteksi apakah dihasilkan AI.',
       href: '/deteksi',
       imgSrc: '',
-      imgAlt: 'Deteksi AI',
+      imgAlt: 'Deteksi Gambar AI',
     },
     {
       title: 'Berita',

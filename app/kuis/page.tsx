@@ -1,4 +1,3 @@
-// app/kuis/page.tsx (Tingkat Mudah)
 'use client';
 
 import Link from 'next/link';
@@ -40,6 +39,12 @@ export default function KuisEasy() {
         {a === q.correct ? 'Benar!' : 'Jawaban Anda salah'}
       </p>
     );
+  };
+
+  const resetQuiz = () => {
+    setAnswers({});
+    setDisabled({});
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -98,7 +103,7 @@ export default function KuisEasy() {
       ))}
       <button
         className={styles.resetButton}
-        onClick={() => { setAnswers({}); setDisabled({}); }}
+        onClick={resetQuiz}
       >
         Ulangi Kuis
       </button>
