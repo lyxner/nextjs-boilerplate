@@ -13,6 +13,7 @@ export default function GeneratePage() {
   const [images, setImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
+ 
 
   const handleModeChange = (newMode: 'text2img' | 'img2img') => {
     if (loading) return;
@@ -23,6 +24,7 @@ export default function GeneratePage() {
     setImages([]);
     setError('');
   };
+   
 
   const handlePromptChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setPrompt(e.target.value);
@@ -186,8 +188,10 @@ export default function GeneratePage() {
                 </a>
               </div>
             ))}
+          
           </div>
         </section>
+        
       )}
     </main>
   );

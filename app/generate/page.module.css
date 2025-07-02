@@ -185,7 +185,8 @@ left: 30%;
 }
 .resultCard {
   width: 100%;
-  max-width: 300px;
+  max-width: 50%;
+ 
   transition: transform 0.2s, box-shadow 0.2s;
   position: relative;
 
@@ -203,8 +204,9 @@ left: 30%;
 
 .resultImageWrapper {
   width: 100%;
-  aspect-ratio: 3/2;
-  overflow: hidden;
+ height: auto;
+  aspect-ratio: 3/3;
+ 
 }
 .resultImageWrapper img,
 .resultImage {
@@ -251,4 +253,12 @@ left: 30%;
   .resultsGrid {
     grid-template-columns: 1fr;
   }
+.inputPreviewCard {
+left: 18%;
+  margin-top: 8px;
+  width: 100%;
+  max-width: 300px;
+  overflow: hidden;
+  position:relative;
+}
 }
