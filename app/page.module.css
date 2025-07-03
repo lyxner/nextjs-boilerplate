@@ -25,6 +25,7 @@
   margin: 8px auto 0;
 }
 
+
 /* Subheading */
 .subheading {
   margin: 8px 0 32px;
@@ -45,7 +46,7 @@
 .card {
   display: flex;
   flex-direction: column;
-  background-color:#3c3c36;
+  background-color:#5d5336;
   border: 3px solid var(--color-acc2);
 clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
   text-decoration: none;
@@ -96,6 +97,7 @@ clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 
   color: var(--color-text);
   font-size: 1rem;
   font-family: var(--font-sans);
+  color:#b5afa4;
 
 }
 
