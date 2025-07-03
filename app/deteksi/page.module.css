@@ -1,3 +1,5 @@
+/* app/deteksi/page.module.css */
+
 /*root*/
 .root {
   display: flex;
@@ -9,150 +11,154 @@
   font-family: var(--font-sans);
   position: relative;
 }
-
+/* garis tepi samping */
 .root::before,
 .root::after {
   content: '';
-  position: absolute;
-  top: 0;
-  width: 6px;
-  height: 100%;
-  background: var(--color-acc1);
-  border-radius: 8px;
+  position: absolute; top: 0; height: 100%; width: 6px;
+  background: var(--color-acc1); border-radius: 8px;
 }
-.root::before {
-  left: 0;
-}
-.root::after {
-  right: 0;
-}
+.root::before { left: 0; }
+.root::after  { right: 0; }
 
-/* === Judul Halaman === */
+/* judul halaman */
 .title {
-  font-size: 2rem;
-  font-family: var(--font-din1451);
-  color: var(--color-acc1);
-  margin-bottom: 24px;
-  position: relative;
-  text-align: center;
+  font-size: 2rem; font-family: var(--font-din1451);
+  color: var(--color-acc1); margin-bottom: 24px;
+  text-align: center; position: relative;
 }
 .title::after {
-  content: '';
-  display: block;
-  width: 60px;
-  height: 4px;
+  content: ''; display: block;
+  width: 60px; height: 4px;
   background: var(--color-acc2);
   margin: 8px auto 0;
 }
 
-/* === Form upload === */
+/* kotak utama (card) */
+.card {
+  width: 100%;
+  max-width: 480px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.08),
+    0 8px 24px rgba(0,0,0,0.12);
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+
+/* header card */
+.cardHeader {
+  background: var(--color-acc1);
+  color: #fff;
+  padding: 16px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* form dalam card */
 .form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  max-width: 420px;
-  background: #ffffff;
+  gap: 16px;
   padding: 24px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-  border: 1px solid var(--color-acc2);
 }
 
-/* File Input */
+/* file input tombol */
 .fileInput {
+  position: relative;
+  display: inline-block;
   width: 100%;
-  border: 1px solid var(--color-acc2);
-  border-radius: 6px;
-  padding: 6px;
-  font-family: inherit;
+}
+.fileInput input[type="file"] {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%; opacity: 0;
+}
+.fileInput::before {
+  content: 'Pilih Gambar';
+  display: block;
+  width: 100%;
+  padding: 12px;
+ background:  #9e652f;
+  color: #fff;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: transform 0.1s, box-shadow 0.2s;
+}
+.fileInput:hover::before,
+.fileInput:focus-within::before {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
 }
 
-/* Submit Button */
+/* tombol submit */
 .submitButton {
   width: 100%;
-  padding: 0.6rem;
-  background-color: var(--color-acc1);
+  padding: 0.75rem;
+  background-color: var(--color-acc2);
   color: #fff;
   border: none;
-  border-radius: 4px;
-  font-weight: bold;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.1s;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  transition: transform 0.1s, box-shadow 0.2s, background-color 0.2s;
 }
 .submitButton:disabled {
-  background-color: #aaa;
+  background-color: #ccc;
   cursor: not-allowed;
+  box-shadow: none;
 }
 .submitButton:not(:disabled):hover {
-  background-color: var(--color-acc2);
-  color: var(--color-base);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  background-color: var(--color-acc1);
 }
 
-/* === Preview Area === */
+/* preview di dalam card */
 .previewContainer {
-  margin-top: 32px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
+  padding: 0 24px 24px;
 }
 .previewTitle {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 1.125rem;
+  font-weight: 500;
   color: var(--color-acc1);
   margin-bottom: 12px;
-  text-align: center;
 }
-
-/* Scanner Glow Effect */
 .previewImageWrapper {
   width: 100%;
-  max-width: 400px;
-  border-radius: 50px;
+  border-radius: 12px;
   overflow: hidden;
-  position: relative;
-  justify-items: center;
-
 }
-
-
 .previewImage {
   width: 100%;
-  height: 100%;
-  object-fit: contain;
   display: block;
-  border-radius: 20px;
+  object-fit: contain;
 }
 
-/* === Result Box === */
+/* hasil probabilitas di dalam card */
 .resultBox {
-  margin-top: 24px;
-  width: 100%;
-  max-width: 420px;
-  background-color: #fefefe;
-  border: 1px solid var(--color-acc2);
+  margin: 0 24px 24px;
+  padding: 12px;
+  background-color: #f7f7f7;
   border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-  font-weight: bold;
   text-align: center;
+  font-weight: 600;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
 }
-.resultSuccess {
-  color: #28a745;
-}
-.resultError {
-  color: #dc3545;
-}
+.resultSuccess { color: #28a745; }
+.resultError   { color: #dc3545; }
 
-/* === Responsiveness === */
+/* responsive */
 @media (max-width: 600px) {
-  .root {
-    padding: 40px 12px;
-  }
-  .title {
-    font-size: 1.5rem;
-  }
+  .root       { padding: 40px 12px; }
+  .title      { font-size: 1.5rem; }
+  .card       { margin-bottom: 24px; }
+  .form       { padding: 16px; gap: 12px; }
+  .previewContainer,
+  .resultBox  { margin: 0 16px 16px; }
 }

@@ -1,13 +1,14 @@
+// app/deteksi/page.tsx
 'use client';
 
 import { useState, ChangeEvent, FormEvent } from 'react';
-import styles from './page.module.css'; // Impor CSS Module
+import styles from './page.module.css';
 
 export default function Page() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>('');
   const [resultText, setResultText] = useState<string>('');
-  const [resultType, setResultType] = useState<'success'|'error'|' '>(' ');
+  const [resultType, setResultType] = useState<'success' | 'error' | ''>('');
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -16,12 +17,12 @@ export default function Page() {
       setSelectedFile(file);
       setPreviewUrl(URL.createObjectURL(file));
       setResultText('');
-      setResultType(' ');
+      setResultType('');
     } else {
       setSelectedFile(null);
       setPreviewUrl('');
       setResultText('');
-      setResultType(' ');
+      setResultType('');
     }
   };
 
@@ -34,7 +35,7 @@ export default function Page() {
     }
     setLoading(true);
     setResultText('');
-    setResultType(' ');
+    setResultType('');
     try {
       const formData = new FormData();
       formData.append('image', selectedFile);
@@ -78,36 +79,48 @@ export default function Page() {
   return (
     <main className={styles.root}>
       <h1 className={styles.title}>Deteksi Gambar AI</h1>
-      <form onSubmit={handleSubmit} className={styles.form} encType="multipart/form-data">
-        <input
-          type="file"
-          name="image"
-          accept="image/*"
-          required
-          onChange={handleFileChange}
-          className={styles.fileInput}
-        />
-        <button type="submit" disabled={!selectedFile || loading} className={styles.submitButton}>
-          {loading ? 'Memproses...' : 'Upload dan Analisis'}
-        </button>
-      </form>
 
-      {previewUrl && (
-        <div className={styles.previewContainer}>
-          <h2 className={styles.previewTitle}>Preview</h2>
-          <div className={styles.previewImageWrapper}>
-            <img src={previewUrl} alt="Preview" className={styles.previewImage} />
+      <div className={styles.card}>
+        <div className={styles.cardHeader}>Unggah & Deteksi</div>
+
+        <form onSubmit={handleSubmit} className={styles.form} encType="multipart/form-data">
+          <label className={styles.fileInput}>
+            <input
+              type="file"
+              name="image"
+              accept="image/*"
+              disabled={loading}
+              onChange={handleFileChange}
+            />
+          </label>
+          <button
+            type="submit"
+            disabled={!selectedFile || loading}
+            className={styles.submitButton}
+          >
+            {loading ? 'Memproses...' : 'Upload & Analisis'}
+          </button>
+        </form>
+
+        {previewUrl && (
+          <div className={styles.previewContainer}>
+            <h2 className={styles.previewTitle}>Preview</h2>
+            <div className={styles.previewImageWrapper}>
+              <img src={previewUrl} alt="Preview" className={styles.previewImage} />
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {resultText && (
-        <div className={styles.previewContainer}>
-          <div className={`${styles.resultBox} ${resultType === 'success' ? styles.resultSuccess : styles.resultError}`}>
+        {resultText && (
+          <div
+            className={`${styles.resultBox} ${
+              resultType === 'success' ? styles.resultSuccess : styles.resultError
+            }`}
+          >
             {resultText}
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </main>
   );
 }
