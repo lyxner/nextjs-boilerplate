@@ -1,4 +1,3 @@
-// app/model/page.tsx
 'use client';
 
 import styles from './page.module.css';
@@ -27,28 +26,37 @@ export default function ModelPage() {
       <section className={styles.section}>
         <h2 className={styles.heading2}>Generative Adversarial Networks (GAN)</h2>
         <p className={styles.paragraph}>
-          GAN adalah dua jaringan neural yang “bertarung”:  
-          <strong>Generator</strong> berupaya membuat gambar palsu yang mirip aslinya,  
-          sementara <strong>Discriminator</strong> bertugas menebak mana gambar asli dan palsu.  
-          Seiring latihan, Generator makin pandai menipu, dan Discriminator makin jeli mendeteksi.
+          GAN adalah dua jaringan neural yang “bertarung":<br />
+          <strong>Generator</strong> membuat gambar palsu sedekat mungkin dengan aslinya,<br />
+          sementara <strong>Discriminator</strong> memeriksa mana yang asli dan mana yang palsu.
         </p>
 
         <div className={styles.cardGrid}>
           <ModelCard
             name="DCGAN"
-            logoSrc="/assets/gan/dcgan-placeholder.png" // ganti nanti
+            logoSrc="/assets/gan/dcgan-placeholder.png"
             alt="Logo DCGAN"
           />
           <ModelCard
             name="StyleGAN"
-            logoSrc="/assets/gan/stylegan-placeholder.png" // ganti nanti
+            logoSrc="/assets/gan/stylegan-placeholder.png"
             alt="Logo StyleGAN"
           />
           <ModelCard
             name="CycleGAN"
-            logoSrc="/assets/gan/cyclegan-placeholder.png" // ganti nanti
+            logoSrc="/assets/gan/cyclegan-placeholder.png"
             alt="Logo CycleGAN"
           />
+        </div>
+
+        {/* Contoh hasil GAN */}
+        <div className={styles.examplesSection}>
+          <h3 className={styles.examplesTitle}>Contoh Gambar dari GAN</h3>
+          <div className={styles.examplesGrid}>
+            <img src="/examples/gan1.jpg" alt="GAN Example 1" />
+            <img src="/examples/gan2.jpg" alt="GAN Example 2" />
+            <img src="/examples/gan3.jpg" alt="GAN Example 3" />
+          </div>
         </div>
       </section>
 
@@ -56,26 +64,35 @@ export default function ModelPage() {
       <section className={styles.section}>
         <h2 className={styles.heading2}>Model Difusi</h2>
         <p className={styles.paragraph}>
-          Model difusi memulai dari <em>noise</em> acak, lalu belajar “menghapus” noise itu sedikit demi sedikit  
-          hingga membentuk gambar yang nyata. Proses ini seperti mempelajari urutan mundur dari gambar buram ke jernih.
+          Model difusi memulai dari <em>noise</em> acak, lalu belajar mengurangi noise tersebut langkah demi langkah hingga membentuk gambar yang nyata.
         </p>
 
         <div className={styles.cardGrid}>
           <ModelCard
             name="Stable Diffusion"
-            logoSrc="https://via.placeholder.com/80?text=SD" // contoh placeholder
+            logoSrc="https://via.placeholder.com/80?text=SD"
             alt="Logo Stable Diffusion"
           />
           <ModelCard
             name="DALL·E 2"
-            logoSrc="https://via.placeholder.com/80?text=DALL%25C2%25B7E2" // contoh placeholder
+            logoSrc="https://via.placeholder.com/80?text=DALL%25C2%25B7E2"
             alt="Logo DALL·E 2"
           />
           <ModelCard
             name="Imagen"
-            logoSrc="https://via.placeholder.com/80?text=Imagen" // contoh placeholder
+            logoSrc="https://via.placeholder.com/80?text=Imagen"
             alt="Logo Imagen"
           />
+        </div>
+
+        {/* Contoh hasil Difusi */}
+        <div className={styles.examplesSection}>
+          <h3 className={styles.examplesTitle}>Contoh Gambar dari Model Difusi</h3>
+          <div className={styles.examplesGrid}>
+            <img src="/examples/diffusion1.jpg" alt="Diffusion Example 1" />
+            <img src="/examples/diffusion2.jpg" alt="Diffusion Example 2" />
+            <img src="/examples/diffusion3.jpg" alt="Diffusion Example 3" />
+          </div>
         </div>
       </section>
     </div>

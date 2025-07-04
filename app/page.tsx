@@ -29,7 +29,7 @@ export default function DashboardPage() {
     {
       title: 'Kuis Match Prompt',
       description: 'Tes kemampuan Anda dalam menyamakan prompt yang sesuai.',
-      href: '/match-promt',
+      href: '/match-prompt',
       imgSrc: './home/answer.png',
       imgAlt: 'Kuis Match Prompt',
     },

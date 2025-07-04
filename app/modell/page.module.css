@@ -165,10 +165,67 @@
   margin-right: 6px;
   color: var(--color-acc1);
 }
+/* Section contoh gambar */
+.examplesSection {
+  margin-top: 1.5rem;
+}
+.examplesTitle {
+  font-family: var(--font-din1451);
+  font-size: 1.25rem;
+  color: var(--color-acc1);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.examplesGrid {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.examplesGrid img {
+  width: 220px;               
+  height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);  
+  padding: 12px;              
+  background:transparent;         
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.examplesGrid img:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.3);
+}
+
 
 /* Responsive tweaks */
 @media (max-width: 600px) {
   .heading1 { font-size: 2rem; }
   .heading2 { font-size: 1.5rem; }
   .cardGrid { gap: 0.75rem; }
+  /* Contoh gambar pada desktop sudah baik, fokus ke mobile: */
+@media (max-width: 600px) {
+  .examplesGrid {
+    display: flex;
+    justify-content: center;     /* memastikan grid selalu di tengah */
+    gap: 1rem;
+    padding: 0.5rem 0;
+    overflow-x: auto;            /* aktifkan scroll jika lebarnya melebihi viewport */
+    scroll-snap-type: x mandatory;/* agar setiap item “snap” saat scrolling */
+  }
+  .examplesGrid img {
+    flex: 0 0 auto;              /* tidak mengecil atau melebar otomatis */
+    width: 140px;                 /* ukuran tetap proporsional */
+    height: 140px;
+    margin: 0 auto;               /* center tiap item jika ruang cukup */
+    scroll-snap-align: center;    /* pastikan gambar berhenti di tengah saat scroll */
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    transition: transform 0.2s;
+  }
 }
+}
+
