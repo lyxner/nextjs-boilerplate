@@ -3,7 +3,7 @@
 .container {
   max-width: 2000px;
  
-  padding: 0 16px;
+  padding: 16px 0;
   background: #161615;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -75,7 +75,7 @@ left: 36%;
 }
 .listItem {
   position: relative;
-  padding: 16px 0 16px 24px;
+  padding: 10px 0px 10px 0px;
   border-bottom: 1px solid rgba(0,0,0,0.1);
 }
 .listItem::before {
@@ -169,7 +169,7 @@ color: #9e652f;;
   animation-play-state: paused;
 }
 
-/* Responsive tetap sama */
+
 @media (max-width: 768px) {
   .slide {
     flex: 0 0 120px;
