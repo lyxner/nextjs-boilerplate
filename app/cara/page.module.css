@@ -1,14 +1,16 @@
 
-
 .container {
-  max-width: 2000px;
- 
+  max-width: 1500px;
+ width: 100%;
   padding: 16px 0;
   background: #161615;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   font-family: var(--font-sans);
   color: var(--color-text);
+  position: relative;
+    box-sizing: border-box; 
+  overflow-x: hidden; 
 }
 
 .title {
@@ -36,7 +38,7 @@
   margin-bottom: 24px;
 }
 
-/* Untuk menengahkan satu gambar */
+
 .centeredImage {
   display: flex;
   justify-content: center;
@@ -47,7 +49,7 @@
   width: 100%;
   border-radius: 4px;
 }
-/* Section headings */
+
 .sectionTitle {
   font-size: 1.5rem;
   color: #b5afa4;
@@ -66,7 +68,6 @@ left: 36%;
   background: var(--color-acc2);
 }
 
-/* List styling */
 .list {
   list-style: none;
   padding: 0;
@@ -91,17 +92,17 @@ left: 36%;
 color: #9e652f;;
 }
 
-/* ==== Infinite Carousel (Top & Bottom Borders Only) ==== */
+
 .carousel {
   position: relative;
   overflow: hidden;
   margin: 24px 0;
-  padding: 30px 0;  /* ruang atas/bawah untuk border */
+  padding: 30px 0; 
   background: var(--color-bg);
   z-index: 0;
 }
 
-/* Outer border (6px) hanya top & bottom */
+
 .carousel::before {
   content: '';
   position: absolute;
@@ -114,7 +115,6 @@ color: #9e652f;;
   z-index: 2;
 }
 
-/* Inner border (3px) hanya top & bottom */
 .carousel::after {
   content: '';
   position: absolute;
@@ -130,7 +130,7 @@ color: #9e652f;;
   z-index: 2;
 }
 
-/* Track dan slides (tidak berubah) */
+
 .slideTrack {
   display: flex;
   gap: 40px;
@@ -176,8 +176,10 @@ color: #9e652f;;
     height: 90px;
   }
 
-.sectionTitle {
-left: 10%;
+ .sectionTitle {
+    left: auto !important;
+    margin: 32px auto 12px;
+    text-align: center;
 
 }
 }
