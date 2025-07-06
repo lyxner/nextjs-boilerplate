@@ -171,9 +171,10 @@
 /* Wrapper gambar */
 .imageWrapper {
   width: 100%;
-  aspect-ratio: 3/2;
-  overflow: hidden;
+  aspect-ratio: 3/3;
+
   border-radius: 4px;
+ 
 }
 .imageWrapper img {
   width: 100%;

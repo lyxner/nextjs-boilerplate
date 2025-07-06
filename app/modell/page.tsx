@@ -22,7 +22,7 @@ export default function ModelPage() {
     <div className={styles.container}>
       <h1 className={styles.heading1}>Model Generatif: GAN &amp; Difusi</h1>
 
-      {/* Penjelasan GAN */}
+      {/* GAN Section */}
       <section className={styles.section}>
         <h2 className={styles.heading2}>Generative Adversarial Networks (GAN)</h2>
         <p className={styles.paragraph}>
@@ -31,7 +31,22 @@ export default function ModelPage() {
           sementara <strong>Discriminator</strong> memeriksa mana yang asli dan mana yang palsu.
         </p>
 
-        <div className={styles.cardGrid}>
+        {/* Diagram GAN (interaktif & lebih besar) */}
+        <div className={`${styles.card} ${styles.diagramCard}`}>
+          <img
+            src="/images/kuis/ai1.webp"
+            alt="Cara Kerja GAN"
+            className={styles.diagramImage}
+          />
+        </div>
+
+        {/* Teks pengantar varian */}
+        <p className={styles.variantIntro}>
+          Model GAN ini juga mempunyai banyak varian, beberapa di antaranya:
+        </p>
+
+        {/* Varian-model sebagai kartu interaktif */}
+        <div className={styles.variantGrid}>
           <ModelCard
             name="DCGAN"
             logoSrc="/assets/gan/dcgan-placeholder.png"
@@ -60,14 +75,29 @@ export default function ModelPage() {
         </div>
       </section>
 
-      {/* Penjelasan Difusi */}
+      {/* Diffusion Section */}
       <section className={styles.section}>
         <h2 className={styles.heading2}>Model Difusi</h2>
         <p className={styles.paragraph}>
           Model difusi memulai dari <em>noise</em> acak, lalu belajar mengurangi noise tersebut langkah demi langkah hingga membentuk gambar yang nyata.
         </p>
 
-        <div className={styles.cardGrid}>
+        {/* Diagram Difusi (interaktif & lebih besar) */}
+        <div className={`${styles.card} ${styles.diagramCard}`}>
+          <img
+            src="/diagrams/diffusion-workflow.png"
+            alt="Cara Kerja Model Difusi"
+            className={styles.diagramImage}
+          />
+        </div>
+
+        {/* Teks pengantar varian */}
+        <p className={styles.variantIntro}>
+          Model difusi ini juga mempunyai banyak varian, beberapa di antaranya:
+        </p>
+
+        {/* Varian-model sebagai kartu interaktif */}
+        <div className={styles.variantGrid}>
           <ModelCard
             name="Stable Diffusion"
             logoSrc="https://via.placeholder.com/80?text=SD"

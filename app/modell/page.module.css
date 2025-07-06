@@ -1,8 +1,6 @@
-
 /* Container */
 .container {
   max-width: 2000px;
-
   padding: 24px;
   background-color: var(--color-bg);
   border-radius: 12px;
@@ -103,7 +101,7 @@
   left: -20%;
   width: 200%;
   height: 200%;
-  background: rgba( var(--color-acc1) , 0.05 );
+  background: rgba(var(--color-acc1), 0.05);
   transform: rotate(45deg);
 }
 .card:hover {
@@ -165,6 +163,7 @@
   margin-right: 6px;
   color: var(--color-acc1);
 }
+
 /* Section contoh gambar */
 .examplesSection {
   margin-top: 1.5rem;
@@ -185,13 +184,13 @@
 }
 
 .examplesGrid img {
-  width: 220px;               
+  width: 220px;
   height: 220px;
   object-fit: cover;
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);  
-  padding: 12px;              
-  background:transparent;         
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  padding: 12px;
+  background: transparent;
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
@@ -200,32 +199,85 @@
   box-shadow: 0 12px 28px rgba(0,0,0,0.3);
 }
 
-
 /* Responsive tweaks */
 @media (max-width: 600px) {
   .heading1 { font-size: 2rem; }
   .heading2 { font-size: 1.5rem; }
   .cardGrid { gap: 0.75rem; }
-  /* Contoh gambar pada desktop sudah baik, fokus ke mobile: */
+}
+
 @media (max-width: 600px) {
   .examplesGrid {
     display: flex;
-    justify-content: center;     /* memastikan grid selalu di tengah */
+    justify-content: center;
     gap: 1rem;
     padding: 0.5rem 0;
-    overflow-x: auto;            /* aktifkan scroll jika lebarnya melebihi viewport */
-    scroll-snap-type: x mandatory;/* agar setiap item “snap” saat scrolling */
   }
   .examplesGrid img {
-    flex: 0 0 auto;              /* tidak mengecil atau melebar otomatis */
-    width: 140px;                 /* ukuran tetap proporsional */
+    flex: 0 0 auto;
+    width: 140px;
     height: 140px;
-    margin: 0 auto;               /* center tiap item jika ruang cukup */
-    scroll-snap-align: center;    /* pastikan gambar berhenti di tengah saat scroll */
+    margin: 0 auto;
     box-shadow: 0 6px 16px rgba(0,0,0,0.2);
     border-radius: 8px;
     transition: transform 0.2s;
   }
 }
+
+/* … (semua CSS sebelumnya tetap sama, lalu di bawah tambahkan:) … */
+
+/* Pengantar varian */
+.variantIntro {
+  text-align: left;        /* dari center → left */
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: var(--color-text);
+  margin: 1rem 0 1.5rem;   /* margin kiri-kanan 0, jadi teks mulai dari kiri container */
+  max-width: 600px;        /* tetap batasi lebar agar tidak terlalu panjang */
 }
 
+.diagramCard {
+  max-width: 200px;   
+  width: 100%;
+  margin: 0 auto 1.5rem;
+  padding: 0.75rem;    
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.diagramCard:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+
+/* .diagramImage: tampilkan lebih besar */
+.diagramImage {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+/* Variant grid: tetap pakai .card untuk setiap item */
+.variantGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Padding kartu model sudah di-handle di .card */
+/* Jika perlu override spacing: */
+.variantGrid .card {
+  padding: 1.25rem 1rem;
+}
+
+/* (Responsive tweaks untuk diagram & variant tetap berjalan) */
+@media (max-width: 600px) {
+  .diagramCard {
+    max-width: 100%;
+    padding: 0.75rem;
+  }
+  .variantGrid {
+    gap: 0.75rem;
+  }
+}
