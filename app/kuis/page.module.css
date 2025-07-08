@@ -1,7 +1,7 @@
 
 
 .container {
-  max-width: 900px;
+  max-width: auto;
   margin: 80px auto 40px;
   padding: 0 16px;
   background-color: var(--color-bg);
