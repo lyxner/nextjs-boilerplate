@@ -1,27 +1,25 @@
-/* Container */
+.pageWrapper {
+  overflow-x: hidden;
+}
+
 .container {
-  max-width: 2000px;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100vh;
   padding: 24px;
   background-color: var(--color-bg);
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   font-family: var(--font-sans);
   color: var(--color-text);
-  position: relative;
+  border: 8px solid var(--color-acc1);
+  border-radius: 0;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  margin: 0;
 }
 
-/* Surprise accent stripe down left edge */
-.container::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 8px; height: 100%;
-  background: var(--color-acc1);
-  border-top-left-radius: 12px;
-  border-bottom-left-radius: 12px;
-}
 
-/* Main heading */
+
+
+/* ==================== Headings ==================== */
 .heading1 {
   font-family: var(--font-din1451);
   font-size: 2.25rem;
@@ -29,6 +27,7 @@
   text-align: center;
   margin-bottom: 1.5rem;
   position: relative;
+  overflow-wrap: break-word;
 }
 .heading1::after {
   content: '';
@@ -40,18 +39,13 @@
   border-radius: 2px;
 }
 
-/* Sections */
-.section {
-  margin-top: 2rem;
-}
-
-/* Subheading */
 .heading2 {
   font-family: var(--font-din1451);
   font-size: 1.75rem;
   color: var(--color-acc2);
   margin-bottom: 0.75rem;
   position: relative;
+  overflow-wrap: break-word;
 }
 .heading2::before {
   content: '';
@@ -64,16 +58,17 @@
   border-radius: 2px;
 }
 
-/* Paragraph */
+/* ==================== Paragraph ==================== */
 .paragraph {
   font-family: var(--font-sans);
   font-size: 1rem;
   line-height: 1.6;
   margin-bottom: 1.25rem;
   color: var(--color-text);
+  overflow-wrap: break-word;
 }
 
-/* Card grid */
+/* ==================== Card Grid ==================== */
 .cardGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -81,7 +76,7 @@
   margin-top: 1rem;
 }
 
-/* Individual card */
+/* ==================== Card ==================== */
 .card {
   background: var(--color-base);
   border-left: 4px solid var(--color-acc1);
@@ -94,14 +89,13 @@
   overflow: hidden;
 }
 .card::before {
-  /* diagonal stripe accent */
   content: '';
   position: absolute;
   top: -20%;
   left: -20%;
   width: 200%;
   height: 200%;
-  background: rgba(var(--color-acc1), 0.05);
+  background: rgba(158,101,47,0.05);
   transform: rotate(45deg);
 }
 .card:hover {
@@ -109,23 +103,24 @@
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-/* Card image */
 .cardImage {
   width: 60px;
   height: 60px;
   object-fit: contain;
   margin-bottom: 0.75rem;
+  max-width: 100%;
+  height: auto;
 }
 
-/* Card title */
 .cardTitle {
   font-family: var(--font-futura);
   font-size: 1rem;
   color: var(--color-acc2);
   margin: 0;
+  overflow-wrap: break-word;
 }
 
-/* ===== Reference Design Highlight ===== */
+/* ==================== References ==================== */
 .references {
   margin-top: 2rem;
   padding: 16px;
@@ -164,7 +159,7 @@
   color: var(--color-acc1);
 }
 
-/* Section contoh gambar */
+/* ==================== Examples Section ==================== */
 .examplesSection {
   margin-top: 1.5rem;
 }
@@ -175,81 +170,52 @@
   text-align: center;
   margin-bottom: 1rem;
 }
-
 .examplesGrid {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 1.5rem;
   margin-top: 1rem;
+  padding: 0.5rem 0;
 }
-
 .examplesGrid img {
-  width: 220px;
-  height: 220px;
+  flex: 0 1 220px;
   object-fit: cover;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.25);
   padding: 12px;
   background: transparent;
   transition: transform 0.3s, box-shadow 0.3s;
+  max-width: 20%;
+  height: auto;
 }
-
 .examplesGrid img:hover {
   transform: translateY(-6px) scale(1.03);
   box-shadow: 0 12px 28px rgba(0,0,0,0.3);
 }
 
-/* Responsive tweaks */
-@media (max-width: 600px) {
-  .heading1 { font-size: 2rem; }
-  .heading2 { font-size: 1.5rem; }
-  .cardGrid { gap: 0.75rem; }
-}
-
-@media (max-width: 600px) {
-  .examplesGrid {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    padding: 0.5rem 0;
-  }
-  .examplesGrid img {
-    flex: 0 0 auto;
-    width: 140px;
-    height: 140px;
-    margin: 0 auto;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-    border-radius: 8px;
-    transition: transform 0.2s;
-  }
-}
-
-/* … (semua CSS sebelumnya tetap sama, lalu di bawah tambahkan:) … */
-
-/* Pengantar varian */
+/* ==================== Variant Intro & Grid ==================== */
 .variantIntro {
-  text-align: left;        /* dari center → left */
+  text-align: left;
   font-family: var(--font-sans);
   font-size: 1rem;
   color: var(--color-text);
-  margin: 1rem 0 1.5rem;   /* margin kiri-kanan 0, jadi teks mulai dari kiri container */
-  max-width: 600px;        /* tetap batasi lebar agar tidak terlalu panjang */
+  margin: 1rem 0 1.5rem;
+  max-width: 600px;
+  overflow-wrap: break-word;
 }
 
 .diagramCard {
-  max-width: 200px;   
+  max-width: 200px;
   width: 100%;
   margin: 0 auto 1.5rem;
-  padding: 0.75rem;    
+  padding: 0.75rem;
   transition: transform 0.2s, box-shadow 0.2s;
 }
-
 .diagramCard:hover {
   transform: translateY(-4px) scale(1.01);
   box-shadow: 0 8px 24px rgba(0,0,0,0.2);
 }
-
-/* .diagramImage: tampilkan lebih besar */
 .diagramImage {
   width: 100%;
   height: auto;
@@ -257,18 +223,39 @@
   border-radius: 8px;
 }
 
-/* Variant grid: tetap pakai .card untuk setiap item */
 .variantGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 1rem;
   margin-bottom: 2rem;
 }
-
-/* Padding kartu model sudah di-handle di .card */
-/* Jika perlu override spacing: */
 .variantGrid .card {
   padding: 1.25rem 1rem;
 }
 
-/* (Responsive tweaks untuk diagram & variant tetap berjalan) */
+/* ==================== Responsive Tweaks (≤600px) ==================== */
+@media (max-width: 600px) {
+  .container {
+    padding: 12px;
+  }
+  .heading1 { font-size: 2rem; }
+  .heading2 { font-size: 1.5rem; }
+  .cardGrid,
+  .variantGrid {
+    gap: 0.75rem;
+  }
+  .paragraph {
+    padding: 0 8px;
+  }
+  .examplesGrid {
+    gap: 1rem;
+  }
+  .examplesGrid img {
+    flex: 0 1 140px;
+    margin-bottom: 1rem;
+  }
+  .diagramCard,
+  .card {
+    margin: 0 0 1rem;
+  }
+}
