@@ -272,12 +272,3 @@
 }
 
 /* (Responsive tweaks untuk diagram & variant tetap berjalan) */
-@media (max-width: 600px) {
-  .diagramCard {
-    max-width: 100%;
-    padding: 0.75rem;
-  }
-  .variantGrid {
-    gap: 0.75rem;
-  }
-}
