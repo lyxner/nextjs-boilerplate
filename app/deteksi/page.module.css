@@ -1,6 +1,6 @@
 /* app/deteksi/page.module.css */
 
-/*root*/
+/* root */
 .root {
   display: flex;
   flex-direction: column;
@@ -10,26 +10,31 @@
   color: var(--color-text);
   font-family: var(--font-sans);
   position: relative;
+ min-height: 100vh;
+  /* border keempat sisi */
+  box-shadow:
+    inset 6px 0 0 0 var(--color-acc1),    /* kiri */
+    inset -6px 0 0 0 var(--color-acc1),   /* kanan */
+    inset 0 6px 0 0 var(--color-acc1),    /* atas */
+    inset 0 -6px 0 0 var(--color-acc1);   /* bawah */
+
+  border-radius: 8px;
 }
-/* garis tepi samping */
-.root::before,
-.root::after {
-  content: '';
-  position: absolute; top: 0; height: 100%; width: 6px;
-  background: var(--color-acc1); border-radius: 8px;
-}
-.root::before { left: 0; }
-.root::after  { right: 0; }
 
 /* judul halaman */
 .title {
-  font-size: 2rem; font-family: var(--font-din1451);
-  color: var(--color-acc1); margin-bottom: 24px;
-  text-align: center; position: relative;
+  font-size: 2rem;
+  font-family: var(--font-din1451);
+  color: var(--color-acc1);
+  margin-bottom: 24px;
+  text-align: center;
+  position: relative;
 }
 .title::after {
-  content: ''; display: block;
-  width: 60px; height: 4px;
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
   background: var(--color-acc2);
   margin: 8px auto 0;
 }
@@ -72,15 +77,19 @@
   width: 100%;
 }
 .fileInput input[type="file"] {
-  position: absolute; top: 0; left: 0;
-  width: 100%; height: 100%; opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
 }
 .fileInput::before {
   content: 'Pilih Gambar';
   display: block;
-  width: 100%;
-  padding: 12px;
- background:  #9e652f;
+  width: 95%;
+  padding: 10px;
+  background: #9e652f;
   color: #fff;
   font-weight: 500;
   text-align: center;

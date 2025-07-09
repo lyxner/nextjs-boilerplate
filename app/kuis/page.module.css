@@ -170,9 +170,8 @@
 
 /* Wrapper gambar */
 .imageWrapper {
-  width: 50%;
-  aspect-ratio: 3/3;
-
+  width: 60%;
+  aspect-ratio: 2/2;
   border-radius: 4px;
  
 }
