@@ -145,6 +145,7 @@ color: #9e652f;;
   transition: transform 0.3s;
   position: relative;
   z-index: 1;
+  
 }
 
 .slide img {
@@ -152,10 +153,12 @@ color: #9e652f;;
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s;
+ 
 }
 
 .slide:hover {
   transform: translateY(-6px);
+    transform: scale(1.3);
 }
 .slide:hover img {
   transform: scale(1.07);
@@ -175,7 +178,10 @@ color: #9e652f;;
     flex: 0 0 120px;
     height: 90px;
   }
-
+.slide:hover {
+  transform: translateY(-6px);
+    transform: scale(1.5);
+}
  .sectionTitle {
     left: auto !important;
     margin: 32px auto 12px;

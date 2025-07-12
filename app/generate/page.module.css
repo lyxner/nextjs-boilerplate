@@ -118,7 +118,7 @@
 .fileInput::before {
   content: 'Pilih Gambar';
   display: block;
-  width: 100%;
+  width: 80%;
   padding: 12px 16px;
   background:  #9e652f;
   color: #fff;
@@ -137,7 +137,7 @@
 }
 /* after file chosen */
 .hasFile::before {
-  content: '✅ File Siap Dideteksi';
+  content: '✅ File Siap Dibuat';
   background: linear-gradient(135deg, #4caf50, #81c784);
 }
 
