@@ -86,7 +86,7 @@ export default function ModelPage() {
           {/* Diagram Difusi */}
           <div className={`${styles.card} ${styles.diagramCard}`}>
             <img
-              src="/diagrams/diffusion-workflow.png"
+              src="/images/kuis/ai1.webp"
               alt="Cara Kerja Model Difusi"
               className={styles.diagramImage}
             />
@@ -101,7 +101,7 @@ export default function ModelPage() {
           <div className={styles.variantGrid}>
             <ModelCard
               name="Stable Diffusion"
-              logoSrc="https://via.placeholder.com/80?text=SD"
+              logoSrc="/images/kuis/ai1.webp"
               alt="Logo Stable Diffusion"
             />
             <ModelCard
