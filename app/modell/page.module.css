@@ -179,16 +179,15 @@
   padding: 0.5rem 0;
 }
 .examplesGrid img {
-  flex: 0 1 220px;
-  aspect-ratio: 1 / 1;      /* memaksa kotak */
-  object-fit: cover;
+  flex: 0 0 220px;     /* basis flex = 220px */
+  width: 220px;        /* paksa lebar 220px */
+  height: 220px;       /* paksa tinggi 220px */
+  object-fit: cover;   /* memotong agar proporsional */
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.25);
   padding: 7px;
   background: transparent;
   transition: transform 0.3s, box-shadow 0.3s;
-  max-width: 20%;
-  height: auto;
 }
 .examplesGrid img:hover {
   transform: translateY(-6px) scale(1.3);
@@ -252,8 +251,9 @@
     gap: 1rem;
   }
   .examplesGrid img {
-    flex: 0 1 140px;
-    margin-bottom: 1rem;
+    flex: 0 0 140px;
+    width: 140px;
+    height: 140px;
   }
   .examplesGrid img:hover {
   transform: translateY(-6px) scale(1.3);
