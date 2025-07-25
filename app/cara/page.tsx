@@ -74,7 +74,7 @@ const dampakMisinformasi: Dampak[] = [
     title: 'Kerusakan Reputasi Individu/Brand',
     description:
       'Brand atau individu bisa diserang lewat gambar palsu—misalnya foto yang diubah menunjukkan tindakan negatif. Dampaknya, pelanggan kehilangan kepercayaan, saham turun, dan proses pemulihan reputasi memakan waktu dan biaya besar.',
-    image: '/slide7/image1.jpg',
+    image: '/slide6/image1.jpg',
   },
 ];
 

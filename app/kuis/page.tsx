@@ -109,6 +109,7 @@ export default function KuisEasy() {
                       <img
                         src={isAi ? q.imageAI : q.imageReal}
                         alt={isAi ? 'Gambar AI' : 'Gambar Asli'}
+                        loading="lazy"
                       />
                     </div>
                   </label>
