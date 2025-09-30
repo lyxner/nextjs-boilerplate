@@ -20,7 +20,7 @@ const penjelasanKarakteristik: string[] = [
 // Gallery untuk setiap karakteristik
 const placeholdersPerList: string[][] = [
   [
-    '/slide2/image1.jpg',
+    '/slide/kucing1.webp',
     '/slide2/image1.jpg',
     '/slide2/image1.jpg',
     '/slide2/image1.jpg',
