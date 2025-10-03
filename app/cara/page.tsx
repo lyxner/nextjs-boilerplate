@@ -21,10 +21,11 @@ const penjelasanKarakteristik: string[] = [
 const placeholdersPerList: string[][] = [
   [
     '/slide/kucing1.webp',
-    '/slide2/image1.jpg',
-    '/slide2/image1.jpg',
-    '/slide2/image1.jpg',
-    '/slide2/image1.jpg',
+    '/slide/panda1.webp',
+     '/slide/harimau1.webp',
+      '/slide/elang1.webp',
+       '/slide/jerapah1.webp',
+    
   ],
   [
     '/slide2/image1.jpg',
