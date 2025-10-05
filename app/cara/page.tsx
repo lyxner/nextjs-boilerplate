@@ -10,8 +10,8 @@ const karakteristik = [
 ];
 
 const penjelasanKarakteristik: string[] = [
-  'Beberapa bagian tubuh tampak memanjang, menyusut, atau menempel tidak wajar, misalnya jari yang terlalu panjang, siku tanpa sendi yang jelas, atau mata yang berlainan ukuran.',
-  'Permukaan objek tampak sangat mulus dan tanpa cacat—tidak ada pori-pori, goresan, atau noise yang biasa muncul pada foto asli.',
+  'Beberapa bagian tubuh tampak memanjang, menyusut, atau menempel tidak wajar, misalnya jari yang terlalu panjang, dan jumlah anggota tubuh lainya juga melebihi jumlah aslinya.',
+  'Permukaan objek tampak sangat mulus terutama pada bagian muka dan tanpa cacat—tidak ada pori-pori, goresan, atau noise yang biasa muncul pada foto asli.',
   'Tulisan, simbol, atau logo dalam gambar sering terdistorsi: huruf terbalik, teks terpotong, atau font yang tidak konsisten dengan konteks gambar.',
   'Background menampilkan elemen acak yang tidak masuk akal, seperti benda terapung, bayangan yang salah arah, atau pola yang terulang tanpa alasan.',
   'Cahaya terdistribusi merata di seluruh sudut gambar—jarang ada area bayangan lembut atau sorot lampu yang memberi kesan realistis.',
@@ -28,11 +28,11 @@ const placeholdersPerList: string[][] = [
     
   ],
   [
-    '/slide2/image1.jpg',
-    '/slide2/image1.jpg',
-    '/slide2/image1.jpg',
-    '/slide2/image1.jpg',
-    '/slide2/image1.jpg',
+    '/slide2/orang1.webp',
+    '/slide2/orang2.webp',
+    '/slide2/orang3.webp',
+    '/slide2/orang4.webp',
+    '/slide2/orang5.webp',
   ],
   [
     '/slide3/image1.jpg',
