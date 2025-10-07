@@ -3,18 +3,15 @@ import styles from './page.module.css';
 
 const karakteristik = [
   'Detail Tubuh Tidak Wajar',
-  'Tekstur Terlalu Halus',
-  'Teks atau Logo Aneh',
+  'Tekstur Terlalu Halus,Sempurna, dan Tidak Alami',
   'Latar Belakang Aneh',
-  'Pencahayaan Sempurna',
+ 
 ];
 
 const penjelasanKarakteristik: string[] = [
   'Beberapa bagian tubuh tampak memanjang, menyusut, atau menempel tidak wajar, misalnya jari yang terlalu panjang, dan jumlah anggota tubuh lainya juga melebihi jumlah aslinya.',
-  'Permukaan objek tampak sangat mulus terutama pada bagian muka dan tanpa cacat—tidak ada pori-pori, goresan, atau noise yang biasa muncul pada foto asli.',
-  'Tulisan, simbol, atau logo dalam gambar sering terdistorsi: huruf terbalik, teks terpotong, atau font yang tidak konsisten dengan konteks gambar.',
+  'Permukaan objek tampak sangat mulus terutama pada bagian muka dan tanpa cacat, tidak ada pori-pori, goresan, permukaan kulit terlalu sempurna, dan noise yang biasa muncul pada foto asli tidak ada. Dan ini juga berlaku kepada latar belakang pada gambar ai tersebut seperti latar belakang yang teksturnya dibuat terlalu halus dan terlalu sempurna',
   'Background menampilkan elemen acak yang tidak masuk akal, seperti benda terapung, bayangan yang salah arah, atau pola yang terulang tanpa alasan.',
-  'Cahaya terdistribusi merata di seluruh sudut gambar—jarang ada area bayangan lembut atau sorot lampu yang memberi kesan realistis.',
 ];
 
 // Gallery untuk setiap karakteristik
@@ -41,20 +38,7 @@ const placeholdersPerList: string[][] = [
     '/slide3/image1.jpg',
     '/slide3/image1.jpg',
   ],
-  [
-    '/slide4/image1.jpg',
-    '/slide4/image1.jpg',
-    '/slide4/image1.jpg',
-    '/slide4/image1.jpg',
-    '/slide4/image1.jpg',
-  ],
-  [
-    '/slide3/image1.jpg',
-    '/slide3/image1.jpg',
-    '/slide3/image1.jpg',
-    '/slide3/image1.jpg',
-    '/slide3/image1.jpg',
-  ],
+ 
 ];
 
 type Dampak = { title: string; description: string; image: string };
