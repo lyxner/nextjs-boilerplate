@@ -14,72 +14,72 @@ type Question = {
 const QUESTIONS: Question[] = [
   {
     id: 1,
-    image: '/images/match/ai1.png',
-    promptA: 'Seorang gadis muda duduk di bangku kayu di taman saat musim semi, dikelilingi oleh pohon sakura berbunga merah muda, mengenakan gaun putih dan topi jerami, sinar matahari menembus dedaunan, warna-warna pastel yang lembut, gaya anime.',
-    promptB: 'Seorang gadis muda duduk di bangku kayu di taman saat musim gugur, dikelilingi oleh daun maple berwarna oranye yang berguguran, mengenakan mantel merah gelap dan sepatu bot hitam, langit mendung, suasana tenang dan sedikit muram, gaya anime.',
+    image: '/images3/gambar1.webp',
+    promptA: 'Interior loteng industri dengan furnitur grafit dan lantai beton halus.',
+    promptB: 'Interior loteng industri dengan aksen tembaga hangat dan balok kayu',
     correct: 'A',
   },
   {
     id: 2,
-    image: '/images/match/ai2.png',
-    promptA: 'Pemandangan kota futuristik di malam hari dengan gedung-gedung tinggi bercahaya neón, jalanan basah memantulkan lampu kendaraan, mobil terbang melintas, atmosfer cyberpunk, gaya sinematik.',
-    promptB: 'Pemandangan desa pedesaan di pagi hari dengan kabut tipis, ladang hijau luas, sapi merumput, cahaya matahari lembut, suasana damai, gaya realistik.',
-    correct: 'B',
-  },
-  {
-    id: 3,
-    image: '/images/match/ai3.png',
-    promptA: 'Seekor kucing hitam dengan mata hijau menyala duduk di atas papan kayu di atap rumah tua, latar belakang bulan purnama besar dan awan bergerak, nuansa misterius, gaya gothic.',
-    promptB: 'Seekor anjing golden retriever bermain di pantai saat matahari terbenam, ombak lembut, langit oranye-merah, terasa hangat, gaya fotograﬁ alami.',
+    image: '/images3/gambar2.webp',
+    promptA: 'Taman bunga dengan bunga merah muda dan jalur batu berwarna hitam.',
+    promptB: 'Taman bunga dengan bunga kuning cerah dan jalur kerikil putih.',
     correct: 'A',
   },
   {
+    id: 3,
+    image: '/images3/gambar3.webp',
+    promptA: 'Sebuah danau kecil yang membeku dengan pegunungan disekitarnya beserta pepohonan.',
+    promptB: 'Sebuah danau besar yang membeku dengan pegunungan es disekitarnya beserta pepohonan.',
+    correct: 'B',
+  },
+  {
     id: 4,
-    image: '/images/match/ai4.png',
-    promptA: 'Seorang kesatria berzirah perak berdiri di medan perang berdebu, pedang menyala dengan cahaya biru, gunung vulkanik di latar belakang, suasana epik, gaya fantasi.',
-    promptB: 'Seorang perenang membawa papan selancar di pantai tropis, air jernih, pohon kelapa, langit biru cerah, gaya dokumenter alam.',
+    image: '/images3/gambar4.webp',
+    promptA: 'Meja makan kayu serta piring porselen motif klasik biru-putih.',
+    promptB: 'Meja makan kaca modern dengan piring motif klasik biru-putih.',
     correct: 'A',
   },
   {
     id: 5,
-    image: '/images/match/ai5.png',
-    promptA: 'Ruang angkasa dengan galaksi spiral besar, bintang-bintang berwarna-warni, pesawat luar angkasa kecil melintas di kejauhan, nuansa kosmik, gaya ilustrasi sci‑fi.',
-    promptB: 'Interior kafe klasik di Paris dengan lampu gantung kuning hangat, meja-marmer dan kursi besi, suasana hangat, gaya lukisan minyak.',
-    correct: 'A',
+    image: '/images3/gambar5.webp',
+    promptA: 'Stasiun metro bawah tanah modern dengan lantai marmer gelap.',
+    promptB: 'Stasiun metro bawah tanah modern dengan lantai marmer terang.',
+    correct: 'B',
   },
   {
     id: 6,
-    image: '/images/match/ai6.png',
-    promptA: 'Sekelompok penari tradisional Bali mengenakan kostum warna-warni, gerakan terpadu di atas panggung, latar belakang pura, gaya seni budaya.',
-    promptB: 'Sekelompok astronot berjalan di kawah bulan, permukaan berdebu, Bumi terlihat di langit, nuansa sunyi, gaya hyper‑realistic.',
+    image: '/images3/gambar6.webp',
+    promptA: 'Lorong gang kota tua dengan lampu gantung kuning dan gerobak kayu.',
+    promptB: 'Lorong gang kota tua dengan lampu gantung putih dan gerobak kayu',
     correct: 'A',
   },
   {
     id: 7,
-    image: '/images/match/ai7.png',
-    promptA: 'Meja kayu di studio seniman dipenuhi cat tumpah, kuas, kanvas setengah jadi dengan sketsa bunga mawar, cahaya alami masuk lewat jendela besar, gaya artisanal.',
-    promptB: 'Rak buku antik di perpustakaan tua, debu halus, sinar matahari melewati jendela kaca patri, suasana sunyi, gaya dramatis.',
+    image: '/images3/gambar7.webp',
+    promptA: 'Sudut kota dengan kios makanan jalanan dan lampu neon merah.',
+    promptB: 'Sudut kota dengan kios makanan jalanan dan lampu neon biru dan merah.',
     correct: 'A',
   },
   {
     id: 8,
-    image: '/images/match/ai8.png',
-    promptA: 'Lamborghini futuristik berwarna chrome mengkilap diparkir di depan gedung pencakar langit kaca, jalan basah memantulkan cahaya lampu kota malam, gaya ultra‑modern.',
-    promptB: 'Sebuah perahu dayung di danau pegunungan, air tenang memantulkan puncak bersalju, kabut tipis, gaya lanskap romantik.',
-    correct: 'A',
+    image: '/images3/gambar8.webp',
+    promptA: 'Teh hijau panas dalam cangkir keramik putih dengan dua potong kue di sebelahnya',
+    promptB: 'Teh hijau panas dalam cangkir keramik putih dengan sepotong kue di sebelahnya',
+    correct: 'B',
   },
   {
     id: 9,
-    image: '/images/match/ai9.png',
-    promptA: 'Kamar tidur minimalis dengan dinding putih, tanaman Monstera di sudut, sinar matahari lembut masuk, nuansa hygge, gaya interior modern.',
-    promptB: 'Pesta karnaval di Rio de Janeiro, penari mengenakan kostum penuh bulu dan payet, kerumunan bahagia, warna cerah, gaya festif.',
+    image: '/images3/gambar9.webp',
+    promptA: 'Taman belakang dengan rumput hijau dan bangku kayu tua.',
+    promptB: 'Taman belakang dengan rumput hijau dan bangku kayu tua berwarna hitam.',
     correct: 'A',
   },
   {
     id: 10,
-    image: '/images/match/ai10.png',
-    promptA: 'Jembatan suspensi ikonik di bawah kabut pagi, berjalan kaki sendirian, pemandangan kota samar di kejauhan, suasana misterius, gaya fotografi hitam-putih.',
-    promptB: 'Lapangan bunga matahari luas di musim panas, langit biru cerah, anak-anak berlari, suasana ceria, gaya realistik.',
+    image: '/images3/gambar10.webp',
+    promptA: 'Kamar tidur modern dengan dinding berwarna abu-abu dan biru gelap dengan rak buku besar terbuka dan tanaman hijau kecil.',
+    promptB: 'Kamar tidur modern dengan dinding berwarna abu-abu dan biru terang dengan rak buku besar terbuka dan tanaman hijau kecil.',
     correct: 'A',
   },
 ];
@@ -102,7 +102,7 @@ export default function MatchPromptPage() {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.heading}>Game: Cocokkan Prompt</h1>
+      <h1 className={styles.heading}>Game Kuis: Cocokkan Prompt Gambar AI</h1>
       <p className={styles.description}>
         Untuk setiap gambar AI, pilih prompt (A atau B) yang <strong>benar</strong> digunakan untuk membuatnya.
       </p>
