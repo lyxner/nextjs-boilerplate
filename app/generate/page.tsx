@@ -8,7 +8,7 @@ import styles from './page.module.css';
  * - POST ke /api/generate-image
  * - Jika response berisi task_id tapi belum ada images -> polling ke /api/generate-image/status
  *
- * Pastikan server-side sudah terpasang:
+ * Pastikan server-side:
  * - app/api/generate-image/route.ts  (POST handler)
  * - app/api/generate-image/status/route.ts (GET handler)
  */
@@ -53,7 +53,7 @@ export default function FreepikGeneratePage() {
           try {
             json = text ? JSON.parse(text) : {};
           } catch {
-            // respons non-json
+            // respons non-json -> teruskan loop
             setStatus((prev) => prev ?? 'Menunggu (response non-JSON).');
             continue;
           }
@@ -197,22 +197,12 @@ export default function FreepikGeneratePage() {
     }
   };
 
-  // kecil: gaya sr-only inline (karena page.module.css tidak punya srOnly)
-  const srOnlyStyle: React.CSSProperties = {
-    position: 'absolute',
-    left: -10000,
-    top: 'auto',
-    width: 1,
-    height: 1,
-    overflow: 'hidden',
-  };
-
   return (
     <main className={styles.container} aria-live="polite">
       <h1 className={styles.title}>Generate Gambar AI (Freepik)</h1>
 
       <form onSubmit={handleSubmit} className={styles.form} aria-describedby="generate-desc">
-        <p id="generate-desc" style={srOnlyStyle}>
+        <p id="generate-desc" className={styles.srOnly}>
           Masukkan prompt dan pilih aspect ratio, lalu klik Generate.
         </p>
 
@@ -242,17 +232,17 @@ export default function FreepikGeneratePage() {
             value={aspectRatio}
             onChange={handleAspectChange}
             disabled={loading}
+            className={styles.select}
             aria-label="Pilih Aspect Ratio"
-            // className .select tidak ada di CSS yang kamu kirim — biarkan default
           >
             <option value="square_1_1">Square (1:1)</option>
             <option value="widescreen_16_9">16:9 Widescreen</option>
           </select>
         </div>
 
-        <div style={{ display: 'flex', gap: 12, alignItems: 'center', justifyContent: 'flex-end' }}>
+        <div className={styles.buttonRow ?? ''}>
           {polling && (
-            <button type="button" onClick={cancelPolling} className={styles.button} aria-pressed="false">
+            <button type="button" onClick={cancelPolling} className={styles.button}>
               Batalkan Polling
             </button>
           )}
@@ -270,13 +260,13 @@ export default function FreepikGeneratePage() {
       )}
 
       {status && (
-        <div role="status" aria-live="polite" style={{ textAlign: 'center', marginBottom: 12 }}>
+        <div role="status" aria-live="polite" className={styles.status}>
           <strong>Status:</strong> {status}
         </div>
       )}
 
       {taskId && (
-        <div style={{ textAlign: 'center', marginBottom: 12 }}>
+        <div className={styles.taskId}>
           <small>Task ID: <code>{taskId}</code></small>
         </div>
       )}
