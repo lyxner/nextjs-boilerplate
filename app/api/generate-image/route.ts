@@ -1,38 +1,35 @@
-import { NextRequest, NextResponse } from 'next/server';
+// pages/api/freepik-generate.ts
+import type { NextApiRequest, NextApiResponse } from 'next';
 
-const FREEPIK_URL = 'https://api.freepik.com/v1/ai/mystic';
+const FREEPIK_API_BASE = 'https://api.freepik.com/v1/ai/text-to-image/flux-dev';
 
-async function getTaskStatus(taskId: string, apiKey: string) {
-  const url = `${FREEPIK_URL}/${taskId}`;
-  const res = await fetch(url, {
-    method: 'GET',
-    headers: {
-      'x-freepik-api-key': apiKey,
-      'Accept': 'application/json'
-    }
-  });
-  const text = await res.text();
-  const data = JSON.parse(text);
-  return data;
+function sleep(ms: number) {
+  return new Promise((r) => setTimeout(r, ms));
 }
 
-export async function POST(request: NextRequest) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== 'POST') {
+    res.setHeader('Allow', 'POST');
+    return res.status(405).json({ error: 'Method not allowed. Use POST.' });
+  }
+
+  const { prompt, aspect_ratio } = req.body ?? {};
+
+  if (!prompt || typeof prompt !== 'string' || !prompt.trim()) {
+    return res.status(400).json({ error: 'Prompt tidak boleh kosong.' });
+  }
+
+  const apiKey = process.env.FREEPIK_API_KEY;
+  if (!apiKey) {
+    return res.status(500).json({
+      error:
+        'Server misconfigured: missing FREEPIK_API_KEY. Set it in your environment (Vercel Environment Variables).',
+    });
+  }
+
   try {
-    const body = await request.json();
-    const prompt = body.prompt as string;
-    const aspectRatio = body.aspect_ratio;
-
-    if (!prompt) {
-      return NextResponse.json({ error: 'Prompt tidak boleh kosong.' }, { status: 400 });
-    }
-
-    const apiKey = process.env.FREEPIK_API_KEY;
-    if (!apiKey) {
-      return NextResponse.json({ error: 'API key Freepik tidak dikonfigurasi.' }, { status: 500 });
-    }
-
-    // Kirim request initiator
-    const res = await fetch(FREEPIK_URL, {
+    // 1) Create task
+    const createResp = await fetch(FREEPIK_API_BASE, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -40,43 +37,88 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify({
         prompt,
-        aspect_ratio: aspectRatio,
+        ...(aspect_ratio ? { aspect_ratio } : {}),
       }),
     });
 
-    const text = await res.text();
-    const initData = JSON.parse(text);
+    // parse safely
+    const createJson = await (async () => {
+      const txt = await createResp.text();
+      try {
+        return txt ? JSON.parse(txt) : {};
+      } catch {
+        return { rawText: txt };
+      }
+    })();
 
-    if (!res.ok) {
-      const msg = initData.error?.message ?? `Freepik API error: ${res.status}`;
-      return NextResponse.json({ error: msg }, { status: res.status });
+    if (!createResp.ok) {
+      return res.status(createResp.status).json({
+        error: createJson?.error ?? `Freepik API error: ${createResp.status}`,
+        details: createJson,
+      });
     }
 
-    const taskId = initData.data?.task_id;
-    let status = initData.data?.status;
+    // get task id & initial status
+    const taskId = createJson?.data?.task_id ?? createJson?.task_id ?? null;
+    let status = createJson?.data?.status ?? createJson?.status ?? 'CREATED';
+
+    // 2) Poll briefly for completed images (best-effort — serverless functions have time limits)
+    const maxAttempts = 12; // ~12 attempts
+    const delayMs = 1500; // 1.5s between attempts (total ~18s)
     let images: string[] = [];
 
-    // Polling sampai status selesai (max retry)
-    const MAX_POLL = 10;
-    const INTERVAL = 3000; // 3 detik
+    if (taskId) {
+      for (let i = 0; i < maxAttempts; i++) {
+        await sleep(delayMs);
 
-    for (let i = 0; i < MAX_POLL; i++) {
-      await new Promise(r => setTimeout(r, INTERVAL));
-      const task = await getTaskStatus(taskId, apiKey);
-      status = task.data?.status;
-      if (status === 'COMPLETED') {
-        if (Array.isArray(task.data.generated)) {
-          images = task.data.generated;
+        try {
+          const getResp = await fetch(`${FREEPIK_API_BASE}/${taskId}`, {
+            method: 'GET',
+            headers: {
+              'x-freepik-api-key': apiKey,
+            },
+          });
+
+          const getJson = await (async () => {
+            const txt = await getResp.text();
+            try {
+              return txt ? JSON.parse(txt) : {};
+            } catch {
+              return { rawText: txt };
+            }
+          })();
+
+          const data = getJson?.data ?? getJson;
+          status = data?.status ?? status;
+
+          // docs show generated[] or generated field; sometimes "generated" or "generated" inside data
+          images =
+            Array.isArray(data?.generated) && data.generated.length > 0
+              ? data.generated
+              : Array.isArray(data?.images) && data.images.length > 0
+              ? data.images
+              : Array.isArray(getJson?.generated) && getJson.generated.length > 0
+              ? getJson.generated
+              : [];
+
+          // if images found or status is final, break
+          if (images.length > 0 || status === 'COMPLETED' || status === 'FAILED') {
+            break;
+          }
+        } catch (e) {
+          // continue polling; don't crash on transient errors
+          console.warn('Polling error', e);
         }
-        break;
-      } else if (status === 'FAILED') {
-        break;
       }
     }
 
-    return NextResponse.json({ images, taskId, status });
+    return res.status(200).json({
+      task_id: taskId,
+      status,
+      images,
+    });
   } catch (err: any) {
-    console.error('Error Freepik-generate:', err);
-    return NextResponse.json({ error: err.message || 'Server error' }, { status: 500 });
+    console.error(err);
+    return res.status(500).json({ error: err?.message ?? 'Unknown server error' });
   }
 }
