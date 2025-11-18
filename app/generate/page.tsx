@@ -5,23 +5,27 @@ import styles from './page.module.css';
 
 export default function FreepikGeneratePage() {
   const [prompt, setPrompt] = useState('');
-  const [aspectRatio, setAspectRatio] = useState<string>('widescreen_16_9');
+  const [aspectRatio, setAspectRatio] = useState<'square_1_1' | 'widescreen_16_9' | 'classic_4_3'>('square_1_1');
   const [images, setImages] = useState<string[]>([]);
+  const [status, setStatus] = useState<string | null>(null);
+  const [taskId, setTaskId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState('');
 
   const handlePromptChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setPrompt(e.target.value);
   };
 
   const handleAspectChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setAspectRatio(e.target.value);
+    setAspectRatio(e.target.value as any);
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
     setImages([]);
+    setStatus(null);
+    setTaskId(null);
 
     if (!prompt.trim()) {
       setError('Prompt tidak boleh kosong.');
@@ -39,14 +43,19 @@ export default function FreepikGeneratePage() {
       });
 
       const text = await res.text();
+      const json = JSON.parse(text);
+
       if (!res.ok) {
         setError(`Server error: ${res.status} — ${text}`);
       } else {
-        const json = JSON.parse(text);
-        if (Array.isArray(json.images) && json.images.length > 0) {
+        if (json.images && Array.isArray(json.images) && json.images.length > 0) {
           setImages(json.images);
-        } else {
-          setError(json.error ?? 'Gagal menghasilkan gambar.');
+        }
+        if (json.taskId) {
+          setTaskId(json.taskId);
+        }
+        if (json.status) {
+          setStatus(json.status);
         }
       }
     } catch (e: any) {
@@ -58,7 +67,7 @@ export default function FreepikGeneratePage() {
 
   return (
     <main className={styles.container}>
-      <h1 className={styles.title}>Generate Gambar AI (Freepik)</h1>
+      <h1 className={styles.title}>Generate Gambar AI (Freepik Mystic)</h1>
 
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.inputGroup}>
@@ -66,7 +75,7 @@ export default function FreepikGeneratePage() {
           <textarea
             id="prompt"
             className={styles.textarea}
-            placeholder="Misal: pemandangan futuristik dengan cahaya neon"
+            placeholder="Misal: lanskap futuristik di malam hari"
             value={prompt}
             onChange={handlePromptChange}
             rows={4}
@@ -83,9 +92,9 @@ export default function FreepikGeneratePage() {
             disabled={loading}
             className={styles.select}
           >
-            <option value="square">Square</option>
+            <option value="square_1_1">Square (1:1)</option>
             <option value="widescreen_16_9">16:9 Widescreen</option>
-            <option value="portrait">Portrait</option>
+            <option value="classic_4_3">4:3 Classics</option>
           </select>
         </div>
 
@@ -96,15 +105,18 @@ export default function FreepikGeneratePage() {
 
       {error && <p className={styles.error}>{error}</p>}
 
+      {status && (
+        <p className={styles.status}>Status: {status}{taskId ? ` (Task ID: ${taskId})` : ''}</p>
+      )}
+
       {images.length > 0 && (
         <section className={styles.resultsSection}>
           <h2 className={styles.resultsTitle}>Hasil Gambar:</h2>
           <div className={styles.resultsGrid}>
             {images.map((src, i) => (
               <div key={i} className={styles.resultCard}>
-                {/* Jika src adalah base64: bisa langsung <img src={src} /> */}
                 <img src={src} alt={`Generated ${i}`} className={styles.resultImage} />
-                <a href={src} download={`freepik-img-${i}.png`} className={styles.download}>
+                <a href={src} download={`freepik-mystic-${i}.png`} className={styles.download}>
                   Download
                 </a>
               </div>

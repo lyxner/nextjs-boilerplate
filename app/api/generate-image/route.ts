@@ -14,21 +14,26 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'API key Freepik tidak dikonfigurasi.' }, { status: 500 });
     }
 
-    // Endpoint Freepik AI generation (misalnya model "mystic")
-    const url = 'https://api.freepik.com/v1/ai/mystic';
+    const url = 'https://api.freepik.com/v1/ai/mystic';  // endpoint sesuai dokumentasi Freepik Mystic :contentReference[oaicite:0]{index=0}
 
     const res = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'x-freepik-api-key': apiKey,
-        'Accept': 'application/json',
       },
       body: JSON.stringify({
         prompt: prompt,
-        // Opsi lain bisa disertakan sesuai dokumentasi Freepik API, misal aspect_ratio
-        // contoh: "aspect_ratio": "widescreen_16_9"
-        ...(body.aspect_ratio && { aspect_ratio: body.aspect_ratio }),
+        // Parameter opsional, sesuai dokumentasi Freepik Mystic :contentReference[oaicite:1]{index=1}
+        aspect_ratio: body.aspect_ratio,
+        resolution: body.resolution,
+        model: body.model,
+        creative_detailing: body.creative_detailing,
+        engine: body.engine,
+        fixed_generation: body.fixed_generation,
+        filter_nsfw: body.filter_nsfw,
+        styling: body.styling,
+        // Jika kamu mau juga webhook: body.webhook_url
       }),
     });
 
@@ -46,19 +51,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: msg }, { status: res.status });
     }
 
-    // Freepik API generasi gambar: misal respons berisi `image` base64 atau URL gambar
-    // Sesuaikan dengan dokumentasi Freepik response
+    // Struktur respons Freepik ketika membuat task: data.data.generated, data.data.task_id, data.data.status :contentReference[oaicite:2]{index=2}
     const images: string[] = [];
-    // Asumsi respons: { "data": { "image": "<base64>" } } atau bisa berbeda
-    if (data.data?.image) {
-      images.push(data.data.image);
-    } else if (Array.isArray(data.data?.images)) {
-      for (const img of data.data.images) {
-        images.push(img);
+    if (data.data?.generated && Array.isArray(data.data.generated)) {
+      for (const imgUrl of data.data.generated) {
+        images.push(imgUrl);
       }
     }
 
-    return NextResponse.json({ images });
+    // Return juga task_id & status agar bisa polling status jika diperlukan
+    return NextResponse.json({
+      images,
+      taskId: data.data?.task_id,
+      status: data.data?.status,
+    });
   } catch (err: any) {
     console.error('Error di Freepik-generate route:', err);
     return NextResponse.json({ error: err.message || 'Server error' }, { status: 500 });
