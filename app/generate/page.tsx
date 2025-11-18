@@ -3,16 +3,6 @@
 import React, { useState, useRef, FormEvent, ChangeEvent } from 'react';
 import styles from './page.module.css';
 
-/**
- * Page: Generate Gambar AI (Freepik)
- * - POST ke /api/generate-image
- * - Jika response berisi task_id tapi belum ada images -> polling ke /api/generate-image/status
- *
- * Pastikan server-side:
- * - app/api/generate-image/route.ts  (POST handler)
- * - app/api/generate-image/status/route.ts (GET handler)
- */
-
 export default function FreepikGeneratePage() {
   const [prompt, setPrompt] = useState('');
   const [aspectRatio, setAspectRatio] = useState<'square_1_1' | 'widescreen_16_9'>('square_1_1');
@@ -22,6 +12,7 @@ export default function FreepikGeneratePage() {
   const [loading, setLoading] = useState(false);
   const [polling, setPolling] = useState(false);
   const [error, setError] = useState('');
+  const [downloadingIndex, setDownloadingIndex] = useState<number | null>(null);
   const pollAbortRef = useRef<{ aborted: boolean }>({ aborted: false });
 
   const handlePromptChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -32,7 +23,7 @@ export default function FreepikGeneratePage() {
     setAspectRatio(e.target.value as 'square_1_1' | 'widescreen_16_9');
   };
 
-  // Fungsi polling sederhana (client-side)
+  // client-side polling
   async function pollStatusLoop(tid: string, maxAttempts = 15, intervalMs = 2000) {
     setPolling(true);
     pollAbortRef.current.aborted = false;
@@ -41,10 +32,7 @@ export default function FreepikGeneratePage() {
     try {
       while (attempt < maxAttempts && !pollAbortRef.current.aborted) {
         attempt++;
-        // tunggu sebelum cek (kecuali attempt ke-1)
-        if (attempt > 1) {
-          await new Promise((r) => setTimeout(r, intervalMs));
-        }
+        if (attempt > 1) await new Promise((r) => setTimeout(r, intervalMs));
 
         try {
           const resp = await fetch(`/api/generate-image/status?taskId=${encodeURIComponent(tid)}`);
@@ -53,12 +41,10 @@ export default function FreepikGeneratePage() {
           try {
             json = text ? JSON.parse(text) : {};
           } catch {
-            // respons non-json -> teruskan loop
             setStatus((prev) => prev ?? 'Menunggu (response non-JSON).');
             continue;
           }
 
-          // ambil status & images dari struktur respons (defensive)
           const data = json?.data ?? json;
           const s = data?.status ?? json?.status ?? null;
           const imgs =
@@ -80,7 +66,6 @@ export default function FreepikGeneratePage() {
             return { ok: true, images: imgs };
           }
 
-          // jika status final tapi tidak ada images -> stop
           if (s === 'FAILED' || s === 'COMPLETED') {
             setPolling(false);
             setLoading(false);
@@ -88,7 +73,6 @@ export default function FreepikGeneratePage() {
           }
         } catch (err: any) {
           console.warn('Polling error', err);
-          // jangan crash; lanjut ke percobaan berikutnya
         }
       }
 
@@ -98,7 +82,6 @@ export default function FreepikGeneratePage() {
         setStatus((p) => p ?? 'Batas polling tercapai — coba cek task_id secara manual.');
         return { ok: false, reason: 'timeout' };
       } else {
-        // polling dibatalkan
         setPolling(false);
         setLoading(false);
         setStatus('Polling dibatalkan.');
@@ -151,14 +134,12 @@ export default function FreepikGeneratePage() {
       }
 
       if (!response.ok) {
-        // server error (Freepik or our server)
         const message = json?.error ?? `Server error: ${response.status}`;
         setError(message);
         setLoading(false);
         return;
       }
 
-      // sukses
       const returnedStatus = json?.status ?? json?.data?.status ?? null;
       const returnedTaskId = json?.task_id ?? json?.data?.task_id ?? null;
       const returnedImages =
@@ -182,18 +163,64 @@ export default function FreepikGeneratePage() {
       if (returnedTaskId) {
         setTaskId(returnedTaskId);
         setStatus(returnedStatus ?? 'Task dibuat; menunggu hasil (async).');
-
-        // jalankan polling client-side
         await pollStatusLoop(returnedTaskId, 15, 2000);
         return;
       }
 
-      // jika tidak ada images & tidak ada task_id (kasus tak terduga)
       setStatus('Tidak ada hasil dan tidak ada task_id dikembalikan.');
     } catch (err: any) {
       setError(`Kesalahan: ${err?.message ?? String(err)}`);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // DOWNLOAD: fetch image as blob then trigger download (safer than relying on <a download>)
+  const downloadImage = async (src: string, filename: string, index: number) => {
+    setDownloadingIndex(index);
+    setError('');
+
+    try {
+      const resp = await fetch(src, {
+        method: 'GET',
+        // request without credentials; CORS must be allowed by the image host
+        credentials: 'omit',
+        // sometimes using no-referrer helps servers that block referer
+        referrerPolicy: 'no-referrer',
+      });
+
+      if (!resp.ok) {
+        throw new Error(`Gagal mengambil gambar (status ${resp.status})`);
+      }
+
+      const blob = await resp.blob();
+      const url = URL.createObjectURL(blob);
+
+      // buat elemen <a> untuk trigger download
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      // some browsers require append to DOM to work properly
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      // revoke object URL setelah sedikit delay supaya download sempat mulai
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch (err: any) {
+      console.error('Download error', err);
+      setError(
+        // fallback message dan buka di tab baru kalau fetch gagal
+        `Gagal mengunduh langsung: ${err?.message ?? String(err)}. Membuka gambar di tab baru sebagai fallback.`
+      );
+      try {
+        // fallback: buka di tab baru (user dapat klik kanan -> Save as)
+        window.open(src, '_blank', 'noopener,noreferrer');
+      } catch (openErr) {
+        console.error('Fallback open failed', openErr);
+      }
+    } finally {
+      setDownloadingIndex(null);
     }
   };
 
@@ -214,7 +241,7 @@ export default function FreepikGeneratePage() {
             id="prompt-input"
             value={prompt}
             onChange={handlePromptChange}
-            placeholder="Tulis prompt... (misal: lanskap futuristik dengan lampu neon di malam hari)"
+            placeholder="Disarankan menggunakan bahasa inggris (contoh: A black car)"
             rows={5}
             disabled={loading}
             className={styles.textarea}
@@ -246,7 +273,6 @@ export default function FreepikGeneratePage() {
               Batalkan Polling
             </button>
           )}
-
           <button type="submit" disabled={loading} className={styles.button} aria-disabled={loading}>
             {loading ? 'Memproses...' : 'Generate'}
           </button>
@@ -280,9 +306,17 @@ export default function FreepikGeneratePage() {
                 <div className={styles.resultImageWrapper}>
                   <img src={src} alt={`Hasil generasi ${i + 1}`} className={styles.resultImage} />
                 </div>
-                <a href={src} download={`freepik-image-${i + 1}.png`} className={styles.downloadButton}>
-                  Download
-                </a>
+
+                <button
+                  type="button"
+                  className={styles.downloadButton}
+                  onClick={() => downloadImage(src, `freepik-image-${i + 1}.png`, i)}
+                  disabled={downloadingIndex !== null}
+                  aria-disabled={downloadingIndex !== null}
+                  aria-label={`Download hasil ${i + 1}`}
+                >
+                  {downloadingIndex === i ? 'Mengunduh...' : 'Download'}
+                </button>
               </div>
             ))}
           </div>
