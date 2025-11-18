@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@google/genai": "^1.6.0",
+    "@google/genai": "^1.29.1",
     "ably": "^2.10.0",
     "axios": "^1.10.0",
     "form-data": "^4.0.3",

@@ -1,4 +1,3 @@
-// app/generate/page.tsx
 'use client';
 
 import { useState, ChangeEvent, FormEvent } from 'react';
@@ -37,6 +36,7 @@ export default function GeneratePage() {
     e.preventDefault();
     setError('');
     setImages([]);
+
     if (!prompt.trim()) {
       setError('Prompt tidak boleh kosong.');
       return;
@@ -45,6 +45,7 @@ export default function GeneratePage() {
       setError('Pilih gambar input.');
       return;
     }
+
     setLoading(true);
 
     try {
@@ -54,21 +55,31 @@ export default function GeneratePage() {
       if (mode === 'img2img' && inputFile) {
         formData.append('image', inputFile);
       }
+
       const res = await fetch('/api/generate-image', {
         method: 'POST',
         body: formData,
       });
-      const data = await res.json();
+
+      const text = await res.text();
       if (!res.ok) {
-        setError(data.error || `Server error: ${res.status}`);
-      } else if (Array.isArray(data.images) && data.images.length > 0) {
-        setImages(data.images);
+        setError(`Server error: ${res.status} — ${text}`);
+      } else if (!text) {
+        setError('Respons dari server kosong.');
       } else {
-        setError('Tidak ada gambar yang dihasilkan.');
+        try {
+          const json = JSON.parse(text);
+          if (Array.isArray(json.images) && json.images.length > 0) {
+            setImages(json.images);
+          } else {
+            setError(json.error ?? 'Tidak ada gambar yang dihasilkan.');
+          }
+        } catch (e: any) {
+          setError(`Gagal parse respons: ${e.message}`);
+        }
       }
-    } catch (err: any) {
-      console.error('Fetch error:', err);
-      setError(`Gagal memanggil server: ${err.message}`);
+    } catch (e: any) {
+      setError(`Gagal memanggil server: ${e.message}`);
     } finally {
       setLoading(false);
     }
@@ -76,7 +87,7 @@ export default function GeneratePage() {
 
   return (
     <main className={styles.container}>
-      <h1 className={styles.title}>Image Generation</h1>
+      <h1 className={styles.title}>Generate Gambar AI</h1>
 
       <div className={styles.tabContainer}>
         <button
@@ -100,24 +111,20 @@ export default function GeneratePage() {
       <form onSubmit={handleSubmit} className={styles.form}>
         {mode === 'img2img' && (
           <div className={styles.inputGroup}>
-            <label htmlFor="inputImage" className={styles.label}>
-              Pilih Gambar Input:
-            </label>
-            <label className={`${styles.fileInput} ${inputFile ? styles.hasFile : ''}`}>
-              <input
-                type="file"
-                id="inputImage"
-                accept="image/*"
-                disabled={loading}
-                onChange={handleFileChange}
-              />
-            </label>
+            <label htmlFor="inputImage" className={styles.label}>Pilih Gambar Input:</label>
+            <input
+              type="file"
+              id="inputImage"
+              accept="image/*"
+              onChange={handleFileChange}
+              disabled={loading}
+            />
             {previewInputUrl && (
-              <div className={styles.inputPreviewCard}>
+              <div className={styles.preview}>
                 <img
                   src={previewInputUrl}
                   alt="Preview Input"
-                  className={styles.inputPreviewImage}
+                  className={styles.previewImage}
                 />
               </div>
             )}
@@ -125,17 +132,13 @@ export default function GeneratePage() {
         )}
 
         <div className={styles.inputGroup}>
-          <label htmlFor="prompt" className={styles.label}>
-            Prompt:
-          </label>
+          <label htmlFor="prompt" className={styles.label}>Prompt:</label>
           <textarea
             id="prompt"
             className={styles.textarea}
-            placeholder={
-              mode === 'text2img'
-                ? 'Contoh: Pemandangan matahari terbenam di pegunungan, detail tinggi'
-                : 'Contoh: Ubah langit menjadi ungu, pertahankan objek utama'
-            }
+            placeholder={mode === 'text2img'
+              ? 'Contoh: pemandangan matahari terbenam di pegunungan'
+              : 'Contoh edit: ubah langit menjadi ungu'}
             value={prompt}
             onChange={handlePromptChange}
             rows={4}
@@ -152,22 +155,12 @@ export default function GeneratePage() {
 
       {images.length > 0 && (
         <section className={styles.resultsSection}>
-          <h2 className={styles.resultsTitle}>Hasil Generated:</h2>
+          <h2 className={styles.resultsTitle}>Hasil Gambar:</h2>
           <div className={styles.resultsGrid}>
             {images.map((src, idx) => (
               <div key={idx} className={styles.resultCard}>
-                <div className={styles.resultImageWrapper}>
-                  <img
-                    src={src}
-                    alt={`Generated ${idx + 1}`}
-                    className={styles.resultImage}
-                  />
-                </div>
-                <a
-                  href={src}
-                  download={`generated-${mode}-${idx + 1}.png`}
-                  className={styles.downloadButton}
-                >
+                <img src={src} alt={`Generated ${idx}`} className={styles.resultImage} />
+                <a href={src} download={`generated-${idx + 1}.png`} className={styles.download}>
                   Download
                 </a>
               </div>
@@ -176,5 +169,5 @@ export default function GeneratePage() {
         </section>
       )}
     </main>
-);
+  );
 }
