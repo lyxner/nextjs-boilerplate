@@ -2,90 +2,65 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
-    const form = await request.formData();
-    const prompt = form.get('prompt')?.toString();
-    const mode = form.get('mode')?.toString();
-    const imageFile = form.get('image');
+    const body = await request.json();
+    const prompt = body.prompt as string;
 
-    if (!prompt || !prompt.trim()) {
+    if (!prompt) {
       return NextResponse.json({ error: 'Prompt tidak boleh kosong.' }, { status: 400 });
     }
 
-    const apiKey = process.env.GENERATIVE_API_KEY;
+    const apiKey = process.env.FREEPIK_API_KEY;
     if (!apiKey) {
-      return NextResponse.json({ error: 'API key belum dikonfigurasi.' }, { status: 500 });
+      return NextResponse.json({ error: 'API key Freepik tidak dikonfigurasi.' }, { status: 500 });
     }
 
-    // Model generasi gambar menurut dokumentasi Gemini
-    const model = 'gemini-2.5-flash-image';
+    // Endpoint Freepik AI generation (misalnya model "mystic")
+    const url = 'https://api.freepik.com/v1/ai/mystic';
 
-    // Mempersiapkan payload
-    const payload: any = {
-      model,
-      contents: [
-        {
-          parts: [
-            { text: prompt },
-          ],
-        },
-      ],
-      config: {
-        responseModalities: ['TEXT', 'IMAGE'], // dari dokumentasi
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-freepik-api-key': apiKey,
+        'Accept': 'application/json',
       },
-    };
+      body: JSON.stringify({
+        prompt: prompt,
+        // Opsi lain bisa disertakan sesuai dokumentasi Freepik API, misal aspect_ratio
+        // contoh: "aspect_ratio": "widescreen_16_9"
+        ...(body.aspect_ratio && { aspect_ratio: body.aspect_ratio }),
+      }),
+    });
 
-    // Jika mode img2img (edit gambar), tambahkan image sebagai base64
-    if (mode === 'img2img' && imageFile instanceof File) {
-      const buffer = await imageFile.arrayBuffer();
-      const base64 = Buffer.from(buffer).toString('base64');
-      payload.image = base64;
-    }
-
-    // Panggil API Gemini via REST
-    const apiRes = await fetch(
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Goog-Api-Key': apiKey, // sesuai dokumentasi REST Gemini :contentReference[oaicite:2]{index=2}
-        },
-        body: JSON.stringify(payload),
-      }
-    );
-
-    const status = apiRes.status;
-    const text = await apiRes.text();
-    let apiData: any;
+    const text = await res.text();
+    let data: any;
     try {
-      apiData = JSON.parse(text);
-    } catch (e: any) {
-      console.error('Parse JSON gagal dari Gemini:', e, text);
-      return NextResponse.json({ error: 'Respons tidak valid dari Google API' }, { status: 502 });
+      data = JSON.parse(text);
+    } catch (e) {
+      console.error('Gagal parse JSON dari Freepik API:', text);
+      return NextResponse.json({ error: 'Respons tidak valid dari Freepik API' }, { status: 502 });
     }
 
-    if (!apiRes.ok) {
-      const msg = apiData.error?.message ?? `API Error ${status}`;
-      return NextResponse.json({ error: msg }, { status });
+    if (!res.ok) {
+      const msg = data.error?.message || `Freepik API error: ${res.status}`;
+      return NextResponse.json({ error: msg }, { status: res.status });
     }
 
-    // Ambil bagian image dari response
-    const parts = apiData.parts ?? apiData.candidates?.[0]?.parts;
+    // Freepik API generasi gambar: misal respons berisi `image` base64 atau URL gambar
+    // Sesuaikan dengan dokumentasi Freepik response
     const images: string[] = [];
-
-    if (parts && Array.isArray(parts)) {
-      for (const part of parts) {
-        if (part.inlineData) {
-          // inlineData biasanya base64
-          const raw = part.inlineData.data;
-          images.push(`data:image/png;base64,${raw}`);
-        }
+    // Asumsi respons: { "data": { "image": "<base64>" } } atau bisa berbeda
+    if (data.data?.image) {
+      images.push(data.data.image);
+    } else if (Array.isArray(data.data?.images)) {
+      for (const img of data.data.images) {
+        images.push(img);
       }
     }
 
     return NextResponse.json({ images });
   } catch (err: any) {
-    console.error('Error route generate-image:', err);
+    console.error('Error di Freepik-generate route:', err);
     return NextResponse.json({ error: err.message || 'Server error' }, { status: 500 });
   }
 }
