@@ -1,9 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+const FREEPIK_URL = 'https://api.freepik.com/v1/ai/mystic';
+
+async function getTaskStatus(taskId: string, apiKey: string) {
+  const url = `${FREEPIK_URL}/${taskId}`;
+  const res = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'x-freepik-api-key': apiKey,
+      'Accept': 'application/json'
+    }
+  });
+  const text = await res.text();
+  const data = JSON.parse(text);
+  return data;
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const prompt = body.prompt as string;
+    const aspectRatio = body.aspect_ratio;
 
     if (!prompt) {
       return NextResponse.json({ error: 'Prompt tidak boleh kosong.' }, { status: 400 });
@@ -14,59 +31,52 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'API key Freepik tidak dikonfigurasi.' }, { status: 500 });
     }
 
-    const url = 'https://api.freepik.com/v1/ai/mystic';  // endpoint sesuai dokumentasi Freepik Mystic :contentReference[oaicite:0]{index=0}
-
-    const res = await fetch(url, {
+    // Kirim request initiator
+    const res = await fetch(FREEPIK_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'x-freepik-api-key': apiKey,
       },
       body: JSON.stringify({
-        prompt: prompt,
-        // Parameter opsional, sesuai dokumentasi Freepik Mystic :contentReference[oaicite:1]{index=1}
-        aspect_ratio: body.aspect_ratio,
-        resolution: body.resolution,
-        model: body.model,
-        creative_detailing: body.creative_detailing,
-        engine: body.engine,
-        fixed_generation: body.fixed_generation,
-        filter_nsfw: body.filter_nsfw,
-        styling: body.styling,
-        // Jika kamu mau juga webhook: body.webhook_url
+        prompt,
+        aspect_ratio: aspectRatio,
       }),
     });
 
     const text = await res.text();
-    let data: any;
-    try {
-      data = JSON.parse(text);
-    } catch (e) {
-      console.error('Gagal parse JSON dari Freepik API:', text);
-      return NextResponse.json({ error: 'Respons tidak valid dari Freepik API' }, { status: 502 });
-    }
+    const initData = JSON.parse(text);
 
     if (!res.ok) {
-      const msg = data.error?.message || `Freepik API error: ${res.status}`;
+      const msg = initData.error?.message ?? `Freepik API error: ${res.status}`;
       return NextResponse.json({ error: msg }, { status: res.status });
     }
 
-    // Struktur respons Freepik ketika membuat task: data.data.generated, data.data.task_id, data.data.status :contentReference[oaicite:2]{index=2}
-    const images: string[] = [];
-    if (data.data?.generated && Array.isArray(data.data.generated)) {
-      for (const imgUrl of data.data.generated) {
-        images.push(imgUrl);
+    const taskId = initData.data?.task_id;
+    let status = initData.data?.status;
+    let images: string[] = [];
+
+    // Polling sampai status selesai (max retry)
+    const MAX_POLL = 10;
+    const INTERVAL = 3000; // 3 detik
+
+    for (let i = 0; i < MAX_POLL; i++) {
+      await new Promise(r => setTimeout(r, INTERVAL));
+      const task = await getTaskStatus(taskId, apiKey);
+      status = task.data?.status;
+      if (status === 'COMPLETED') {
+        if (Array.isArray(task.data.generated)) {
+          images = task.data.generated;
+        }
+        break;
+      } else if (status === 'FAILED') {
+        break;
       }
     }
 
-    // Return juga task_id & status agar bisa polling status jika diperlukan
-    return NextResponse.json({
-      images,
-      taskId: data.data?.task_id,
-      status: data.data?.status,
-    });
+    return NextResponse.json({ images, taskId, status });
   } catch (err: any) {
-    console.error('Error di Freepik-generate route:', err);
+    console.error('Error Freepik-generate:', err);
     return NextResponse.json({ error: err.message || 'Server error' }, { status: 500 });
   }
 }
