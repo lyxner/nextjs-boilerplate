@@ -1,58 +1,97 @@
 // app/api/freepik-download/route.ts
 import { NextResponse } from 'next/server';
 
-export async function GET(req: Request) {
+export async function POST(req: Request) {
   try {
-    const url = new URL(req.url);
-    const resourceId = url.searchParams.get('resourceId');
-    const imageUrl = url.searchParams.get('imageUrl');
-    const filename = url.searchParams.get('filename') || 'download.png';
+    // logging supaya jelas muncul di Vercel logs
+    const headersObj = Object.fromEntries(req.headers.entries());
+    console.log('FREEPIK-DOWNLOAD POST called, headers:', headersObj);
 
-    // Enforce that user accepted license (client must send this header)
-    const licenseHeader = req.headers.get('x-accept-license');
-    if (licenseHeader !== '1') {
-      return NextResponse.json({ error: 'License not accepted' }, { status: 403 });
+    const body = await req.json();
+    const imageUrl = body?.imageUrl;
+    const resourceId = body?.resourceId;
+    const filename = body?.filename ?? 'image.png';
+
+    if (!imageUrl && !resourceId) {
+      console.log('FREEPIK-DOWNLOAD missing imageUrl/resourceId');
+      return NextResponse.json({ error: 'imageUrl or resourceId required' }, { status: 400 });
     }
 
-    if (!resourceId && !imageUrl) {
-      return NextResponse.json({ error: 'resourceId or imageUrl required' }, { status: 400 });
-    }
-
-    let upstreamResp: Response;
-
+    // jika resourceId tersedia dan kamu punya akses ke endpoint resources/download
     if (resourceId) {
-      // Preferred: call Freepik's download endpoint so Freepik records the download.
-      // (Requires your server-side FREEPIK_API_KEY in env)
-      const freepikUrl = `https://api.freepik.com/v1/resources/${encodeURIComponent(resourceId)}/download`;
-      upstreamResp = await fetch(freepikUrl, {
-        method: 'GET',
+      const downloadUrl = `https://api.freepik.com/v1/resources/${encodeURIComponent(resourceId)}/download`;
+      console.log('FREEPIK-DOWNLOAD using resourceId ->', resourceId);
+      const upstream = await fetch(downloadUrl, {
         headers: {
           'x-freepik-api-key': process.env.FREEPIK_API_KEY ?? '',
         },
       });
-    } else {
-      // Fallback: fetch the actual image URL (public CDN). Use caution: this does not
-      // notify Freepik's API that a download occurred.
-      upstreamResp = await fetch(imageUrl!, { method: 'GET' });
+
+      if (!upstream.ok) {
+        const txt = await upstream.text();
+        console.log('FREEPIK-DOWNLOAD upstream error (resourceId):', upstream.status, txt);
+        return NextResponse.json({ error: 'upstream failed', detail: txt }, { status: upstream.status });
+      }
+
+      const arrayBuffer = await upstream.arrayBuffer();
+      return new Response(arrayBuffer, {
+        status: 200,
+        headers: {
+          'Content-Type': upstream.headers.get('content-type') ?? 'application/octet-stream',
+          'Content-Disposition': `attachment; filename="${filename}"`,
+        },
+      });
     }
 
-    if (!upstreamResp.ok) {
-      const txt = await upstreamResp.text();
-      return NextResponse.json({ error: 'Upstream fetch failed', detail: txt }, { status: upstreamResp.status });
+    // fallback: fetch langsung dari imageUrl (CDN)
+    console.log('FREEPIK-DOWNLOAD fetching imageUrl:', imageUrl);
+    const upstreamRes = await fetch(imageUrl as string);
+    if (!upstreamRes.ok) {
+      const txt = await upstreamRes.text();
+      console.log('FREEPIK-DOWNLOAD upstream error (imageUrl):', upstreamRes.status, txt);
+      return NextResponse.json({ error: 'unable to fetch image', details: txt }, { status: upstreamRes.status });
     }
 
-    const arrayBuffer = await upstreamResp.arrayBuffer();
-    const contentType = upstreamResp.headers.get('content-type') || 'application/octet-stream';
-    const contentDisposition = upstreamResp.headers.get('content-disposition') || `attachment; filename="${filename}"`;
-
-    const headers: Record<string, string> = {
-      'Content-Type': contentType,
-      'Content-Disposition': contentDisposition,
-    };
-
-    return new Response(arrayBuffer, { status: 200, headers });
+    const arrayBuffer = await upstreamRes.arrayBuffer();
+    return new Response(arrayBuffer, {
+      status: 200,
+      headers: {
+        'Content-Type': upstreamRes.headers.get('content-type') ?? 'application/octet-stream',
+        'Content-Disposition': `attachment; filename="${filename}"`,
+      },
+    });
   } catch (err: any) {
-    console.error('freepik-download proxy error', err);
-    return NextResponse.json({ error: 'Server error', detail: err?.message ?? String(err) }, { status: 500 });
+    console.error('FREEPIK-DOWNLOAD exception', err);
+    return NextResponse.json({ error: 'Server error', message: err.message }, { status: 500 });
+  }
+}
+
+// optional GET fallback (masih disediakan kalau perlu)
+export async function GET(req: Request) {
+  try {
+    const url = new URL(req.url);
+    const imageUrl = url.searchParams.get('imageUrl');
+    const filename = url.searchParams.get('filename') ?? 'image.png';
+    if (!imageUrl) return NextResponse.json({ error: 'imageUrl required' }, { status: 400 });
+
+    console.log('FREEPIK-DOWNLOAD GET fallback fetching:', imageUrl);
+    const upstream = await fetch(imageUrl);
+    if (!upstream.ok) {
+      const txt = await upstream.text();
+      console.log('FREEPIK-DOWNLOAD GET upstream error:', upstream.status, txt);
+      return NextResponse.json({ error: 'upstream failed', detail: txt }, { status: upstream.status });
+    }
+
+    const arrayBuffer = await upstream.arrayBuffer();
+    return new Response(arrayBuffer, {
+      status: 200,
+      headers: {
+        'Content-Type': upstream.headers.get('content-type') ?? 'application/octet-stream',
+        'Content-Disposition': `attachment; filename="${filename}"`,
+      },
+    });
+  } catch (err: any) {
+    console.error('FREEPIK-DOWNLOAD GET exception', err);
+    return NextResponse.json({ error: 'Server error', message: err.message }, { status: 500 });
   }
 }

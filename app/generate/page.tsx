@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useRef, FormEvent, ChangeEvent } from 'react';
+
+// Jika kamu punya page.module.css, tetap bisa gunakan; inline style memastikan tombol terlihat.
 import styles from './page.module.css';
 
 export default function FreepikGeneratePage() {
@@ -13,93 +15,55 @@ export default function FreepikGeneratePage() {
   const [polling, setPolling] = useState(false);
   const [error, setError] = useState('');
   const [downloadingIndex, setDownloadingIndex] = useState<number | null>(null);
+
   const pollAbortRef = useRef<{ aborted: boolean }>({ aborted: false });
 
-  const handlePromptChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setPrompt(e.target.value);
-  };
+  const handlePromptChange = (e: ChangeEvent<HTMLTextAreaElement>) => setPrompt(e.target.value);
+  const handleAspectChange = (e: ChangeEvent<HTMLSelectElement>) => setAspectRatio(e.target.value as any);
 
-  const handleAspectChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setAspectRatio(e.target.value as 'square_1_1' | 'widescreen_16_9');
-  };
-
-  // client-side polling
-  async function pollStatusLoop(tid: string, maxAttempts = 15, intervalMs = 2000) {
+  async function pollStatusLoop(tid: string, maxAttempts = 30, intervalMs = 1500) {
     setPolling(true);
     pollAbortRef.current.aborted = false;
     let attempt = 0;
 
-    try {
-      while (attempt < maxAttempts && !pollAbortRef.current.aborted) {
-        attempt++;
-        if (attempt > 1) await new Promise((r) => setTimeout(r, intervalMs));
+    while (attempt < maxAttempts && !pollAbortRef.current.aborted) {
+      attempt++;
+      if (attempt > 1) await new Promise((r) => setTimeout(r, intervalMs));
+      try {
+        const resp = await fetch(`/api/generate-image/status?taskId=${encodeURIComponent(tid)}`);
+        const json = await resp.json();
+        const data = json?.data ?? json;
+        const s = data?.status;
+        const imgs = Array.isArray(data?.generated) ? data.generated : Array.isArray(data?.images) ? data.images : [];
 
-        try {
-          const resp = await fetch(`/api/generate-image/status?taskId=${encodeURIComponent(tid)}`);
-          const text = await resp.text();
-          let json: any;
-          try {
-            json = text ? JSON.parse(text) : {};
-          } catch {
-            setStatus((prev) => prev ?? 'Menunggu (response non-JSON).');
-            continue;
-          }
-
-          const data = json?.data ?? json;
-          const s = data?.status ?? json?.status ?? null;
-          const imgs =
-            Array.isArray(data?.generated) && data.generated.length > 0
-              ? data.generated
-              : Array.isArray(data?.images) && data.images.length > 0
-              ? data.images
-              : Array.isArray(json?.generated) && json.generated.length > 0
-              ? json.generated
-              : Array.isArray(json?.images) && json.images.length > 0
-              ? json.images
-              : [];
-
-          if (s) setStatus(s);
-          if (imgs.length > 0) {
-            setImages(imgs);
-            setPolling(false);
-            setLoading(false);
-            return { ok: true, images: imgs };
-          }
-
-          if (s === 'FAILED' || s === 'COMPLETED') {
-            setPolling(false);
-            setLoading(false);
-            return { ok: false, reason: s ?? 'final' };
-          }
-        } catch (err: any) {
-          console.warn('Polling error', err);
+        if (s) setStatus(s);
+        if (imgs.length > 0) {
+          setImages(imgs);
+          setPolling(false);
+          setLoading(false);
+          return;
         }
-      }
 
-      if (!pollAbortRef.current.aborted) {
-        setPolling(false);
-        setLoading(false);
-        setStatus((p) => p ?? 'Batas polling tercapai — coba cek task_id secara manual.');
-        return { ok: false, reason: 'timeout' };
-      } else {
-        setPolling(false);
-        setLoading(false);
-        setStatus('Polling dibatalkan.');
-        return { ok: false, reason: 'aborted' };
+        if (s === 'FAILED' || s === 'COMPLETED') {
+          setPolling(false);
+          setLoading(false);
+          return;
+        }
+      } catch (err: any) {
+        console.warn('Polling error', err);
       }
-    } catch (err: any) {
-      setPolling(false);
-      setLoading(false);
-      setError(err?.message ?? 'Polling error');
-      return { ok: false, reason: 'error' };
     }
+
+    setPolling(false);
+    setLoading(false);
+    if (!pollAbortRef.current.aborted) setStatus('Batas polling tercapai.');
   }
 
   const cancelPolling = () => {
     pollAbortRef.current.aborted = true;
     setPolling(false);
     setLoading(false);
-    setStatus('Polling dibatalkan oleh pengguna.');
+    setStatus('Polling dibatalkan.');
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -115,6 +79,7 @@ export default function FreepikGeneratePage() {
     }
 
     setLoading(true);
+    setStatus('Mengirim permintaan...');
 
     try {
       const response = await fetch('/api/generate-image', {
@@ -123,205 +88,168 @@ export default function FreepikGeneratePage() {
         body: JSON.stringify({ prompt, aspect_ratio: aspectRatio }),
       });
 
-      const text = await response.text();
-      let json: any;
-      try {
-        json = text ? JSON.parse(text) : {};
-      } catch (err) {
-        setError(`Server returned non-JSON response: ${text}`);
-        setLoading(false);
-        return;
-      }
-
+      const json = await response.json();
       if (!response.ok) {
-        const message = json?.error ?? `Server error: ${response.status}`;
-        setError(message);
+        setError(json?.error ?? `Generate gagal: ${response.status}`);
         setLoading(false);
         return;
       }
 
-      const returnedStatus = json?.status ?? json?.data?.status ?? null;
-      const returnedTaskId = json?.task_id ?? json?.data?.task_id ?? null;
-      const returnedImages =
-        Array.isArray(json?.images) && json.images.length > 0
-          ? json.images
-          : Array.isArray(json?.data?.generated) && json.data.generated.length > 0
-          ? json.data.generated
-          : Array.isArray(json?.data?.images) && json.data.images.length > 0
-          ? json.data.images
-          : Array.isArray(json?.generated) && json.generated.length > 0
-          ? json.generated
-          : [];
-
-      if (returnedStatus) setStatus(returnedStatus);
-      if (returnedImages.length > 0) {
-        setImages(returnedImages);
+      // Jika API langsung mengembalikan gambar (generated array), gunakan langsung
+      const directImgs = json?.data?.generated ?? json?.generated ?? json?.images ?? null;
+      if (Array.isArray(directImgs) && directImgs.length > 0) {
+        setImages(directImgs);
+        setStatus('Selesai');
         setLoading(false);
         return;
       }
 
-      if (returnedTaskId) {
-        setTaskId(returnedTaskId);
-        setStatus(returnedStatus ?? 'Task dibuat; menunggu hasil (async).');
-        await pollStatusLoop(returnedTaskId, 15, 2000);
-        return;
+      // Jika task id diberikan, polling
+      const tid = json?.data?.task_id ?? json?.task_id ?? null;
+      if (tid) {
+        setTaskId(tid);
+        setStatus('Task dibuat. Polling status...');
+        await pollStatusLoop(tid);
+      } else {
+        setStatus('Tidak ada hasil dari API.');
       }
-
-      setStatus('Tidak ada hasil dan tidak ada task_id dikembalikan.');
     } catch (err: any) {
-      setError(`Kesalahan: ${err?.message ?? String(err)}`);
+      setError(String(err));
     } finally {
       setLoading(false);
     }
   };
 
-  // DOWNLOAD: fetch image as blob then trigger download (safer than relying on <a download>)
-  const downloadImage = async (src: string, filename: string, index: number) => {
+  // DOWNLOAD: gunakan POST supaya token panjang aman dan mudah dilihat di logs
+  const downloadImage = async (srcOrId: string, filename: string, index: number) => {
     setDownloadingIndex(index);
     setError('');
 
     try {
-      const resp = await fetch(src, {
-        method: 'GET',
-        // request without credentials; CORS must be allowed by the image host
-        credentials: 'omit',
-        // sometimes using no-referrer helps servers that block referer
-        referrerPolicy: 'no-referrer',
+      const isUrl = /^https?:\/\//i.test(srcOrId);
+      const body = isUrl ? { imageUrl: srcOrId, filename } : { resourceId: srcOrId, filename };
+
+      // panggil POST ke endpoint download
+      const resp = await fetch('/api/freepik-download', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-accept-license': '1', // jika server memeriksa header ini; boleh tetap dikirim
+        },
+        body: JSON.stringify(body),
       });
 
       if (!resp.ok) {
-        throw new Error(`Gagal mengambil gambar (status ${resp.status})`);
+        const txt = await resp.text();
+        throw new Error(txt || `Response ${resp.status}`);
       }
 
       const blob = await resp.blob();
       const url = URL.createObjectURL(blob);
-
-      // buat elemen <a> untuk trigger download
       const a = document.createElement('a');
       a.href = url;
       a.download = filename;
-      // some browsers require append to DOM to work properly
       document.body.appendChild(a);
       a.click();
       a.remove();
-
-      // revoke object URL setelah sedikit delay supaya download sempat mulai
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      setTimeout(() => URL.revokeObjectURL(url), 1500);
     } catch (err: any) {
       console.error('Download error', err);
-      setError(
-        // fallback message dan buka di tab baru kalau fetch gagal
-        `Gagal mengunduh langsung: ${err?.message ?? String(err)}. Membuka gambar di tab baru sebagai fallback.`
-      );
-      try {
-        // fallback: buka di tab baru (user dapat klik kanan -> Save as)
-        window.open(src, '_blank', 'noopener,noreferrer');
-      } catch (openErr) {
-        console.error('Fallback open failed', openErr);
-      }
+      setError(`Gagal mengunduh: ${err?.message ?? err}`);
     } finally {
       setDownloadingIndex(null);
     }
   };
 
+  // inline styles tombol (agar pasti terlihat)
+  const downloadBtnStyle: React.CSSProperties = {
+    backgroundColor: '#b71c1c', // dark red
+    color: '#fff',
+    border: 'none',
+    padding: '10px 14px',
+    borderRadius: 8,
+    cursor: 'pointer',
+    fontWeight: 600,
+    marginTop: 8,
+  };
+
+  const disabledStyle: React.CSSProperties = {
+    opacity: 0.6,
+    cursor: 'not-allowed',
+  };
+
   return (
-    <main className={styles.container} aria-live="polite">
-      <h1 className={styles.title}>Generate Gambar AI (Freepik)</h1>
+    <main className={styles.container ?? ''} aria-live="polite" style={{ padding: 20 }}>
+      <h1 className={styles.title ?? ''}>Generate Gambar AI (Freepik)</h1>
 
-      <form onSubmit={handleSubmit} className={styles.form} aria-describedby="generate-desc">
-        <p id="generate-desc" className={styles.srOnly}>
-          Masukkan prompt dan pilih aspect ratio, lalu klik Generate.
-        </p>
+      <form onSubmit={handleSubmit} className={styles.form ?? ''} style={{ marginBottom: 16 }}>
+        <label style={{ display: 'block', marginBottom: 6 }}>Prompt</label>
+        <textarea
+          value={prompt}
+          onChange={handlePromptChange}
+          placeholder="Contoh: A black car"
+          rows={4}
+          style={{ width: '100%', padding: 10, borderRadius: 8 }}
+        />
 
-        <div className={styles.inputGroup}>
-          <label htmlFor="prompt-input" className={styles.label}>
-            Prompt
-          </label>
-          <textarea
-            id="prompt-input"
-            value={prompt}
-            onChange={handlePromptChange}
-            placeholder="Disarankan menggunakan bahasa inggris (contoh: A black car)"
-            rows={5}
-            disabled={loading}
-            className={styles.textarea}
-            required
-            aria-required="true"
-          />
-        </div>
-
-        <div className={styles.inputGroup}>
-          <label htmlFor="aspect-select" className={styles.label}>
-            Aspect Ratio
-          </label>
-          <select
-            id="aspect-select"
-            value={aspectRatio}
-            onChange={handleAspectChange}
-            disabled={loading}
-            className={styles.select}
-            aria-label="Pilih Aspect Ratio"
-          >
+        <div style={{ marginTop: 8, display: 'flex', gap: 8, alignItems: 'center' }}>
+          <select value={aspectRatio} onChange={handleAspectChange} style={{ padding: 8, borderRadius: 8 }}>
             <option value="square_1_1">Square (1:1)</option>
             <option value="widescreen_16_9">16:9 Widescreen</option>
           </select>
-        </div>
 
-        <div className={styles.buttonRow ?? ''}>
-          {polling && (
-            <button type="button" onClick={cancelPolling} className={styles.button}>
-              Batalkan Polling
+          <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
+            {polling && (
+              <button type="button" onClick={cancelPolling} className={styles.button ?? ''} style={{ padding: '8px 12px' }}>
+                Batalkan Polling
+              </button>
+            )}
+            <button type="submit" className={styles.button ?? ''} style={{ padding: '8px 12px' }} disabled={loading}>
+              {loading ? 'Memproses...' : 'Generate'}
             </button>
-          )}
-          <button type="submit" disabled={loading} className={styles.button} aria-disabled={loading}>
-            {loading ? 'Memproses...' : 'Generate'}
-          </button>
+          </div>
         </div>
       </form>
 
-      {error && (
-        <div role="alert" aria-live="assertive" className={styles.error}>
-          {error}
-        </div>
-      )}
+      {error && <div role="alert" style={{ color: 'salmon', marginBottom: 12 }}>{error}</div>}
+      {status && <div style={{ marginBottom: 12 }}><strong>Status:</strong> {status}</div>}
+      {taskId && <div style={{ marginBottom: 12 }}><small>Task ID: <code>{taskId}</code></small></div>}
 
-      {status && (
-        <div role="status" aria-live="polite" className={styles.status}>
-          <strong>Status:</strong> {status}
-        </div>
-      )}
+      <section>
+        <h2>Hasil Gambar</h2>
 
-      {taskId && (
-        <div className={styles.taskId}>
-          <small>Task ID: <code>{taskId}</code></small>
-        </div>
-      )}
+        {/* Jika belum ada gambar, tampilkan pesan */}
+        {images.length === 0 && <p style={{ color: '#888' }}>Belum ada gambar. Generate untuk melihat hasil.</p>}
 
-      {images.length > 0 && (
-        <section className={styles.resultsSection} aria-label="Hasil Generated">
-          <h2 className={styles.resultsTitle}>Hasil Gambar</h2>
-          <div className={styles.resultsGrid}>
-            {images.map((src, i) => (
-              <div key={i} className={styles.resultCard}>
-                <div className={styles.resultImageWrapper}>
-                  <img src={src} alt={`Hasil generasi ${i + 1}`} className={styles.resultImage} />
-                </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 16 }}>
+          {images.map((src, i) => (
+            <div key={i} style={{ border: '1px solid #2222', padding: 12, borderRadius: 8, textAlign: 'center' }}>
+              <img
+                src={src}
+                alt={`Hasil ${i + 1}`}
+                style={{ width: '100%', height: 160, objectFit: 'cover', borderRadius: 6 }}
+                onError={() => console.warn('image load error', src)}
+              />
 
+              <div style={{ marginTop: 8 }}>
                 <button
+                  data-testid={`download-button-${i}`}
                   type="button"
-                  className={styles.downloadButton}
+                  style={{
+                    ...downloadBtnStyle,
+                    ...(downloadingIndex !== null ? disabledStyle : {}),
+                    width: '100%',
+                  }}
                   onClick={() => downloadImage(src, `freepik-image-${i + 1}.png`, i)}
                   disabled={downloadingIndex !== null}
-                  aria-disabled={downloadingIndex !== null}
-                  aria-label={`Download hasil ${i + 1}`}
                 >
                   {downloadingIndex === i ? 'Mengunduh...' : 'Download'}
                 </button>
               </div>
-            ))}
-          </div>
-        </section>
-      )}
+            </div>
+          ))}
+        </div>
+      </section>
     </main>
   );
 }
