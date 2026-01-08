@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, FormEvent, ChangeEvent } from 'react';
 
-// Jika kamu punya page.module.css, tetap bisa gunakan; inline style memastikan tombol terlihat.
+
 import styles from './page.module.css';
 
 export default function FreepikGeneratePage() {
@@ -95,7 +95,7 @@ export default function FreepikGeneratePage() {
         return;
       }
 
-      // Jika API langsung mengembalikan gambar (generated array), gunakan langsung
+      // Jika API langsung mengembalikan gambar 
       const directImgs = json?.data?.generated ?? json?.generated ?? json?.images ?? null;
       if (Array.isArray(directImgs) && directImgs.length > 0) {
         setImages(directImgs);
@@ -120,7 +120,7 @@ export default function FreepikGeneratePage() {
     }
   };
 
-  // DOWNLOAD: gunakan POST supaya token panjang aman dan mudah dilihat di logs
+  // POST supaya token panjang aman dan mudah dilihat di logs
   const downloadImage = async (srcOrId: string, filename: string, index: number) => {
     setDownloadingIndex(index);
     setError('');
@@ -134,7 +134,7 @@ export default function FreepikGeneratePage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-accept-license': '1', // jika server memeriksa header ini; boleh tetap dikirim
+          'x-accept-license': '1', // server memeriksa header ini
         },
         body: JSON.stringify(body),
       });
@@ -161,7 +161,7 @@ export default function FreepikGeneratePage() {
     }
   };
 
-  // inline styles tombol (agar pasti terlihat)
+  // inline styles tombol
   const downloadBtnStyle: React.CSSProperties = {
     backgroundColor: '#b71c1c', // dark red
     color: '#fff',
@@ -187,7 +187,7 @@ export default function FreepikGeneratePage() {
         <textarea
           value={prompt}
           onChange={handlePromptChange}
-          placeholder="Contoh: A black car"
+          placeholder="Disarankan menggunakan bhs.inggris,contoh: A white cat"
           rows={4}
           style={{ width: '100%', padding: 10, borderRadius: 8 }}
         />
