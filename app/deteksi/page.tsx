@@ -78,7 +78,7 @@ export default function Page() {
 
   return (
     <main className={styles.root}>
-      <h1 className={styles.title}>Deteksi Gambar AI</h1>
+      <h1 className={styles.title}>Deteksi Gambar AI (Sightengine)</h1>
 
       <div className={styles.card}>
         <div className={styles.cardHeader}>Unggah & Deteksi</div>

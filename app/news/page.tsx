@@ -14,42 +14,14 @@ type Article = {
 const PLACEHOLDER = '/logo_berita.png';
 
 const ARTICLES: Article[] = [
-  {
-    id: 'a1',
-    title: 'Researchers show AI art protection tools still leave creators at risk',
-    source: 'UTSA Today',
-    date: 'June 23, 2025',
-    url: 'https://www.utsa.edu/today/2025/06/story/AI-art-protection-tools-still-leave-creators-at-risk.html'
-  },
-  {
-    id: 'a2',
-    title: 'Here’s Why AI-Generated Images Fool You — And How To Spot Them',
-    source: 'Civil Beat',
-    date: 'June 20, 2025',
-    url: 'https://www.civilbeat.org/2025/06/heres-why-ai-generated-images-fool-you-and-how-to-spot-them/'
-  },
-  {
-    id: 'a3',
-    title: 'Merging AI and underwater photography to reveal hidden ocean worlds',
-    source: 'MIT News',
-    date: 'June 25, 2025',
-    url: 'https://news.mit.edu/2025/merging-ai-underwater-photography-to-reveal-hidden-ocean-worlds-0625'
-  },
-  {
-    id: 'a4',
-    title: 'AI Image Generation Breakthroughs 2025',
-    source: 'Medium',
-    date: '1 day ago',
-    url: 'https://medium.com/ai-simplified-in-plain-english/ai-image-generation-breakthroughs-2025-e81b71e55da1'
-  },
-  {
-    id: 'a5',
-    title: 'The 15 biggest announcements at Google I/O 2025 (incl. Imagen 4)',
-    source: 'The Verge',
-    date: 'May 2025',
-    url: 'https://www.theverge.com/news/669408/google-io-2025-biggest-announcements-ai-gemini'
-  },
+{ id: 'a1', title: 'Google Gemini App luncurkan fitur deteksi gambar AI dengan watermark SynthID', source: 'Blockchain.News', date: 'November 20, 2025', url: 'https://blockchain.news/ainews/google-geminiapp-launches-ai-generated-image-detection-feature-using-synthid-watermark' },
+{ id: 'a2', title: 'Uni Emirat Arab peringatkan penggunaan AI untuk menggambarkan tokoh publik dan simbol tanpa izin', source: 'The National News', date: 'September 25, 2025', url: 'https://www.thenationalnews.com/news/uae/2025/09/25/uae-warns-against-use-of-ai-to-depict-public-figures-for-online-misinformation/' },
+{ id: 'a3', title: 'Tren gambar Polaroid AI viral di media sosial', source: 'RRI.co.id', date: 'Oktober 2025', url: 'https://rri.co.id/lain-lain/1833416/fenomena-tren-foto-polaroid-ai' },
+{ id: 'a4', title: 'Nano Banana: revolusi pengeditan gambar berbasis AI oleh Google DeepMind', source: 'Times Indonesia', date: 'September 5, 2025', url: 'https://timesindonesia.co.id/tekno/553266/nano-banana-revolusi-edit-gambar-di-era-ai' },
+{ id: 'a5', title: 'Foto hasil AI penangkapan Presiden Maduro banjiri medsos dan sulit dibedakan dari nyata', source: 'CNN Indonesia', date: 'January 7, 2026', url: 'https://www.cnnindonesia.com/teknologi/20260107141425-185-1314498/foto-ai-penangkapan-presiden-maduro-banjiri-medsos-simak-bedanya' },
 ];
+
+
 
 export default function NewsPage() {
   return (

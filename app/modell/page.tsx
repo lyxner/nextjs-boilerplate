@@ -21,57 +21,35 @@ export default function ModelPage() {
   return (
     <div className={styles.pageWrapper}>
       <div className={styles.container}>
-        <h1 className={styles.heading1}>Model Generatif: GAN &amp; Difusi</h1>
+        <h1 className={styles.heading1}>Model Generatif: GAN &amp; Model Difusi</h1>
 
         {/* GAN Section */}
         <section className={styles.section}>
           <h2 className={styles.heading2}>Generative Adversarial Networks (GAN)</h2>
           <p className={styles.paragraph}>
-            GAN adalah dua jaringan neural yang “bertarung":<br />
+            GAN adalah dua jaringan neural yang berkompetensi:<br />
             <strong>Generator</strong> membuat gambar palsu sedekat mungkin dengan aslinya,<br />
-            sementara <strong>Discriminator</strong> memeriksa mana yang asli dan mana yang palsu.
+            sementara <strong>Discriminator</strong> memeriksa mana yang asli dan mana yang palsu.<br/>
+            proses akan selesai ketika <strong>Discriminator</strong> tidak bisa membedakan gambar asli dan gambar palsu
           </p>
 
           {/* Diagram GAN */}
           <div className={`${styles.card} ${styles.diagramCard}`}>
             <img
-              src="/images/kuis/ai1.webp"
+              src="/slide6/kerja1.jpg"
               alt="Cara Kerja GAN"
               className={styles.diagramImage}
             />
           </div>
 
-          {/* Teks pengantar varian */}
-          <p className={styles.variantIntro}>
-            Model GAN ini juga mempunyai banyak varian, beberapa di antaranya:
-          </p>
-
-          {/* Varian-model */}
-          <div className={styles.variantGrid}>
-            <ModelCard
-              name="DCGAN"
-              logoSrc="/images/kuis/ai1.webp"
-              alt="Logo DCGAN"
-            />
-            <ModelCard
-              name="StyleGAN"
-              logoSrc="/assets/gan/stylegan-placeholder.png"
-              alt="Logo StyleGAN"
-            />
-            <ModelCard
-              name="CycleGAN"
-              logoSrc="/assets/gan/cyclegan-placeholder.png"
-              alt="Logo CycleGAN"
-            />
-          </div>
 
           {/* Contoh hasil GAN */}
           <div className={styles.examplesSection}>
             <h3 className={styles.examplesTitle}>Contoh Gambar dari GAN</h3>
             <div className={styles.examplesGrid}>
-              <img src="/images/kuis/ai1.webp" alt="GAN Example 1" />
-              <img src="/examples/gan2.jpg" alt="GAN Example 2" />
-              <img src="/examples/gan3.jpg" alt="GAN Example 3" />
+              <img src="/slide6/contohgan.webp" alt="GAN Example 1" />
+              <img src="/slide6/contohgan2.png" alt="GAN Example 2" />
+              <img src="/slide6/contohgan3.png" alt="GAN Example 3" />
             </div>
           </div>
         </section>
@@ -80,49 +58,29 @@ export default function ModelPage() {
         <section className={styles.section}>
           <h2 className={styles.heading2}>Model Difusi</h2>
           <p className={styles.paragraph}>
-            Model difusi memulai dari <em>noise</em> acak, lalu belajar mengurangi noise tersebut langkah demi langkah hingga membentuk gambar yang nyata.
+           Model difusi adalah model generatif yang mempunyai cara kerja dengan membuat sebuah data sampel yang kacau dengan menambahkan noise pada data tersebut <strong>(Forward Diffusion) </strong>
+           yang kemudian membalik proses tersebut dengan mengurangi noise pada data sampel <strong>(Denoising)</strong> secara bertahap <br/>
+           dengan melibatkan conditioning yang pada akhirnya model difusi dapat menciptakan data baru atau sampel yang berasal dari noise murni.
           </p>
 
           {/* Diagram Difusi */}
           <div className={`${styles.card} ${styles.diagramCard}`}>
             <img
-              src="/images/kuis/ai1.webp"
+              src="/slide6/kerja2.png"
               alt="Cara Kerja Model Difusi"
               className={styles.diagramImage}
             />
           </div>
 
-          {/* Teks pengantar varian */}
-          <p className={styles.variantIntro}>
-            Model difusi ini juga mempunyai banyak varian, beberapa di antaranya:
-          </p>
-
-          {/* Varian-model */}
-          <div className={styles.variantGrid}>
-            <ModelCard
-              name="Stable Diffusion"
-              logoSrc="/images/kuis/ai1.webp"
-              alt="Logo Stable Diffusion"
-            />
-            <ModelCard
-              name="DALL·E 2"
-              logoSrc="https://via.placeholder.com/80?text=DALL%25C2%25B7E2"
-              alt="Logo DALL·E 2"
-            />
-            <ModelCard
-              name="Imagen"
-              logoSrc="https://via.placeholder.com/80?text=Imagen"
-              alt="Logo Imagen"
-            />
-          </div>
+        
 
           {/* Contoh hasil Difusi */}
           <div className={styles.examplesSection}>
             <h3 className={styles.examplesTitle}>Contoh Gambar dari Model Difusi</h3>
             <div className={styles.examplesGrid}>
               <img src="/images/kuis/ai1.webp" alt="GAN Example 1" />
-              <img src="/examples/diffusion2.jpg" alt="Diffusion Example 2" />
-              <img src="/examples/diffusion3.jpg" alt="Diffusion Example 3" />
+              <img src="/slide6/gambar1.webp" alt="Diffusion Example 2" />
+              <img src="/slide6/gambar2.webp" alt="Diffusion Example 3" />
             </div>
           </div>
         </section>
