@@ -2,16 +2,21 @@
 import styles from './page.module.css';
 
 const karakteristik = [
-  'Detail Tubuh Tidak Wajar',
-  'Tekstur Terlalu Halus,Sempurna, dan Tidak Alami',
-  'Latar Belakang Aneh',
+  'Kesalahan Anatomi Tubuh',
+  'Artefak Gaya',
+  'Ketidaksesuaian Fungsional ',
+  'Pelanggaran Hukum Fisika',
+  'kesalahan sosial kultural' 
+  ,
  
 ];
 
 const penjelasanKarakteristik: string[] = [
-  'Beberapa bagian tubuh tampak memanjang, menyusut, atau menempel tidak wajar, misalnya jari yang terlalu panjang, dan jumlah anggota tubuh lainya juga melebihi jumlah aslinya.',
-  'Permukaan objek tampak sangat mulus terutama pada bagian muka dan tanpa cacat, tidak ada pori-pori, goresan, permukaan kulit terlalu sempurna, dan noise yang biasa muncul pada foto asli tidak ada. Dan ini juga berlaku kepada latar belakang pada gambar ai tersebut seperti latar belakang yang teksturnya dibuat terlalu halus dan terlalu sempurna',
-  'Background menampilkan elemen acak yang tidak masuk akal, seperti benda terapung, bayangan yang salah arah, atau pola yang terulang tanpa alasan.',
+  'Kelainan pada bentuk anatomi tubuh seperti jari tangan yang hilang/kelebihan/menyatu, mata dengan bentuk pupil yang tidak natural /mata terlalu mengkilap, gigi yang susunannya aneh atau menyatu dengan bibir, tubuh dengan anggota ekstra/hilang atau proporsi yang tidak natural, bagian tubuh yang menyatu antar orang atau objek, serta karakteristik fisik yang tidak konsisten kalau dibandingkan dengan foto asli.',
+  'Masalah pada estetika dan tekstur gambar seperti kulit atau permukaan yang tampak plastik/lilin/terlalu mengkilap, gaya yang jadi berlebihan sinematik, detail yang terlalu berlebihan di bagian tertentu yang terasa tidak natural, dan inkonsistensi resolusi atau warna antar bagian gambar.',
+  'Kesalahan karena AI nggak paham dunia nyata seperti hubungan antar objek/orang yang tidak logis, objek yang jadi rusak/tak bisa dipakai, detail halus yang ikut terdistorsi, teks atau logo yang tidak terbaca, serta elemen berlebihan atau keluar konteks yang muncul gara-gara prompt.',
+  'kesalahan yang melanggar hukum fisika di dunia nyata seperti bayangan dengan arah atau bentuk yang nggak konsisten, pantulan atau refleksi yang nggak cocok sama adegan, serta masalah kedalaman/perspektif seperti distorsi pada objek.',
+  'kesalahan karena AI nggak paham konteks sosial/budaya seperti adegan yang mungkin tapi sangat nggak biasa atau jelas fiksi, situasi yang nggak pantas karena gabungan elemen yang bertentangan, detail budaya yang keliru atau disalahartikan, serta representasi sejarah yang tidak masuk akal.',
 ];
 
 // Gallery untuk setiap karakteristik
@@ -23,6 +28,7 @@ const placeholdersPerList: string[][] = [
       '/slide/elang1.webp',
        '/slide/jerapah1.webp',
         '/slide/orang.webp',
+        '/slide/tangan1.webp',
        
     
   ],
@@ -32,6 +38,20 @@ const placeholdersPerList: string[][] = [
     '/slide2/orang3.webp',
     '/slide2/orang4.webp',
     '/slide2/orang5.webp',
+  ],
+  [
+    '/slide3/image1.jpg',
+    '/slide3/image1.jpg',
+    '/slide3/image1.jpg',
+    '/slide3/image1.jpg',
+    '/slide3/image1.jpg',
+  ],
+  [
+    '/slide3/image1.jpg',
+    '/slide3/image1.jpg',
+    '/slide3/image1.jpg',
+    '/slide3/image1.jpg',
+    '/slide3/image1.jpg',
   ],
   [
     '/slide3/image1.jpg',
