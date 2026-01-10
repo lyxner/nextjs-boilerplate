@@ -22,6 +22,8 @@ const placeholdersPerList: string[][] = [
      '/slide/harimau1.webp',
       '/slide/elang1.webp',
        '/slide/jerapah1.webp',
+        '/slide/orang.webp',
+       
     
   ],
   [
