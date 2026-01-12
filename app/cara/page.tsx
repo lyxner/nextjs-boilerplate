@@ -74,12 +74,7 @@ const dampakMisinformasi: Dampak[] = [
       'Gambar yang menyesatkan sering kali digunakan untuk mendukung narasi salah. Misalnya, foto AI yang direkayasa seolah-olah menunjukkan kejadian tertentu dapat memicu rumor dan membuat opini publik terdistorsi, memengaruhi keputusan politik maupun sosial.',
     image: '/slide6/dampak2.webp',
   },
-  {
-    title: 'Kerusakan Reputasi Individu/Brand',
-    description:
-      'Brand atau individu bisa diserang lewat gambar palsu—misalnya foto yang diubah menunjukkan tindakan negatif. Dampaknya, pelanggan kehilangan kepercayaan, saham turun, dan proses pemulihan reputasi memakan waktu dan biaya besar.',
-    image: '/slide6/dampak3.webp',
-  },
+ 
 ];
 
 function InfiniteSlideshow({ images }: { images: string[] }) {
