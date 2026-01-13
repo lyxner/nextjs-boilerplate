@@ -82,15 +82,14 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-bottom: 24px;
+
 }
 .inputGroup {
   display: flex;
   flex-direction: column;
 }
 .label {
-  margin-bottom: 4px;
+
   font-weight: 500;
   color: var(--color-acc1);
 }
@@ -144,6 +143,7 @@
 /* ==================== Textarea ==================== */
 .textarea {
   width: 100%;
+
   resize: vertical;
   padding: 8px;
   font-size: 1rem;
@@ -189,8 +189,8 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 .inputPreviewImage {
-  width: 40%;
-  height: 40%;
+  width: 30%;
+  height: 30%;
   object-fit: cover;
   display: block;
 }
@@ -205,12 +205,13 @@
 
 /* ==================== Results ==================== */
 .resultsSection {
-  margin-top: 32px;
+  margin-top: 1px;
+   margin-bottom: 1px;
 }
 .resultsTitle {
   font-size: 1.5rem;
   color: var(--color-acc1);
-  margin-bottom: 16px;
+  margin-bottom: 1px;
   text-align: center;
   font-family: var(--font-din1451);
 }
@@ -221,8 +222,8 @@
   justify-items: center;
 }
 .resultCard {
-  width: 30%;
-  max-width: 30%;
+  width: 25%;
+  max-width: 25%;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
