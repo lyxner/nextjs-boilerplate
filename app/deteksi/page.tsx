@@ -1,76 +1,51 @@
-// app/deteksi/page.tsx
 'use client';
 
 import { useState, ChangeEvent, FormEvent } from 'react';
 import styles from './page.module.css';
 
 export default function Page() {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string>('');
-  const [resultText, setResultText] = useState<string>('');
-  const [resultType, setResultType] = useState<'success' | 'error' | ''>('');
-  const [loading, setLoading] = useState<boolean>(false);
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState('');
+  const [result, setResult] = useState<{ text: string; type: 'success' | 'error' | '' }>({ text: '', type: '' });
+  const [loading, setLoading] = useState(false);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] ?? null;
-    if (file) {
-      setSelectedFile(file);
-      setPreviewUrl(URL.createObjectURL(file));
-      setResultText('');
-      setResultType('');
-    } else {
-      setSelectedFile(null);
-      setPreviewUrl('');
-      setResultText('');
-      setResultType('');
-    }
+    const f = e.target.files?.[0] ?? null;
+    if (preview) URL.revokeObjectURL(preview);
+    setFile(f);
+    setPreview(f ? URL.createObjectURL(f) : '');
+    setResult({ text: '', type: '' });
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!selectedFile) {
-      setResultText('Pilih gambar terlebih dahulu.');
-      setResultType('error');
-      return;
-    }
-    setLoading(true);
-    setResultText('');
-    setResultType('');
-    try {
-      const formData = new FormData();
-      formData.append('image', selectedFile);
+    if (!file) return setResult({ text: 'Pilih gambar terlebih dahulu.', type: 'error' });
 
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
+    setLoading(true);
+    setResult({ text: '', type: '' });
+
+    try {
+      const fd = new FormData();
+      fd.append('image', file);
+
+      const res = await fetch('/api/upload', { method: 'POST', body: fd });
+      const json = await res.json().catch(() => ({}));
+
       if (!res.ok) {
-        let errMsg = `Server error: ${res.status}`;
-        try {
-          const errData = await res.json();
-          if (errData?.message) errMsg = errData.message;
-        } catch {}
-        setResultText(`Gagal: ${errMsg}`);
-        setResultType('error');
-        return;
+        const msg = json?.message ?? `Server error: ${res.status}`;
+        return setResult({ text: `Gagal: ${msg}`, type: 'error' });
       }
-      const data = await res.json();
-      if (data.status === 'success') {
-        const aiProb = data.data?.type?.ai_generated;
-        if (typeof aiProb === 'number') {
-          setResultText(`Probabilitas AI: ${(aiProb * 100).toFixed(2)}%`);
-          setResultType('success');
-        } else {
-          setResultText('Analisis selesai, tetapi probabilitas tidak ditemukan.');
-          setResultType('error');
-        }
+
+      if (json?.status === 'success') {
+        const p = typeof json?.data?.type?.ai_generated === 'number'
+          ? `Probabilitas AI: ${(json.data.type.ai_generated * 100).toFixed(2)}%`
+          : 'Analisis selesai, tetapi probabilitas tidak ditemukan.';
+        setResult({ text: p, type: typeof json?.data?.type?.ai_generated === 'number' ? 'success' : 'error' });
       } else {
-        setResultText(`Gagal analisis: ${data.message || 'Unknown error'}`);
-        setResultType('error');
+        setResult({ text: `Gagal analisis: ${json?.message ?? 'Unknown error'}`, type: 'error' });
       }
     } catch (err: any) {
-      setResultText(`Gagal menghubungi server: ${err.message}`);
-      setResultType('error');
+      setResult({ text: `Gagal menghubungi server: ${err?.message ?? err}`, type: 'error' });
     } finally {
       setLoading(false);
     }
@@ -83,41 +58,28 @@ export default function Page() {
       <div className={styles.card}>
         <div className={styles.cardHeader}>Unggah & Deteksi</div>
 
-        <form onSubmit={handleSubmit} className={styles.form} encType="multipart/form-data">
+        <form onSubmit={handleSubmit} className={styles.form}>
           <label className={styles.fileInput}>
-            <input
-              type="file"
-              name="image"
-              accept="image/*"
-              disabled={loading}
-              onChange={handleFileChange}
-            />
+            <input type="file" accept="image/*" disabled={loading} onChange={handleFileChange} />
           </label>
-          <button
-            type="submit"
-            disabled={!selectedFile || loading}
-            className={styles.submitButton}
-          >
+
+          <button type="submit" disabled={!file || loading} className={styles.submitButton}>
             {loading ? 'Memproses...' : 'Upload & Analisis'}
           </button>
         </form>
 
-        {previewUrl && (
+        {preview && (
           <div className={styles.previewContainer}>
             <h2 className={styles.previewTitle}>Preview</h2>
             <div className={styles.previewImageWrapper}>
-              <img src={previewUrl} alt="Preview" className={styles.previewImage} />
+              <img src={preview} alt="Preview" className={styles.previewImage} />
             </div>
           </div>
         )}
 
-        {resultText && (
-          <div
-            className={`${styles.resultBox} ${
-              resultType === 'success' ? styles.resultSuccess : styles.resultError
-            }`}
-          >
-            {resultText}
+        {result.text && (
+          <div className={`${styles.resultBox} ${result.type === 'success' ? styles.resultSuccess : styles.resultError}`}>
+            {result.text}
           </div>
         )}
       </div>
