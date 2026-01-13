@@ -66,8 +66,10 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 5px;
   padding: 24px;
+
+
 }
 
 /* file input tombol */
@@ -130,23 +132,28 @@
 
 /* preview di dalam card */
 .previewContainer {
-  padding: 0 24px 24px;
+  padding: 0 10px 10px;
+ position:relative;
+
 }
 .previewTitle {
   font-size: 1.125rem;
   font-weight: 500;
   color: var(--color-acc1);
   margin-bottom: 12px;
+  padding: 0 180px 10px;
 }
 .previewImageWrapper {
   width: 100%;
-  border-radius: 12px;
-  overflow: hidden;
+
+   padding: 0 100px 10px;
+
 }
 .previewImage {
-  width: 100%;
+  width: 50%;
   display: block;
-  object-fit: contain;
+
+   
 }
 
 /* hasil probabilitas di dalam card */
