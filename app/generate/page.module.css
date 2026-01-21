@@ -222,14 +222,15 @@
   justify-items: center;
 }
 .resultCard {
-  width: 25%;
-  max-width: 25%;
+  width:50%;
+ height: 50%;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .resultImageWrapper {
-  width: 100%;
-  aspect-ratio: 1/1;
+  width: auto;
+
+  aspect-ratio:auto;
   overflow: hidden;
   border-radius: 12px;
 }

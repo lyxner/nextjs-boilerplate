@@ -1,4 +1,3 @@
-// app/layout.tsx
 import '../styles/globals.css';
 
 export const metadata = {
@@ -30,6 +29,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <li><a href="/news">Berita</a></li>
           </ul>
         </nav>
+
+        {/* Script menandai link aktif; letakkan file di /public/active-nav.js */}
+        <script src="/active-nav.js" defer></script>
+
         {children}
       </body>
     </html>

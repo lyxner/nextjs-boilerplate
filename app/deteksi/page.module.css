@@ -76,7 +76,7 @@
 .fileInput {
   position: relative;
   display: inline-block;
-  width: 100%;
+  width: 105%;
 }
 .fileInput input[type="file"] {
   position: absolute;
@@ -141,10 +141,11 @@
   font-weight: 500;
   color: var(--color-acc1);
   margin-bottom: 12px;
-  padding: 0 180px 10px;
+  padding: 0 185px 10px;
 }
 .previewImageWrapper {
-  width: 100%;
+  width: 150%;
+  height: auto;
 
    padding: 0 100px 10px;
 
