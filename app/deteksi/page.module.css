@@ -129,6 +129,46 @@
   box-shadow: 0 6px 12px rgba(0,0,0,0.15);
   background-color: var(--color-acc1);
 }
+/* --- tambahkan ini ke file page.module.css --- */
+
+/* container ilustrasi probabilitas */
+.probImageContainer {
+  padding: 0 24px 16px;
+  text-align: center;
+}
+
+.probImageTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-acc1);
+  margin: 8px 0;
+}
+
+/* wrapper gambar probabilitas */
+.probImageWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 0 0;
+}
+
+/* gambar probabilitas (placeholder) */
+.probImage {
+  width: 80%;
+  max-width: 320px;
+  height: auto;
+  border-radius: 8px;
+
+  background: transparent;
+}
+
+/*  mobile */
+@media (max-width: 600px) {
+  .probImage {
+    width: 95%;
+    max-width: 260px;
+  }
+}
 
 /* preview di dalam card */
 .previewContainer {

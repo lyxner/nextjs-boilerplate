@@ -1,5 +1,4 @@
 'use client';
-
 import { useState, ChangeEvent, FormEvent } from 'react';
 import styles from './page.module.css';
 
@@ -20,27 +19,26 @@ export default function Page() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!file) return setResult({ text: 'Pilih gambar terlebih dahulu.', type: 'error' });
-
     setLoading(true);
     setResult({ text: '', type: '' });
-
     try {
       const fd = new FormData();
       fd.append('image', file);
-
       const res = await fetch('/api/upload', { method: 'POST', body: fd });
       const json = await res.json().catch(() => ({}));
-
       if (!res.ok) {
         const msg = json?.message ?? `Server error: ${res.status}`;
         return setResult({ text: `Gagal: ${msg}`, type: 'error' });
       }
-
       if (json?.status === 'success') {
-        const p = typeof json?.data?.type?.ai_generated === 'number'
-          ? `Probabilitas AI: ${(json.data.type.ai_generated * 100).toFixed(2)}%`
-          : 'Analisis selesai, tetapi probabilitas tidak ditemukan.';
-        setResult({ text: p, type: typeof json?.data?.type?.ai_generated === 'number' ? 'success' : 'error' });
+        const p =
+          typeof json?.data?.type?.ai_generated === 'number'
+            ? `Probabilitas AI: ${(json.data.type.ai_generated * 100).toFixed(2)}%`
+            : 'Analisis selesai, tetapi probabilitas tidak ditemukan.';
+        setResult({
+          text: p,
+          type: typeof json?.data?.type?.ai_generated === 'number' ? 'success' : 'error'
+        });
       } else {
         setResult({ text: `Gagal analisis: ${json?.message ?? 'Unknown error'}`, type: 'error' });
       }
@@ -54,7 +52,6 @@ export default function Page() {
   return (
     <main className={styles.root}>
       <h1 className={styles.title}>Deteksi Gambar AI (Sightengine)</h1>
-
       <div className={styles.card}>
         <div className={styles.cardHeader}>Unggah & Deteksi</div>
 
@@ -68,6 +65,7 @@ export default function Page() {
           </button>
         </form>
 
+        {/* 1) Preview gambar (jika ada) */}
         {preview && (
           <div className={styles.previewContainer}>
             <h2 className={styles.previewTitle}>Preview</h2>
@@ -77,6 +75,21 @@ export default function Page() {
           </div>
         )}
 
+        {/* 2) Gambar ilustrasi probabilitas (placeholder) - tampilkan saat ada hasil */}
+        {result.text && (
+          <div className={styles.probImageContainer}>
+            <h3 className={styles.probImageTitle}>Ilustrasi Cara Kerja Probabilitas</h3>
+            <div className={styles.probImageWrapper}>
+              <img
+                src="/images4/carakerja.png" /* <-- ganti ini sesuai kebutuhan Anda */
+                alt="Ilustrasi Probabilitas"
+                className={styles.probImage}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 3) Hasil probabilitas (tampil paling akhir) */}
         {result.text && (
           <div className={`${styles.resultBox} ${result.type === 'success' ? styles.resultSuccess : styles.resultError}`}>
             {result.text}
