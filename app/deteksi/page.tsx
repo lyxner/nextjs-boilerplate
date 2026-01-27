@@ -81,7 +81,7 @@ export default function Page() {
             <h3 className={styles.probImageTitle}>Ilustrasi Cara Kerja Probabilitas</h3>
             <div className={styles.probImageWrapper}>
               <img
-                src="/images4/carakerja.png" /* <-- ganti ini sesuai kebutuhan Anda */
+                src="/images4/carakerja2.png" /* <-- ganti ini sesuai kebutuhan Anda */
                 alt="Ilustrasi Probabilitas"
                 className={styles.probImage}
               />
