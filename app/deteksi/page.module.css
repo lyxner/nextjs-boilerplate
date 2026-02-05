@@ -220,11 +220,13 @@
   .previewContainer,
   .resultBox  { margin: 0 16px 16px; }
 
+
+}
+@media (max-width: 2712px) {
 .previewTitle {
   font-size: 1.125rem;
   font-weight: 500;
   color: var(--color-acc1);
   margin-bottom: 12px;
-  padding: 10px 170px 10px;
-}
-}
+  padding: 10px 150px 10px;
+}}
