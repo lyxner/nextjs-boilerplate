@@ -1,14 +1,17 @@
 /* ==================== Theme Variables ==================== */
 :root {
-  --color-bg:    #dbd4c6;
-  --color-base:  #b5afa4; /* warna awal link sesuai permintaan */
-  --color-acc1:  #9e652f; /* warna aktif/permanent */
-  --color-acc2:  #3c3c36;
-  --color-text:  #161615;
-  --color-muted: #64796c;
-  --color-primary-nav: #090040;
-  --color-primary-nav-hover: #333446;
-  --color-secondary-btn: #97a5d4;
+
+--color-bg:            #f4efe6; /* latar lembut, lebih terang dari #dbd4c6 */
+  --color-base:          #c9c2b6; /* warna dasar untuk surface/kartu */
+  --color-acc1:          #b35a2b; /* aksen utama — terracotta hangat */
+  --color-acc2:          #2f3230; /* aksen gelap — charcoal halus */
+  --color-text:          #1b1a18; /* teks utama — hangat & kontras */
+  --color-muted:         #6f8579; /* teks/ikon sekunder — sage muted */
+  --color-primary-nav:   #0b2040; /* primary nav — navy-indigo dalam */
+  --color-primary-nav-hover: #22304b; /* hover nav — lembut, tidak kaget mata */
+  --color-secondary-btn: #61a5a5; /* tombol sekunder — teal lembut (kontras dgn terracotta) */
+
+
 
   --font-sans:    'Arial', sans-serif;
   --font-din1451: 'DIN1451', sans-serif;
